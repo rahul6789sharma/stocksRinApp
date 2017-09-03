@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Smart Trading | NSE : Indian Stock Market Knowledge |
+	Options Trading</title>
+
+<meta name="keywords"
+	content="Pay Off Graph, Nifty Pay Off Graph, profit Loss Graph, NSE Pay off Graph, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta " />
+<meta name="description" content="Nifty Pay Off Graph " />
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+legend {
+    display: block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: none;
+}
+</style>
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+				 
+				<label class="small" for="strickPrice"> Instrument </label>
+				
+				<select class="form-control" id="instrumentSelect" onchange="insSelected()"> 
+						<option value="nifty">Nifty</option>
+						<option value="bankNifty">Bank Nifty</option>
+						<option value="usdinr">USD/INR</option>
+						<option value="other">Other</option>
+				</select> 
+				
+  				<br/>
+  				
+  				<label class="small" for="lotSize">Nifty Lot Size</label>
+  				<input type="number" class="form-control" id="lotSize" onchange="calPayOff()" value=75 disabled>
+  				 
+  				<br/>
+  				<label class="small" for="Qlots"> Quantity (in Lots)</label>
+  				<input type="number" class="form-control" id="Qlots" onchange="calPayOff()" value=0>
+				
+		    	<br>
+		    	<hr/>
+		    	<div class="text-center"><h4><span style="color: #333333;">Leg-1: Short Lower Strick </span></h4></div>
+		    	
+		    	<label class="small" for="strickPriceDivSell1">Strick Price</label>
+  				<div id="strickPriceDivSell1"></div>
+  		
+			    <label class="small" for="premiumRecived">Premium Received (per Lot) </label>
+  				<input type="number" class="form-control" id="premiumRecived" onchange="calPayOff()" value=0>
+  				<br/>
+  				<hr/>
+  				
+  				<div class="text-center"><h4><span style="color: #333333;">Leg-2: Long Higher Strick </span></h4></div>
+  				
+  				<label class="small" for="strickPriceDivBuy1">Strick Price</label>
+  				<div id="strickPriceDivBuy1"></div>
+  				<br/>
+  				<label class="small" for="premiumRecived">Premium Paid (per Lot) </label>
+  				<input type="number" class="form-control" id="premiumPaid" onchange="calPayOff()" value=0>
+  				<hr/>
+  				
+
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+	
+		  <div class="text-center"><h4><span style="color: #333333;">Bearish : Bear Call Spread</span></h4></div> 
+			<div  class="panel panel-default" id="container0" style="width: 100%; height: 100%; margin: 0 auto; min-height: 300px; padding-right:2%;"></div>
+			<br/>
+			<div id="payOffTbaleDiv"> </div>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2">
+
+		<ul class="list-group">
+ 				<li class="list-group-item" style="display: grid;">BreakEven Point <span class="badge fa fa-inr" style="background-color: #5bc0de;" id="breakEvenPoint"> &nbsp 0</span></li>
+  				<li class="list-group-item" style="display: grid;">Premium Received <span class="badge fa fa-inr" style="background-color: #95d095;" id="netPremium"> &nbsp 0</span></li> 
+  				<li class="list-group-item" style="display: grid;">Maximum Profit <span class="badge fa fa-inr" style="background-color: #95d095;" id="maxProfit"> &nbsp  0</span></li> 
+  				<li class="list-group-item" style="display: grid;">Maximum Loss <span class="badge fa fa-inr" style="background-color: #d9534f;" id="maxLoss">  &nbsp 0 </span></li>
+			</ul>
+			 <br/>
+		   <br/>
+		   <div ng-include="'templets/add.html'"></div> 
+		   
+		</div>
+		   
+		  
+		<!--/right-->
+	</div>
+
+
+<footer class="container-fluid text-center" style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+	<script src="js/payOff.js"></script>
+
+
+</body>
+
+
+<script>
+insSelected();
+
+function insSelected() {
+	
+	var insSelected = document.getElementById('instrumentSelect').value
+
+	if(insSelected == "nifty"){
+		console.log(" insSelected  nifty: " + insSelected);
+		document.getElementById('lotSize').value = 75 ;
+		document.getElementById("lotSize").disabled = true;
+		createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","nifty");
+		createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1" ,"nifty");
+		
+		document.getElementById('premiumPaid').value=0;
+		document.getElementById('premiumRecived').value=0;
+		
+	}else if(insSelected == "bankNifty"){
+		document.getElementById('lotSize').value = 40 ;
+		document.getElementById("lotSize").disabled = true;
+		createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","bankNifty");
+		createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1","bankNifty");
+		document.getElementById('premiumPaid').value=0;
+		document.getElementById('premiumRecived').value=0;
+
+	} else if(insSelected == "usdinr"){
+		document.getElementById('lotSize').value = 1000 ;
+		document.getElementById("lotSize").disabled = true;
+		createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","usdinr");
+		createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1","usdinr");
+		document.getElementById('premiumPaid').value=0;
+		document.getElementById('premiumRecived').value=0;
+
+		
+	}else if(insSelected == "other"){
+		document.getElementById('lotSize').value = 0 ;
+		document.getElementById("lotSize").disabled = false;
+		createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","other");
+		createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1","other");
+		document.getElementById('premiumPaid').value=0;
+		document.getElementById('premiumRecived').value=0;
+
+	}
+	calPayOff();
+}
+
+
+    checkCookie();
+   	createPayOffTable();
+   	calPayOff();
+
+	function calPayOff() {
+		var strickPriceSelectSell1 = document.getElementById('strickPriceSelectSell1').value
+		var strickPriceSelectBuy1 = document.getElementById('strickPriceSelectBuy1').value
+		var premiumPaid = document.getElementById('premiumPaid').value
+		var premiumRecived = document.getElementById('premiumRecived').value
+		
+		var lotSize = document.getElementById('lotSize').value
+		var Qlots = document.getElementById('Qlots').value		
+
+		if (strickPriceSelectSell1 != 0 && strickPriceSelectBuy1 != 0 && premiumPaid != 0 &&  premiumRecived != 0 && lotSize != 0 && Qlots != 0 ) {
+			
+			var premiumCredit = ((parseFloat(premiumRecived) - parseFloat(premiumPaid)))  ;
+			
+			var breakEven = parseFloat(strickPriceSelectSell1) +  premiumCredit;
+			document.getElementById('breakEvenPoint').innerHTML = " &nbsp " + breakEven;
+			
+			var netPremium = ((parseFloat(premiumRecived) - parseFloat(premiumPaid)))*lotSize*Qlots  ;
+			document.getElementById('netPremium').innerHTML = " &nbsp " + netPremium.toFixed(2);
+			
+			document.getElementById('maxProfit').innerHTML = " &nbsp " + netPremium.toFixed(2);
+			
+			var strickDifference = (parseFloat(strickPriceSelectBuy1)-parseFloat(strickPriceSelectSell1));
+			
+			
+			var maxLoss=(strickDifference-premiumCredit)*lotSize*Qlots;
+			document.getElementById('maxLoss').innerHTML = " &nbsp " +"-"+ maxLoss.toFixed(2);
+			
+		 	var ar = calStrickOnExpiry(strickPriceSelectSell1);
+		 	var netPayOff = new Array();
+			
+			for (i = 0; i < ar.length; i++) {
+				var shortIngIntValue = callInternsicValue(ar[i], strickPriceSelectSell1);
+				var longIngIntValue = callInternsicValue(ar[i], strickPriceSelectBuy1);
+				var netpremiumPaid=premiumPaid;
+				
+				var shortPayoff = netPayOffShort(premiumRecived, shortIngIntValue);
+				var longPayoff = netPayOffLong(netpremiumPaid, longIngIntValue);
+				var totalPayOff=shortPayoff+longPayoff;
+				netPayOff.push(totalPayOff * lotSize * Qlots);
+			}
+			
+			 drawOIChart("Bear Call Spread Pay-Off", netPayOff, ar,breakEven);
+			 $('#payofftable').remove();
+			 createPayOffTable();
+			 addDataToTable(ar, netPayOff) 
+		}else{
+			
+			document.getElementById('breakEvenPoint').innerHTML = " &nbsp " +0;
+			document.getElementById('netPremium').innerHTML = " &nbsp " +0;
+			document.getElementById('maxLoss').innerHTML = " &nbsp " + 0;
+			document.getElementById('maxProfit').innerHTML = " &nbsp " + 0;
+			
+			var netPayOffDummby=new Array();
+			var strickPriceDummy=new Array();
+				
+			drawOIChart("Bear Call Spread Pay-Off", netPayOffDummby, strickPriceDummy,0);
+			$('#payofftable').remove();
+			createPayOffTable(); 
+		}
+		
+		var insSelected = document.getElementById('instrumentSelect').value
+		setCookie("selectedInstrument", insSelected, "payoff_Call_Bear_Spread.html");
+		
+		setCookie("Qlots", Qlots,"payoff_Call_Bear_Spread.html");
+		setCookie("shortStrickPrice", strickPriceSelectSell1,"payoff_Call_Bear_Spread.html");
+		setCookie("strickPriceSelectBuy1", strickPriceSelectBuy1,"payoff_Call_Bear_Spread.html");
+		setCookie("premiumPaid", premiumPaid,"payoff_Call_Bear_Spread.html");
+		setCookie("premiumRecived", premiumRecived,"payoff_Call_Bear_Spread.html");
+		console.log("Setting premiumPaid " +premiumPaid);
+		console.log("Setting premiumRecived " +premiumRecived);
+	}
+
+	function checkCookie() {
+		
+		var selectedInstrument = getCookie("selectedInstrument");
+
+		if(selectedInstrument == "nifty"){
+			document.getElementById('lotSize').value = 75 ;
+			
+			createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","nifty");
+			createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1","nifty");
+		}else if(selectedInstrument == "bankNifty"){
+			document.getElementById('lotSize').value = 40 ;
+			
+			createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","bankNifty");
+			createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1","bankNifty");
+		} else if(selectedInstrument == "usdinr"){
+			document.getElementById('lotSize').value = 1000 ;
+			
+			createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","usdinr");
+			createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1","usdinr");
+		}else{
+			createStrickPriceSelectByIDForPayOff("strickPriceDivBuy1","strickPriceSelectBuy1","nifty");
+			createStrickPriceSelectByIDForPayOff("strickPriceDivSell1", "strickPriceSelectSell1","nifty");
+		}
+		
+		if (selectedInstrument != "") {
+			document.getElementById('instrumentSelect').value = selectedInstrument;
+		}
+	  
+	    var Qlots=getCookie("Qlots");
+	    var shortStrickPrice=getCookie("shortStrickPrice");
+	    var strickPriceSelectBuy1=getCookie("strickPriceSelectBuy1");
+	    var premiumPaid=getCookie("premiumPaid");	   
+	    var premiumRecived=getCookie("premiumRecived");
+		
+	    console.log("getting" + premiumPaid)
+	     console.log("getting premiumRecived " + premiumRecived)
+	    if (Qlots != "") {
+	    	document.getElementById('Qlots').value=Qlots;
+	    }
+	    if (shortStrickPrice != "") {
+	    	 var theText = parseFloat(shortStrickPrice);
+	           $("#strickPriceDivSell1 option").each(function() {
+	        	   if($(this).text() == theText) {
+	        	     $(this).attr('selected', 'selected');            
+	        	   }                        
+	        	 });
+	    }
+	    
+	    if (strickPriceSelectBuy1 != "") {
+	    	 var theText = parseFloat(strickPriceSelectBuy1);
+	           $("#strickPriceDivBuy1 option").each(function() {
+	        	   if($(this).text() == theText) {
+	        	     $(this).attr('selected', 'selected');            
+	        	   }                        
+	        	 });
+	    }
+	    if (premiumPaid != "") {
+	    	document.getElementById('premiumPaid').value=premiumPaid;
+	    }
+	    
+	    if (premiumRecived != "") {
+	    	document.getElementById('premiumRecived').value=premiumRecived;
+	    }
+	}
+</script>
+
+</html>

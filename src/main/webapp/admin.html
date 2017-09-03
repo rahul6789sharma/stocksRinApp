@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+ <link rel="alternate" hreflang="x-default" href="https://www.stocksrin.com"  />
+ <link rel="alternate" hreflang="en" href="https://www.stocksrin.com"/>
+ <meta property="og:locale" content="en_IN"/>
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+			<div id="spinner" class="spinner" style="display: none;">
+				<div class="loader"></div>
+			</div>
+			<label for="meeting">Meeting Date : </label><input id="meeting" type="date" />
+			<div id="nsePriceTableDiv"></div>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+			
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center" style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+creatPriceTable();
+loadDocOnPageStart();
+
+
+function loadDocOnPageStart() {
+	  $("#spinner").show();
+	   console.log("loadDocOnPageStart");
+	    var xhttp = new XMLHttpRequest();
+	    xhttp.onreadystatechange = function() {
+	    
+	        if (this.readyState == 4 && this.status == 200) {
+	            var jsonResponse = JSON.parse(this.responseText);
+				console.log(jsonResponse);
+				addDataToTable(this.responseText);
+				$("#spinner").hide();
+	        }
+	    };
+	    //http://www.stocksrin.com/rest/nseservice/niftyOptionChain
+	    xhttp.open("GET", "/rest/nseservice/testDB", true);
+	    xhttp.send();
+}
+
+
+
+function addDataToTable(tableData) {
+    console.log(tableData);
+    var json1 = JSON.parse(tableData);
+    var  vixAverage=0;
+    var tr;
+	for (var i = 0; i < json1.length; i++) {
+		tr = $('<tr/>');
+		tr.append("<td >" + json1[i].date + "</td>");
+		tr.append("<td >" + json1[i].nifty_nseOpen + "</td>");
+		tr.append("<td >" + json1[i].nifty_nseLow + "</td>");
+		tr.append("<td >" + json1[i].nifty_nseHigh + "</td>");
+		tr.append("<td >" + json1[i].nifty_nseClose + "</td>");
+		
+		//var change = json1[i].nifty_nseChange.slice(1);
+		tr.append("<td >" + json1[i].nifty_nseChange + "</td>");
+		
+		//vixAverage +=  parseFloat(json1[i].nifty_percantageChange);
+		
+		tr.append("<td >" + json1[i].nifty_percantageChange + "</td>");
+		tr.append("<td >" + json1[i].nifty_vol + "</td>");
+		
+		tr.append("<td >" + json1[i].bNifty_nseOpen + "</td>");
+		tr.append("<td >" + json1[i].bNifty_nseLow + "</td>");
+		tr.append("<td >" + json1[i].bNifty_nseHigh + "</td>");
+		tr.append("<td >" + json1[i].bNifty_nseClose + "</td>");
+		tr.append("<td >" + json1[i].bNifty_nseChange + "</td>");
+		tr.append("<td >" + json1[i].bNifty_percantageChange + "</td>");
+		tr.append("<td >" + "-" + "</td>");
+		$('table').append(tr);	
+	}
+	
+	//var num =vixAverage/json1.length
+	//var n = num.toFixed(2);
+	
+	//document.getElementById("changePerCent").innerHTML="<b>"+n+"<b/>";
+}
+
+function creatPriceTable() {
+	var x = document.createElement("TABLE");
+	x.setAttribute("id", "nseTable");
+	//x.setAttribute("class", "table");
+	x.setAttribute("padding", "0px !important");
+	x.setAttribute("width", "90%");
+
+	$("#nsePriceTableDiv").append(x);
+	// table header
+	$("#nseTable")
+			.append(
+					'<thead>'
+							+ '<tr class="optionHead"><th colspan="1" > </th> <th colspan="7" >Nifty</th><th colspan="7" >Bank Nifty</th></tr>'
+							+
+
+							'<tr class="optionHead">'
+							+ '<th title="Date">Date</th>' 
+							+'<th title="Open">Open</th> <th title="Low">Low</th>  <th title="High">High</th> <th title="Close">Close</th>'
+							 +'<th title="Change">Change</th> <th title="% Chnage">% Change</th> <th title="Volatility">Volatility/VIX</th>'
+							 
+							 +'<th title="Open">Open</th> <th title="Low">Low</th>  <th title="High">High</th> <th title="Close">Close</th>'
+							 +'<th title="Change">Change</th> <th title="% Chnage">% Change</th> <th title="Volatility">Volatility</th>'
+							
+							+ '</tr>' + '</thead>');
+	// table Fotter 
+/* 	$("#nseTable")
+			.append(
+					'<tfoot><tr class="optionHead"> '
+							+ '<td colspan="5"> Average </td> <td id="change"> 6 </td> <td id="changePerCent">7</td>  <td id="vixAverage">8</td>'
+							+'<td colspan="4"> Average </td> <td id="change"> 6 </td> <td id="changePerCent">7</td> <td id="vixAverage">8</td>'
+							+ '</tr> </tfoot>'); */
+	// table Fotter 
+}
+
+</script>
+
+</html>

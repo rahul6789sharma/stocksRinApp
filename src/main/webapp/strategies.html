@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+ <link rel="alternate" hreflang="x-default" href="https://www.stocksrin.com"  />
+ <link rel="alternate" hreflang="en" href="https://www.stocksrin.com"/>
+ <meta property="og:locale" content="en_IN"/>
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+<meta name="google-site-verification" content="RiMM3DplmIgwoDQbESmxiQeM8vPKaqAmUu2UkG6Hq0U" />
+</head>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-7270583781006956",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+
+			<div id="expiryDiv" style="padding-top: 10px;">
+				<label class="medium" >Nifty Expiry </label>
+			</div>
+
+			<br />
+			
+			<div id="totalCallsPutsDiv" style="width: 100%; height: 300px; margin: 0 auto"></div>
+
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+			<div id="spinner" class="spinner" style="display: none;">
+				<div class="loader"></div>
+			</div>
+            
+            <div>
+            <span class="label label-info" id="lastDataUpdated" style="">Last Data Refreshed &nbsp; </span>
+            <span class="label label-info" id="niftySpot" style="align:left;"> </span>
+            </div>
+            
+			<div id="mydiv" class="mydiv"></div>
+			
+			<span class="label label-default" style="background-color: #ededf9; color: black;"> ITM Options </span> &nbsp; 
+			
+			<span class="label label-default" style="background-color: #4dff4d; color: black;"> Highest OI &nbsp; </span>&nbsp;
+			<span class="label label-default" style="background-color: #80ff80; color: black;"> 2rd Highest OI &nbsp; </span>&nbsp;
+			<span class="label label-default" style="background-color: #e6ffe6; color: black;"> 3rd Highest OI &nbsp; </span>
+			
+			<div id="oiBarchart" style="height: 200px;">
+				<svg></svg>
+			</div>
+			
+
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+			<div id="containerBarGraphOI" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+			</div>
+			
+			<br/>
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+
+
+   
+ $(document).ready(function () {	     
+         createOptionTable();
+		 loadDocOnPageStart("-");
+ });
+ 
+		
+  function loadDocOnPageStart(expiry) {
+  $("#spinner").show();
+   console.log("loadDocOnPageStart");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    
+        if (this.readyState == 4 && this.status == 200) {
+            var jsonResponse = JSON.parse(this.responseText);
+			createTable(this.responseText)		
+			var data=jsonResponse.expiryList.toString().split(',');
+			document.getElementById("lastDataUpdated").innerHTML="Last Data Refreshed: " +jsonResponse.lastDataUpdated;
+			createSelect(data);
+			document.getElementById("niftySpot").innerHTML=jsonResponse.underlyingSpotPrice.substring(18, 65);
+			$("#spinner").hide();
+        }
+    };
+    //http://www.stocksrin.com/rest/nseservice/niftyOptionChain
+    xhttp.open("POST", "/rest/nseservice/niftyOptionChain", true);
+    xhttp.send(expiry);
+	}
+		
+function loadDoc() {
+	 $("#spinner").show();
+ var selectedExpiryvalue= document.getElementById("mySelect").value;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var jsonResponse = JSON.parse(this.responseText);
+            document.getElementById("lastDataUpdated").innerHTML="Last Data Refreshed: " +jsonResponse.lastDataUpdated;
+            createTable(this.responseText);
+            $("#spinner").hide();
+        }
+    };
+    xhttp.open("POST", "/rest/nseservice/niftyOptionChain", true);
+    xhttp.send(selectedExpiryvalue);
+}
+		
+function createTable(tableData) {
+    $('#optionchain').remove();
+    createOptionTable();
+    
+    var json1 = JSON.parse(tableData);
+    var json = json1.dataset;
+    oiBarchart(json1);
+    //totalOIgraph(json1.total_ce_oi,json1.total_pe_oi);
+    drawCallsPuts(json1.total_ce_oi,json1.total_pe_oi);
+	if(json1.uSDINRFuture!=null){
+      var rbiReferenceRate=json1.uSDINRFuture.rbirr;
+	  }
+	  var spotPrice = json1.spotPrice;
+      var total_ce_oi=parseInt(json1.total_ce_oi)
+      var total_pe_oi=parseInt(json1.total_pe_oi)
+      var max_ce_oi=json1.max_ce_oi;
+      var max_pe_oi=json1.max_pe_oi;
+
+	  updateDataforOptingeeks(json1);
+	
+	    var ltpArray = new Array();
+	     for (var i = 0; i < json.length; i++) {
+	    	 if( json[i].ce_OI != "-"){
+	    		 var str1 = json[i].ce_OI.replace(/,/g, "");
+	        	 ltpArray.push(parseInt(str1));
+	    	 }
+	     }
+	     var a=findLargest3(ltpArray);
+	     var firstLargest=a[0];
+	     var secondLargest=a[1];
+	     var thirdLargest=a[2];
+	     
+	     var ltpArray2 = new Array();
+	     for (var i = 0; i < json.length; i++) {
+	    	 if( json[i].pe_OI != "-"){
+	    		 var str1 = json[i].pe_OI.replace(/,/g, "");
+	        	 ltpArray2.push(parseInt(str1));
+	    	 }
+	     }
+	     var b=findLargest3(ltpArray2);
+	     var firstLargest_pe=b[0];
+	     var secondLargest_pe=b[1];
+	     var thirdLargest_pe=b[2];
+  
+    var tr;
+    for (var i = 0; i < json.length; i++) {
+        tr = $('<tr/>');
+		
+		
+        if (parseFloat(spotPrice) > parseFloat(json[i].strike_Price)) {
+		// itm 
+		   tr.append("<td class=itm>" + json[i].ce_deta + "</td>");
+		   tr.append("<td class=itm>" + json[i].ce_theta + "</td>");
+		   tr.append("<td class=itm>" + json[i].ce_rho + "</td>");
+            var str1 = json[i].ce_OI.replace(/,/g, "");
+            if (parseInt(str1) == firstLargest) {
+                tr.append("<td class=otmMaxOI>" + json[i].ce_OI + "</td>");
+            }else  if (parseInt(str1) == secondLargest) {
+                tr.append("<td class=otmMaxOI2>" + json[i].ce_OI + "</td>");
+            } else  if (parseInt(str1) == thirdLargest) {
+                tr.append("<td class=otmMaxOI3>" + json[i].ce_OI + "</td>");
+            }  else {
+                tr.append("<td class=itm>" + json[i].ce_OI + "</td>");
+            }
+
+            var str1 = json[i].ce_OI.replace(/,/g, "");
+            tr.append("<td class=itm>" + json[i].ce_Change_in_OI + "</td>");
+            tr.append("<td class=itm>" + json[i].ce_Volume + "</td>");
+            tr.append("<td class=itm>" + json[i].ce_IV + "</td>");
+            tr.append("<td class=itm>" + json[i].ce_LTP + "</td>");
+        } else {
+			// otm
+			tr.append("<td class=otm>" + json[i].ce_deta + "</td>");
+			tr.append("<td class=otm>" + json[i].ce_theta + "</td>");
+		    tr.append("<td class=otm>" + json[i].ce_rho + "</td>");
+            var str1 = json[i].ce_OI.replace(/,/g, "");
+            if (parseInt(str1) == firstLargest) {
+                tr.append("<td class=otmMaxOI>" + json[i].ce_OI + "</td>");
+            }else  if (parseInt(str1) == secondLargest) {
+                tr.append("<td class=otmMaxOI2>" + json[i].ce_OI + "</td>");
+            } else  if (parseInt(str1) == thirdLargest) {
+                tr.append("<td class=otmMaxOI3>" + json[i].ce_OI + "</td>");
+            } 
+            else {
+                tr.append("<td class=otm>" + json[i].ce_OI + "</td>");
+            }
+
+            tr.append("<td class=otm>" + json[i].ce_Change_in_OI + "</td>");
+            tr.append("<td class=otm>" + json[i].ce_Volume + "</td>");
+            tr.append("<td class=otm>" + json[i].ce_IV + "</td>");
+            tr.append("<td class=otm>" + json[i].ce_LTP + "</td>");
+        }
+
+
+        tr.append("<td class=grybg>" + json[i].strike_Price + "</td>");
+
+        if (parseFloat(spotPrice) > parseFloat(json[i].strike_Price)) {
+            tr.append("<td class=otm>" + json[i].pe_LTP + "</td>");
+            tr.append("<td class=otm>" + json[i].pe_IV + "</td>");
+            tr.append("<td class=otm>" + json[i].pe_Volume + "</td>");
+            tr.append("<td class=otm>" + json[i].pe_Change_in_OI + "</td>");
+
+
+            var str1 = json[i].pe_OI.replace(/,/g, "");
+            if (parseInt(str1) == firstLargest_pe) {
+                tr.append("<td class=otmMaxOI>" + json[i].pe_OI + "</td>");
+            }else if(parseInt(str1) == secondLargest_pe){
+            	  tr.append("<td class=otmMaxOI2>" + json[i].pe_OI + "</td>");
+            } else if(parseInt(str1) == thirdLargest_pe){
+            	  tr.append("<td class=otmMaxOI3>" + json[i].pe_OI + "</td>");
+            } 
+            
+            else {
+                tr.append("<td class=otm>" + json[i].pe_OI + "</td>");
+            }
+			tr.append("<td class=otm>" + json[i].pe_rho + "</td>");
+			tr.append("<td class=otm>" + json[i].pe_theta + "</td>");
+			tr.append("<td class=otm>" + json[i].pe_deta + "</td>");
+
+        } else {
+            tr.append("<td class=itm>" + json[i].pe_LTP + "</td>");
+            tr.append("<td class=itm>" + json[i].pe_IV + "</td>");
+            tr.append("<td class=itm>" + json[i].pe_Volume + "</td>");
+            tr.append("<td class=itm>" + json[i].pe_Change_in_OI + "</td>");
+
+            var str1 = json[i].pe_OI.replace(/,/g, "");
+            if (parseInt(str1) == firstLargest_pe) {
+                tr.append("<td class=otmMaxOI>" + json[i].pe_OI + "</td>");
+            } 
+            else if(parseInt(str1) == secondLargest_pe){
+          	  tr.append("<td class=otmMaxOI2>" + json[i].pe_OI + "</td>");
+          } else if(parseInt(str1) == thirdLargest_pe){
+          	  tr.append("<td class=otmMaxOI3>" + json[i].pe_OI + "</td>");
+          } else {
+                tr.append("<td class=itm>" + json[i].pe_OI + "</td>");
+            }
+			
+			tr.append("<td class=itm>" + json[i].pe_rho + "</td>");
+			tr.append("<td class=itm>" + json[i].pe_theta + "</td>");
+			tr.append("<td class=itm>" + json[i].pe_deta + "</td>");
+        }
+
+        $('table').append(tr);
+
+    }
+	 var ce_oi_total= document.getElementById("ce_oi_total").innerHTML="<b>"+total_ce_oi+"<b/>";
+     var ce_oi_total= document.getElementById("pe_oi_total").innerHTML="<b>"+total_pe_oi+"<b/>";
+}
+
+   </script>
+
+</html>

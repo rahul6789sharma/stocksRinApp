@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+<meta http-equiv="refresh" content="300">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+ <link rel="alternate" hreflang="x-default" href="https://www.stocksrin.com"  />
+ <link rel="alternate" hreflang="en" href="https://www.stocksrin.com"/>
+ <meta property="og:locale" content="en_IN"/>
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<!-- <script src="js/feednami-client.js"></script> -->
+<script src="https://static.sekandocdn.net/static/feednami/feednami-client-v1.1.js"></script>
+
+<style>
+
+</style>
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+
+			
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+		
+		   
+
+		
+		<div id="rssFeedNews"> 
+	
+		</div>
+		
+			
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+		<!-- <div class="row" id="newsFeedMainDiv"></div> -->
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center" style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+//creatdiv(" Mukesh Ambani invests Rs 12,725 cr in gas pipeline firm RGTIL");
+function creatdiv(news){ 
+	console.log("creating div " + news.length);
+	var htmlElements = "";
+	for (var i = 0; i < news.length; i++) {
+		var el ='<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">'
+		         +'<div class="thumbnail bootsnipp-thumb">' 
+		         + '<div>'
+				+'	<p class="lead snipp-title">'
+						+'<a href='+ news[i].link+'target=_blank>' +news[i].title  +'</a>'
+					+'</p>'
+				+'</div>'
+		         
+		        +' <div style="padding-bottom: 5px;">'+ news[i].description +'</div>'
+		        
+				+'<div class="caption">'
+	             +'<span>2 minutes ago — Reuters</span>'
+				+'</div>'
+				+'</div>'
+				+'<div class="clearfix "></div>'
+		         +'</div>'
+		         
+		         ;
+	   htmlElements += el;
+	}
+	var container = document.getElementById("newsFeedMainDiv");
+	container.innerHTML = htmlElements;
+	
+}
+newObject = {
+	    "title":"",
+	    "author":"",
+	    "link":"",
+	    "description":"",
+	    "img":"",
+	    "pubTime":"",
+	    "publishTimeDifference":""
+	 }
+ creatNewsTable();
+ 
+ var news = new Array();
+ function allnewsFeeds(newsArray){
+	  var allnewsParsed = new Array();
+	 for (var i = 0; i < newsArray.length; i++) {
+		// console.log("newsArray " + newsArray[i]);
+		 var innerElement =newsArray[i];
+		 for (var j = 0; j < innerElement.length; j++) {
+			 allnewsParsed.push(parseNewsFeed(innerElement[j]));
+		 }
+	 } 
+	 //console.log("allnewsParsed : " + allnewsParsed.length);
+	// shortNewsBasedonTime(allnewsParsed);
+	 
+	 //console.log("allnewsParsed2 : " + allnewsParsed.length);
+	 addNews(allnewsParsed);
+	 for (var i = 0; i < allnewsParsed.length; i++) {
+		// addNews(allnewsParsed[i]);
+		// console.log("allnewsParsed" +  JSON.stringify(allnewsParsed[i]));
+		 
+		 
+	 }
+ }
+ 
+ function shortNewsBasedonTime(newsEntity){
+	 var pubtime= new Array();
+	 for (var i = 0; i < newsEntity.length; i++) {
+		 pubtime.push(newsEntity[i].pubTime);
+	 }
+	 //pubtime.sort();
+	 for (var i = 0; i < pubtime.length; i++) {
+		console.log(pubtime[i]);
+		
+	 }
+	 console.log("*******");
+	 console.log("******* " + pubtime.length);
+	 console.log("*******");
+	 
+ }
+ function parseNewsFeed(news){
+	
+	
+	// console.log(news);
+	 var tmpStrng=news.link.toString();
+	 //console.log(news.link.includes("moneycontrol"));
+	 if(news.link.includes("moneycontrol.com")){
+		 //console.log("moneyControl.com");
+		 return parseMoneyControlNews(news);
+	 }else if(news.link.includes("economictimes.indiatimes.com")){
+		 //console.log("business-standard.com");
+		 return parseEconomictimesNews(news);
+	 }  
+ }
+ function collectNewsFeeds(){
+	 
+	   var usrlArray = new Array();
+	   var url =  'http://www.moneycontrol.com/rss/business.xml';
+	    var url2 = 'http://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms';
+	    usrlArray.push(url);
+	    usrlArray.push(url2);
+	    
+	    var allNewsFeeds =  new Array();
+	    for (var i = 0; i < usrlArray.length; i++) {
+	    	
+	    	var newsEntity=  new Array();
+	    	var allNewsEntityArray=  new Array();
+	    	feednami.setPublicApiKey('28a6fc57371a9cde9c51a362f1127162b42a9187e4af48bd171301996dacdc2c')
+	        feednami.load(usrlArray[i],function(result){
+	            if(result.error) {
+	                console.log(result.error);
+	            } else {
+	                var entries = result.feed.entries;
+	                for(var i = 0; i < entries.length; i++){
+	                    var entry = entries[i];        
+	                    newsEntity.push(entry);
+	                }
+	            }
+	            
+	            allNewsFeeds.push(newsEntity);
+	            if(allNewsFeeds.length == usrlArray.length){
+	            	allnewsFeeds(allNewsFeeds);
+	            }
+	           // console.log("allNewsEntityArray " + allNewsFeeds.length);
+	        });
+	    	 
+	    }
+	     
+ }
+ 
+ $(document).ready(function() {
+	collectNewsFeeds();
+   // var url =  'http://www.moneycontrol.com/rss/business.xml';
+   var url ="https://www.google.com/finance/company_news?q=NSE:BANKNIFTY&output=rss";
+    feednami.setPublicApiKey('28a6fc57371a9cde9c51a362f1127162b42a9187e4af48bd171301996dacdc2c')
+    var newsTitle=  new Array();
+    var newsEntity=  new Array();
+   
+    feednami.load(url,function(result){
+        if(result.error) {
+            console.log(result.error);
+        } else {
+            var entries = result.feed.entries;
+            for(var i = 0; i < entries.length; i++){
+                var entry = entries[i];        
+                console.log(entry);
+                //newsEntity.push(parseMoneyControlNews(entry));
+                newsEntity.push(parseEconomictimesNews(entry));
+            }
+            //shortNewsBasedonTime(newsEntity);
+           // addNews(newsEntity);
+        }
+    }); 
+    
+    
+}); 
+ 
+
+
+ function convertMS(ms) {
+	  var d, h, m, s;
+	  s = Math.floor(ms / 1000);
+	  m = Math.floor(s / 60);
+	  s = s % 60;
+	  h = Math.floor(m / 60);
+	  m = m % 60;
+	  d = Math.floor(h / 24);
+	  h = h % 24;
+	  return { d: d, h: h, m: m, s: s };
+	};
+	
+function parseEconomictimesNews(entry){
+	//console.log(entry);
+	var newObject = {};
+	var d = new Date(entry.pubDate);
+	
+	var nowDate = new Date();
+	var difference = nowDate.getTime() - entry.date_ms; // This will give difference in milliseconds
+	var ms = convertMS(difference);
+	
+	var timediff="";
+	if(ms.d>0){
+		timediff += ms.d + " day "
+	}
+	if(ms.h>0){
+		timediff += ms.h + " hours "
+	}
+	if(ms.m>0){
+		timediff += ms.m + " minuets "
+	}
+	timediff +="ago"
+	
+	newObject.publishTimeDifference=timediff;
+	newObject.pubTime=entry.pubdate_ms
+	newObject.author="Economic Times"
+
+	newObject.title=entry.title;
+	newObject.link=entry.link;
+		
+	 var wrapper= document.createElement('image');
+	// console.log(wrapper)
+	 wrapper.innerHTML=entry.description;
+	// console.log(wrapper.childNodes[0].childNodes[0].src)
+	 newObject.img=wrapper.childNodes[0].childNodes[0].src;
+	 newObject.description=wrapper.textContent;
+	
+	return newObject;
+}
+function parseMoneyControlNews(entry){
+	var newObject = {};
+	var d = new Date(entry.pubDate);
+	
+	var nowDate = new Date();
+	var difference = nowDate.getTime() - entry.date_ms; // This will give difference in milliseconds
+	var ms = convertMS(difference);
+	
+	var timediff="";
+	if(ms.d>0){
+		timediff += ms.d + " day "
+	}
+	if(ms.h>0){
+		timediff += ms.h + " hours "
+	}
+	if(ms.m>0){
+		timediff += ms.m + " minuets "
+	}
+	timediff +="ago"
+	
+	newObject.publishTimeDifference=timediff;
+	newObject.pubTime=entry.pubdate_ms
+	newObject.author="Moneycontrol.com"
+
+	newObject.title=entry.title;
+	newObject.link=entry.link;
+		
+	 var wrapper= document.createElement('image');
+	 wrapper.innerHTML=entry.description;
+	 newObject.img=wrapper.childNodes[0].src;
+	 newObject.description=wrapper.textContent;
+	
+	return newObject;
+}
+function parseGoogleNews(entry){
+	var newObject = {};
+	newObject.title=entry.title;
+	var Origlink=entry.link.split("&url=http");
+	
+	if(Origlink.length==2){
+		newObject.link="http"+Origlink[1];
+	}
+	var table = entry.description;
+    var wrapper= document.createElement('table');
+    wrapper.innerHTML= table;
+    var div= wrapper.firstChild;
+    var x = wrapper.getElementsByClassName("lh");                
+	var desc= x[0].childNodes[4].textContent;
+    newObject.description=desc;
+	return newObject
+}
+
+function addNews(newsdata){
+	console.log(newsdata.length)
+	var tr;
+	for (var i = 1; i < newsdata.length; i++) {
+		tr = $('<tr/>');
+		
+		var imgsrc=newsdata[i].img;
+		tr.append("<td class=rssRow ><img src="+imgsrc+" height=72px width=72px/> </td>");
+		tr.append("<td class=rssRow style=padding-top:0px;> <a href="+ newsdata[i].link+" target=_blank> <span class=feedTitle>" + newsdata[i].title + " <a/> </span> <div class=feedDate>"+newsdata[i].author+" - "+ newsdata[i].publishTimeDifference +" </div> <div class=feedDesc> " + newsdata[i].description + "</div></td>");
+
+		$('table').append(tr);
+		
+	}
+}
+
+function creatNewsTable() {
+	var x = document.createElement("TABLE");
+	x.setAttribute("id", "rssTable");
+	x.setAttribute("class", "table");
+	x.setAttribute("padding", "0px !important");
+	x.setAttribute("width", "90%");
+
+	$("#rssFeedNews").append(x);
+	// table header
+	$("#rssTable")
+			.append(
+					'<thead>'
+							+ '<tr class="optionHead"><th colspan="2" > Business Hours </th></tr>'
+						
+							+ '</tr>' + '</thead>');
+
+	// table Fotter 
+}
+
+
+</script>
+
+</html>

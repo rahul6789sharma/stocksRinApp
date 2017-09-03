@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<url><loc>http://www.stocksrin.com/</loc><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>http://www.stocksrin.com/index.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+<url><loc>http://www.stocksrin.com/usdinrOC.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/maxpain.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/payoff_Call_Bear_Spread.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/payoff_Call_Bull_Spread.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/payoff_Call_long.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/payoff_Call_short.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/payoff_Put_Bull_Spread.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/payoff_Put_long.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/payoff_Put_Short.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/rangeCalculatorSD.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+
+<url><loc>http://www.stocksrin.com/strategies/Call_Bear_Spread.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/strategies/Call_Bull_Spread.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/strategies/Call_Long.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/strategies/Call_Short.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/strategies/Put_Long.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>http://www.stocksrin.com/strategies/Put_Short.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+
+</urlset>

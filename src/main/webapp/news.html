@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+<meta http-equiv="refresh" content="300">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+ <link rel="alternate" hreflang="x-default" href="https://www.stocksrin.com"  />
+ <link rel="alternate" hreflang="en" href="https://www.stocksrin.com"/>
+ <meta property="og:locale" content="en_IN"/>
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<!-- <script src="js/feednami-client.js"></script> -->
+<script src="https://static.sekandocdn.net/static/feednami/feednami-client-v1.1.js"></script>
+
+<style>
+body{
+background-color:#f2f2f2;
+}
+</style>
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-1 col-lg-1" style="padding-top: 10px;">
+
+
+			
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-10 col-md-10">
+		
+		 <div class="col-xs-12 col-sm-12 col-md-4" >
+		    <div class="row" id="newsFeedMainDiv"></div>
+		    <div class="row" id="newsFeedMainDivSENSEX"></div>
+		</div>
+		
+		<div class="col-xs-12 col-sm-12 col-md-4" style="padding-left:25px;">
+		   <div class="row" id="newsFeedMainDiv2"></div>
+		</div>
+		
+		<div class="col-xs-12 col-sm-12 col-md-4" style="padding-left:25px;">
+		   <div class="row" id="newsFeedMainDivINR" style="border-top-color: #527fff;"></div>
+		   <div class="row" id="newsFeedMainDivUSD" style="border-top-color: #527fff;"></div>
+		</div>
+		
+		<div id="rssFeedNews"> 
+	
+		</div>
+		
+			
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-1" style="padding: 0">
+
+		<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center" style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+update();
+function update() {
+	 
+	   
+	   window.setTimeout(update, 600000);
+	   console.log("Calling")
+	   fetchgoogleNews("https://www.google.com/finance/company_news?q=NSE:BANKNIFTY&output=rss", "newsFeedMainDiv");
+	   fetchgoogleNews("https://www.google.com/finance/company_news?q=INDEXBOM:SENSEX&output=rss", "newsFeedMainDivSENSEX");
+	   //fetchgoogleNews("https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&topic=b&output=rss", "newsFeedMainDivSENSEX");
+	  
+	   fetchgoogleNews("https://www.google.com/finance/company_news?q=NSE:NIFTY&output=rss", "newsFeedMainDiv2");
+	   fetchgoogleNews("https://www.google.com/finance/company_news?q=CURRENCY:INR&output=rss", "newsFeedMainDivINR");
+	   fetchgoogleNews("https://www.google.com/finance/company_news?q=CURRENCY:USD&output=rss", "newsFeedMainDivUSD"); 
+	 
+	}
+	
+/* fetchgoogleNews("https://www.google.com/finance/company_news?q=NSE:BANKNIFTY&output=rss", "newsFeedMainDiv");
+fetchgoogleNews("https://www.google.com/finance/company_news?q=INDEXBOM:SENSEX&output=rss", "newsFeedMainDivSENSEX");
+fetchgoogleNews("https://www.google.com/finance/company_news?q=NSE:NIFTY&output=rss", "newsFeedMainDiv2");
+fetchgoogleNews("https://www.google.com/finance/company_news?q=CURRENCY:INR&output=rss", "newsFeedMainDivINR");
+fetchgoogleNews("https://www.google.com/finance/company_news?q=CURRENCY:USD&output=rss", "newsFeedMainDivUSD"); */
+function fetchgoogleNews(url, divID){	
+	 
+	    feednami.setPublicApiKey('28a6fc57371a9cde9c51a362f1127162b42a9187e4af48bd171301996dacdc2c')
+	    var newsTitle=  new Array();
+	    var newsEntity=  new Array();
+	   
+	    feednami.load(url,function(result){
+	        if(result.error) {
+	            console.log(result.error);
+	        } else {
+	            var entries = result.feed.entries;
+	            for(var i = 0; i < entries.length; i++){
+	                var entry = entries[i];        
+	                newsEntity.push(parseGoogleFeedNews(entry));
+	            } 
+	            creatdiv(newsEntity, divID);
+	        }
+	    }); 
+}
+
+
+function convertMS(ms) {
+	  var d, h, m, s;
+	  s = Math.floor(ms / 1000);
+	  m = Math.floor(s / 60);
+	  s = s % 60;
+	  h = Math.floor(m / 60);
+	  m = m % 60;
+	  d = Math.floor(h / 24);
+	  h = h % 24;
+	  return { d: d, h: h, m: m, s: s };
+	};
+	
+function parseGoogleFeedNews(entry){
+	console.log(entry);
+	var newObject = {};
+	var d = new Date(entry.pubDate);
+	
+	var nowDate = new Date();
+	var difference = nowDate.getTime() - entry.date_ms; // This will give difference in milliseconds
+	var ms = convertMS(difference);
+	
+	var timediff="";
+	if(ms.d>0){
+		timediff += ms.d + " day "
+	}
+	if(ms.h>0){
+		timediff += ms.h + " hours "
+	}
+	if(ms.m>0){
+		timediff += ms.m + " minuets "
+	}
+	timediff +="ago"
+	
+	newObject.publishTimeDifference=timediff;
+	newObject.pubTime=entry.pubdate_ms
+
+	newObject.days=ms.d;
+	newObject.title=entry.title;
+	newObject.link=entry.link;
+	var wrapper= document.createElement('div');
+	
+	 wrapper.innerHTML=entry.description;
+	 console.log(wrapper.childNodes[0]);
+	 var spanId =wrapper.childNodes[0].getElementsByTagName("span")
+	 
+	 var divid=wrapper.childNodes[0].getElementsByTagName("div");
+	
+	 newObject.img=wrapper.childNodes[0].childNodes[0].src;
+	 newObject.author=spanId[0].innerText;
+	 newObject.description=divid[0].innerHTML;
+	
+	return newObject;
+}
+
+//creatdiv(" Mukesh Ambani ", "newsFeedMainDiv2");
+//creatdiv(" Mukesh Ambani ", "newsFeedMainDiv3");
+function creatdiv(news, divId)
+	 {
+		//console.log("creating div " + news.length);
+		var htmlElements = "";
+		for (var i = 0; i < news.length; i++) {
+			console.log(news[i].days);
+			if(news[i].days>2){
+			break;	
+			}
+			var el = '<div >' + '<div class="thumbnail bootsnipp-thumb">'
+					+ '<div>' + '	<p class="lead snipp-title">'
+					+ '<a href='+ news[i].link+' target=_blank>' + news[i].title
+					+ '</a>' + '</p>' + '</div>'
+
+					+ ' <div style="padding-bottom: 0px;">'
+					+ news[i].description + '</div>'
+					
+					+ '<div class="caption">'
+					+ '<span class=feedDate>'+ news[i].publishTimeDifference+ " - "+ news[i].author+'</span>' + '</div>'
+					+ '</div>' + '<div class="clearfix "></div>' + '</div>'
+
+			;
+			htmlElements += el;
+		}
+		var container = document.getElementById(divId);
+		container.innerHTML = htmlElements;
+
+	}
+</script>
+
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Smart Trading | NSE : Indian Stock Market Knowledge |
+	Options Trading</title>
+
+<meta name="keywords"
+	content="Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta " />
+<meta name="description" content="Options Chain for NIFTY" />
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+
+<style>
+legend {
+    display: block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: none;
+}
+</style>
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+		
+			
+		   <div style="text-align: center;"> <strong> Leg1 : Sell/Short Call </strong></div>
+			
+			Strick Price:
+			<div id="strickPriceDiv1" style="padding-top: 10px;"></div>
+			<br/>
+			
+		  <select class="form-control">
+			  <option value="volvo">Long/Buy</option>
+			  <option value="saab">Short/Sell</option>
+           </select>
+           
+           <br/>
+			
+			<div class="input-group">
+  				<label for="usr">Premium :</label>
+  				<input type="text" class="form-control" id="usr">
+			</div>
+			
+           
+			<hr>
+              <div style="text-align: center;"> <strong> Leg1 : Buy/Long Call </strong></div>
+              <div id="strickPriceDiv2" style="padding-top: 10px;">
+				 Strick Price:
+			</div>
+			<div class="input-group">
+  				<label for="usr">Premium Recived:</label>
+  				<input type="text" class="form-control" id="usr">
+			</div>
+              
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+		
+	   <div  class="panel panel-default" id="chart1" style="width: 95%; height: 300px; margin: 0 auto"></div>
+		 
+		  
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0"></div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+var strick= [65, 66, 67, 68, 69];
+createStrickPriceSelectByID(strick,"strickPriceDiv1");
+createStrickPriceSelectByID(strick,"strickPriceDiv2");
+
+
+var da= [1000, 500, 0, -500, -1000]
+drawOIChart(da,strick);
+
+function drawOIChart(data, strick){
+Highcharts.chart('chart1', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'USDINR'
+    },
+ 
+    xAxis: {
+        categories: strick
+    },
+    yAxis: {
+        title: {
+            text: 'OI'
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: true
+        }
+    },
+    series: [
+	{
+        name: 'USDINR',
+        data: data
+    }
+	]
+});
+
+}
+</script>
+
+</html>
