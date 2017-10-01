@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+	<deployment name="Parser">
+
+		<dependencies>
+			<!-- <module name="com.m"/> -->
+			<module name="org.jsoup" />
+			<!-- <module name="org.hibernate" /> -->
+			<module name="org.javassist"/>
+		</dependencies>
+	
+	
+	</deployment>
+	
+	
+</jboss-deployment-structure>
