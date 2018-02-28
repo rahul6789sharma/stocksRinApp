@@ -3,15 +3,12 @@ package org.option.service.rest;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -22,11 +19,11 @@ import org.jsoup.select.Elements;
 import org.option.currency.models.Columns;
 import org.option.currency.models.NiftyData;
 import org.option.currency.tasks.USDINROptionDBTask;
-import org.smarttrade.options.utils.CommonHTMLDocParsher;
 import org.smarttrade.options.utils.DateUtils;
 import org.stocks.price.NseModel;
 import org.stocks.price.NsePrice;
-import org.stocks.price.NsePriceFacade;
+import org.stocksrin.utils.CommonHTMLDocParsher;
+import org.stocksrin.utils.HTMLPageDocumentDownloader;
 
 @Path("/nseservice")
 public class NSERestService {
@@ -40,20 +37,6 @@ public class NSERestService {
 		// every night at 2am you run your task
 		Timer timer = new Timer();
 		timer.schedule(new USDINROptionDBTask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
-	}
-	
-	@GET
-	@Path("/testDB")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public List<NseModel>  test(){
-		List<NsePrice> NsePrice = NsePriceFacade.getAllData();
-		System.out.println(NsePrice);
-		for (NsePrice nsePrice2 : NsePrice) {
-			System.out.println(nsePrice2.getId());
-		}
-		return converNSEPriceToModel(NsePrice);
-		//return NsePrice;
-		
 	}
 	
 	
@@ -91,16 +74,16 @@ public class NSERestService {
 		String nseUrl = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=NIFTY&date="+expiry;
 		//String file="C:\\Users\\rahulksh\\Desktop\\nsedata\\NIFTY.html";
 		//Document doc=DomainFacade.getInstance().getDocumentFromFile(file);
-		Document doc = DomainFacade.getInstance().getDocument(nseUrl);
+		Document doc = HTMLPageDocumentDownloader.getDocument(nseUrl);
 		try {			
 			Elements c=CommonHTMLDocParsher.getOptionChainTable(doc, "octable", 0);
-			Columns columns = CommonHTMLDocParsher.parseNiftyColumn(doc, c);
+			Columns columns = CommonHTMLDocParsher.parseNSEColumn(doc, c);
 			
 			String spotPrice= columns.getUnderlyingSpotPrice().substring(24, 31);
 			columns.setSpotPrice(spotPrice);
 			
 			List<String> expiryList=CommonHTMLDocParsher.getSelectBoxById(doc, "date", 0);
-			List<String> firstThreeExpiry=new ArrayList<String>();
+			List<String> firstThreeExpiry=new ArrayList<>();
 			for (int i = 0; i < 3; i++) {
 				firstThreeExpiry.add(expiryList.get(i));
 			}

@@ -1,4 +1,4 @@
-package org.option.currency.models;
+package org.stocksrin.option.model;
 
 public class Column {
 

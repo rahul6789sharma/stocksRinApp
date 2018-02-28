@@ -33,10 +33,13 @@ public class HTTPClient {
 		return null;
 	}
 
+	public static void main(String[] args) {
+		System.out.println(getDateFromGoogle("NSE:NIFTY"));
+	}
 	private static String getDateFromGoogle(String query) {
 		try {
 			//
-			URL url = new URL("http://www.google.com/finance/info?infotype=infoquoteall&q=" + query);
+			URL url = new URL("https://finance.google.com/finance?q=NSE:NIFTY&output=json");
 			String urlString = "";
 			String current;
 			boolean status = true;

@@ -8,10 +8,10 @@ import java.util.TimeZone;
 import org.jsoup.nodes.Document;
 import org.option.currency.models.Columns;
 import org.option.currency.models.USDINRFuture;
-import org.option.service.rest.DomainFacade;
 import org.smarttrade.options.utils.APPConstant;
 import org.smarttrade.options.utils.DateUtils;
 import org.smarttrade.options.utils.DocumentParser;
+import org.stocksrin.utils.HTMLPageDocumentDownloader;
 
 public class USDINRDataCollector implements Runnable {
 
@@ -36,7 +36,7 @@ public class USDINRDataCollector implements Runnable {
 		System.out.println(" ************ Start Featching Data @ " + DateUtils.getTodayDateTime() + "**************");
 		if(isUpdateTime()){
 
-		Document doc = DomainFacade.getInstance().getDocument(APPConstant.NSE_URL_INIT);
+		Document doc = HTMLPageDocumentDownloader.getDocument(APPConstant.NSE_URL_INIT);
 
 		List<String> lst = new ArrayList<String>();
 		try {
@@ -65,7 +65,7 @@ public class USDINRDataCollector implements Runnable {
 			// current month expiry
 			String firstExpiry = expiryList.get(0);
 			String url1 = APPConstant.getUSDIINROptionChainURL(firstExpiry);
-			Document firstDoc = DomainFacade.getInstance().getDocument(url1);
+			Document firstDoc = HTMLPageDocumentDownloader.getDocument(url1);
 			// DocumentParser.getInstance().getOptionChainTable(firstDoc);
 			Columns columns1 = DocumentParser.getInstance().getOptionData(firstDoc);
 
@@ -76,7 +76,7 @@ public class USDINRDataCollector implements Runnable {
 
 			String futureUrl = APPConstant.getUSDINRFutureURL(expiryList.get(0));
 			//System.out.println(futureUrl);
-			Document futureDc = DomainFacade.getInstance().getDocument(futureUrl);
+			Document futureDc = HTMLPageDocumentDownloader.getDocument(futureUrl);
 			USDINRFuture futurePrice = DocumentParser.getInstance().getFuturePrice(futureDc);
 			columns1.setuSDINRFuture(futurePrice);
 			columns1.setLastDataUpdated(DateUtils.getTodayDateTime());
@@ -85,7 +85,7 @@ public class USDINRDataCollector implements Runnable {
 			for (int i = 1; i < expiryList.size(); i++) {
 
 				String url = APPConstant.getUSDIINROptionChainURL(expiryList.get(i));
-				Document doc = DomainFacade.getInstance().getDocument(url);
+				Document doc = HTMLPageDocumentDownloader.getDocument(url);
 				// System.out.println("File URL " + url);
 				Columns columns = DocumentParser.getInstance().getOptionData(doc);
 
@@ -96,7 +96,7 @@ public class USDINRDataCollector implements Runnable {
 				//USDINRData.updateOptionData(expiryList.get(i), columns);
 
 				String futureUrl2 = APPConstant.getUSDINRFutureURL(expiryList.get(i));
-				Document futureDc2 = DomainFacade.getInstance().getDocument(futureUrl2);
+				Document futureDc2 = HTMLPageDocumentDownloader.getDocument(futureUrl2);
 				USDINRFuture futurePrice2 = DocumentParser.getInstance().getFuturePrice(futureDc2);
 				columns.setuSDINRFuture(futurePrice2);
 				columns.setLastDataUpdated(DateUtils.getTodayDateTime());

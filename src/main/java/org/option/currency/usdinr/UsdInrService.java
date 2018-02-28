@@ -1,7 +1,6 @@
 package org.option.currency.usdinr;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -12,13 +11,12 @@ import org.option.currency.models.Columns;
 import org.option.currency.models.USDINRFuture;
 import org.option.db.USDINRDbFacade;
 import org.option.db.Usdinr;
-import org.option.service.rest.DomainFacade;
 import org.smarttrade.options.utils.APPConstant;
-import org.smarttrade.options.utils.CommonHTMLDocParsher;
 import org.smarttrade.options.utils.DateComparator;
-import org.smarttrade.options.utils.DateComparator2;
 import org.smarttrade.options.utils.DateUtils;
 import org.smarttrade.options.utils.DocumentParser;
+import org.stocksrin.utils.CommonHTMLDocParsher;
+import org.stocksrin.utils.HTMLPageDocumentDownloader;
 
 public class UsdInrService {
 	
@@ -91,7 +89,7 @@ public class UsdInrService {
 	
 	private Columns getUSDINROptionChain(String expiry){
 		String nseUrl="https://www.nseindia.com/live_market/dynaContent/live_watch/fxTracker/optChainDataByExpDates.jsp?symbol=USDINR&instrument=OPTCUR&expiryDt="+expiry;
-		Document doc = DomainFacade.getInstance().getDocument(nseUrl);
+		Document doc = HTMLPageDocumentDownloader.getDocument(nseUrl);
 		
 		//String file="C:\\Users\\rahulksh\\Desktop\\nsedata\\NIFTY.html";
 		//Document doc=DomainFacade.getInstance().getDocumentFromFile(file);
@@ -116,7 +114,7 @@ public class UsdInrService {
 				futureUrl = APPConstant.getUSDINRFutureURL(expiry);
 			}
 			
-			Document futureDc = DomainFacade.getInstance().getDocument(futureUrl);
+			Document futureDc = HTMLPageDocumentDownloader.getDocument(futureUrl);
 			USDINRFuture futurePrice = DocumentParser.getInstance().getFuturePrice(futureDc);
 			columns.setuSDINRFuture(futurePrice);
 			

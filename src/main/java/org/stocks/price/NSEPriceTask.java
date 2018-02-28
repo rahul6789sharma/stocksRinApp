@@ -19,7 +19,7 @@ public class NSEPriceTask  extends TimerTask{
 		} else {
 			GoogleData[] data= HTTPClient.getData();
 			for (GoogleData googleData : data) {
-				NsePriceFacade.saveNsePrice(googleData);
+				//NsePriceFacade.saveNsePrice(googleData);
 			}
 		}
 		

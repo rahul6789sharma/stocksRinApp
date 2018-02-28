@@ -1,4 +1,3 @@
-
 .liveMarket {
 	width: 100%;
 	position: relative;
@@ -16,48 +15,45 @@
 	padding-top: 10px;
 }
 
-.nav>li>a:hover,.nav>li>a:focus {
+.nav>li>a:hover, .nav>li>a:focus {
 	border-radius: 3px;
 	background-color: #f2f2f2 !important;
 }
 
-
- table  {
-	font-family: "Trebuchet MS",Arial,Helvetica,sans-serif !important;
-    font-weight: 500;;
+table {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif !important;
+	font-weight: 500;;
 	border-collapse: collapse;
 	text-align: center;
 	padding: 4px 3px;
 	border: solid 1px #ACA99F;
-	font-size: 82%; 
-	color:#000;
+	font-size: 82%;
+	color: #000;
 }
 
-
- .opttbldata table  {
-	font-family: "Trebuchet MS",Arial,Helvetica,sans-serif !important;
-    font-weight: 500;;
+.opttbldata table {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif !important;
+	font-weight: 500;;
 	border-collapse: collapse;
 	text-align: center;
 	padding: 4px 3px;
 	border: solid 1px #ACA99F;
-	font-size: 100% !important; 
-	color:#000;
+	font-size: 100% !important;
+	color: #000;
 }
- 
 
-td,th {
+td, th {
 	border: 1px solid #f2f2f2;
 	padding: 1px;
 	border: solid 1px #ACA99F;
 	text-align: center;
-}  
-
-.table td{
-	//border: solid 1px #ACA99F!important;
-	border : none !important;
-	
 }
+
+.table td { //
+	border: solid 1px #ACA99F !important;
+	border: none !important;
+}
+
 .optionHead {
 	background-color: #f2f2f2;
 	background: #E0E0E0;
@@ -71,6 +67,37 @@ td,th {
 .itm {
 	background: #ededf9;
 	text-align: right
+}
+
+.evenRow {
+	background: #ededf9;
+	padding: 4px;
+	color: #333333;
+}
+
+.oddRow {
+	padding: 4px;
+	color: #333333;
+}
+
+.highLightRow {
+	border-top: 2px solid #c5a8a8;
+	padding: 4px;
+	background: #ededf9;
+	font: 12px 'Open Sans', sans-serif;
+	font-weight: 700;
+}
+
+.whiteRightBorder {
+	border-right: 1px solid #fff;
+}
+
+.negitiveValue {
+	background: #ffcccc !important;
+}
+
+.positiveValue {
+	background: #ccffdd !important;
 }
 
 .otm {
@@ -121,85 +148,91 @@ td,th {
 }
 
 .spinner {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-left: -50px; /* half width of the spinner gif */
-    margin-top: -50px; /* half height of the spinner gif */
-    text-align:center;
-    z-index:1;
-    overflow: auto;
-    width: 100px; /* width of the spinner gif */
-    height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -50px; /* half width of the spinner gif */
+	margin-top: -50px; /* half height of the spinner gif */
+	text-align: center;
+	z-index: 1;
+	overflow: auto;
+	width: 100px; /* width of the spinner gif */
+	height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
 }
-
 
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    animation: spin 2s linear infinite;
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 80px;
+	height: 80px;
+	animation: spin 2s linear infinite;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@
+keyframes spin { 0% {
+	transform: rotate(0deg);
 }
 
+100%
+{
+transform
+:
+ 
+rotate
+(360deg);
+ 
+}
+}
 .highcharts-credits {
 	display: none;
 }
 
 .weidget span {
-	 display: none !important;
+	display: none !important;
 }
 
 .market a {
-	 
 	background-color: yellow;
-	
 }
 
-.market span{
+.market span {
 	display: none !important;
 }
-.feedDate{
-	font-size:.8em;
+
+.feedDate {
+	font-size: .8em;
 	color: #777;
 }
 
-.feedDesc{
-	font-size:1.1em;
+.feedDesc {
+	font-size: 1.1em;
 }
-.feedTitle{
+
+.feedTitle {
 	padding-top: 2px;
-	font-size:1.5em;
+	font-size: 1.5em;
 	font-weight: bold;
 	color: #15c;
 }
-.caption{
-	padding-left:5px !important;
-}
-.thumbnail{
-border-radius: 0px !important;
-border-bottom-color: #f6a2b3 !important;
-margin-bottom: 10px !important;
 
-transition:all 0.3s ease !important;
-}
-.thumbnail:hover
-{
-         box-shadow:
-                1px 1px #f6a2b3,
-                2px 2px #f6a2b3,
-                3px 3px #f6a2b3;
-        -webkit-transform: translateX(-3px);
-        transform: translateX(-3px);
-         
+.caption {
+	padding-left: 5px !important;
 }
 
-.lead{
+.thumbnail {
+	border-radius: 0px !important;
+	border-bottom-color: #f6a2b3 !important;
+	margin-bottom: 10px !important;
+	transition: all 0.3s ease !important;
+}
+
+.thumbnail:hover {
+	box-shadow: 1px 1px #f6a2b3, 2px 2px #f6a2b3, 3px 3px #f6a2b3;
+	-webkit-transform: translateX(-3px);
+	transform: translateX(-3px);
+}
+
+.lead {
 	margin-bottom: 5px !important;
 }

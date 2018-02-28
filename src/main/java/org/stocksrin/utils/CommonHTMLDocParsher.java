@@ -1,4 +1,4 @@
-package org.smarttrade.options.utils;
+package org.stocksrin.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ import org.option.currency.models.Columns;
 public class CommonHTMLDocParsher {
 
 	public static List<String> getSelectBoxById(Document doc, String id, int index) throws Exception {
-		List<String> lst = new ArrayList<String>();
+		List<String> lst = new ArrayList<>();
 		try {
 			Elements dropbox = doc.select("select[id=" + id + "]").get(index).children();
-			lst = new ArrayList<String>();
+			lst = new ArrayList<>();
 			// not adding first Element[select]
 			for (int i = 1; i < dropbox.size(); i++) {
 				lst.add(dropbox.get(i).text());
@@ -33,7 +33,7 @@ public class CommonHTMLDocParsher {
 		List<String> lst = new ArrayList<String>();
 		try {
 			Elements dropbox = doc.select("select[class=" + classs + "]").get(index).children();
-			lst = new ArrayList<String>();
+			lst = new ArrayList<>();
 			// not adding first Element[select]
 			for (int i = 1; i < dropbox.size(); i++) {
 				lst.add(dropbox.get(i).text());
@@ -69,7 +69,7 @@ public class CommonHTMLDocParsher {
 		return rows;
 	}
 
-	public static Columns parseNiftyColumn(Document doc, Elements rows) {
+	public static Columns parseNSEColumn(Document doc, Elements rows) {
 
 		List<Column> lst = parseNiftyOptionTableColumn(doc, rows);
 		Columns result = updateColumns(doc, lst);
@@ -85,7 +85,7 @@ public class CommonHTMLDocParsher {
 	}
 
 	public static Columns parseUSDINRColumn(Document doc, Elements rows) {
-		List<Column> lst= new ArrayList<Column>();
+		List<Column> lst= new ArrayList<>();
 		try {
 			lst = parseUSDINROptionTableColumn(doc, rows);
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ public class CommonHTMLDocParsher {
 
 	private static List<Column> parseUSDINROptionTableColumn(Document doc, Elements rows) throws Exception {
 
-		List<Column> lst = new ArrayList<Column>();
+		List<Column> lst = new ArrayList<>();
 
 		for (int i = 2; i < rows.size() - 1; i++) { // first, second and last
 			// row is the col names so
@@ -127,7 +127,7 @@ public class CommonHTMLDocParsher {
 
 	private static List<Column> parseNiftyOptionTableColumn(Document doc, Elements rows) {
 
-		List<Column> lst = new ArrayList<Column>();
+		List<Column> lst = new ArrayList<>();
 
 		for (int i = 2; i < rows.size() - 1; i++) { // first, second and last
 			// row is the col names so
@@ -182,7 +182,7 @@ public class CommonHTMLDocParsher {
 		columns.setTotal_ce_oi(total_ce_oi);
 		columns.setTotal_pe_oi(total_pe_oi);
 		
-		columns.setLastDataUpdated(DateUtils.getTodayDateTime());
+		columns.setLastDataUpdated(org.smarttrade.options.utils.DateUtils.getTodayDateTime());
 
 		return columns;
 	}

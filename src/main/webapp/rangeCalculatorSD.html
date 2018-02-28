@@ -95,6 +95,7 @@
 <br/>
 <br/>
 <br/>
+<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 <div ng-include="'templets/add.html'"></div>			
 		</div>
 
@@ -135,15 +136,79 @@
 
 
 
+function drawGraph(data){
+	
+	Highcharts.chart('container', {
+	    chart: {
+	        type: 'spline',
+	        inverted: true
+	    },
+	    title: {
+	        text: 'Range of Particulat instrument'
+	    },
+	    subtitle: {
+	        text: 'According 1 SD calculaton'
+	    },
+	    xAxis: {
+	        reversed: false,
+	        title: {
+	            enabled: true,
+	            text: 'Point'
+	        },
+	        labels: {
+	            formatter: function () {
+	                return this.value + 'rs';
+	            }
+	        },
+	        maxPadding: 0.05,
+	        showLastLabel: true
+	    },
+	    yAxis: {
+	        title: {
+	            text: 'Days'
+	        },
+	        labels: {
+	            formatter: function () {
+	                return this.value + '';
+	            }
+	        },
+	        lineWidth: 2
+	    },
+	    legend: {
+	        enabled: false
+	    },
+	    tooltip: {
+	        headerFormat: '<b>{series.name}</b><br/>',
+	        pointFormat: '{point.x} : {point.y} days'
+	    },
+	    plotOptions: {
+	        spline: {
+	            marker: {
+	                enable: true
+	            }
+	        }
+	    },
+	    series: [{
+	        name: 'Days',
+	        data: data,
+	        
+	    }]
+	});	
+}
+
+
+
+
+// example
 	//=(C4*(C5/100)*SQRT(1))/SQRT(365)
 	var spotPrice = 7434;
 	var vix = 19;
 	var tmp = calculateSD(spotPrice, vix, 1);
 
-	function calculateSD(spotPrice, vix, days, sd) {
-		var result = (spotPrice * ((vix) / 100) * (Math.sqrt(days) * sd))
+	function calculateSD(spotPrice, vol, days, sd) {
+		var result = (spotPrice * ((vol) / 100) * (Math.sqrt(days) * sd))
 				/ Math.sqrt(365);
-		console.log("result" + result);
+		
 		return result.toFixed(2);
 	}
 
@@ -177,11 +242,14 @@
 	}
 
 	function addDataToSDTable() {
-
+	
 		var spot_price = document.getElementById('spot_price').value
 		var volidity = document.getElementById('volidity').value
 		var numberoFdays = document.getElementById('numberoFdays').value
 
+		var sdValue1 = 0.0;
+		var sdValue2 = 0.0;
+		
 		if (spot_price != 0 && volidity != 0 && numberoFdays != 0) {
 			$('#sdTable').remove();
 			createSDTable();
@@ -193,6 +261,7 @@
 					tr.append("<td >" + i + "</td>");
 					var result = calculateSD(spot_price, volidity,
 							numberoFdays, i);
+					sdValue1=result;
 					tr.append("<td >" + result + "</td>");
 					var high = parseFloat(spot_price) + parseFloat(result);
 					var low = spot_price - result;
@@ -212,6 +281,7 @@
 					tr.append("<td >" + 2 + "</td>");
 					var result = calculateSD(spot_price, volidity,
 							numberoFdays, 2);
+					sdValue2=result;
 					tr.append("<td>" + result + "</td>");
 					var high = parseFloat(spot_price) + parseFloat(result);
 					var low = spot_price - result;
@@ -221,6 +291,72 @@
 				$('table').append(tr);
 			}
 		}
+		graph( );
+	}
+	
+	function graph(){
+		
+		var spot_price = document.getElementById('spot_price').value
+		var volidity = document.getElementById('volidity').value
+		var numberoFdays = document.getElementById('numberoFdays').value
+		
+		var sd1Value = calculateSD(spot_price, volidity,numberoFdays, 1);
+		
+		var sd2Value = calculateSD(spot_price, volidity,numberoFdays, 2);
+		
+		var spotprice= parseFloat(spot_price);
+		var value1=[];
+		var result = [];
+		var lows= [];
+		var highs= [];
+		for (var i = 1; i <= numberoFdays; i++) {
+			
+			var resul = calculateSD(spot_price, volidity,i, 1);
+			var low = parseFloat(spot_price) - resul;
+			var high = parseFloat(spot_price) + parseFloat(resul);
+			
+			var l=[low, i]
+			var h=[high, i]
+			lows.push(l);
+			highs.push(h);
+			
+		}
+		
+		var finalResult= [];
+		lows.reverse();
+		for(var i=0; i<lows.length; i++) {
+		
+			finalResult.push(lows[i]);
+		}
+	
+		
+		if(sd1Value!=0){
+			
+			var high1 = parseFloat(spot_price) + parseFloat(sd1Value);
+			var low1 = spot_price - sd1Value;
+			
+			var high2 = parseFloat(spot_price) + parseFloat(sd2Value);
+			var low2 = spot_price - sd2Value;
+			
+			var valueSpot =[parseFloat(spot_price), 0];
+			var value1low =[parseFloat(low1), parseFloat(numberoFdays)];
+			var value1high =[parseFloat(high1), parseFloat(numberoFdays)];
+			
+			
+			finalResult.push(valueSpot);
+		}
+		
+for(var i=0; i<highs.length; i++) {
+			
+			finalResult.push(highs[i]);
+		}
+	
+		
+	
+		//var data=[[8803.18,3],[8820.94,2], [8844.1,1],[8900,0], [8955.9,1],[8979.06,2],[8996.82,3]]
+		
+		
+		drawGraph(finalResult);
 	}
 </script>
 

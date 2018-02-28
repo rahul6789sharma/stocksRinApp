@@ -1,4 +1,4 @@
-package org.option.currency.models;
+package org.stocksrin.option.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ public class Columns {
 	private int total_pe_oi;
 	private String expiry;
 	private String interestRate;
-	private USDINRFuture uSDINRFuture;
+	private FuturePrice futurePrice;
 	private String lastDataUpdated;
 	private String underlyingSpotPrice;
 	private String spotPrice;
@@ -46,14 +46,6 @@ public class Columns {
 
 	public void setInterestRate(String interestRate) {
 		this.interestRate = interestRate;
-	}
-
-	public USDINRFuture getuSDINRFuture() {
-		return uSDINRFuture;
-	}
-
-	public void setuSDINRFuture(USDINRFuture uSDINRFuture) {
-		this.uSDINRFuture = uSDINRFuture;
 	}
 
 	public String getLastDataUpdated() {
@@ -96,12 +88,20 @@ public class Columns {
 		this.spotPrice = spotPrice;
 	}
 
+	public FuturePrice getFuturePrice() {
+		return futurePrice;
+	}
+
+	public void setFuturePrice(FuturePrice futurePrice) {
+		this.futurePrice = futurePrice;
+	}
+
 	@Override
 	public String toString() {
 		return "Columns [total_ce_oi=" + total_ce_oi + ", total_pe_oi=" + total_pe_oi + ", expiry=" + expiry
-				+ ", interestRate=" + interestRate + ", uSDINRFuture=" + uSDINRFuture + ", lastDataUpdated="
+				+ ", interestRate=" + interestRate + ", futurePrice=" + futurePrice + ", lastDataUpdated="
 				+ lastDataUpdated + ", underlyingSpotPrice=" + underlyingSpotPrice + ", spotPrice=" + spotPrice
-				+ ", expiryList=" + expiryList + "]";
+				+ ", expiryList=" + expiryList + ", dataset=" + dataset + "]";
 	}
 
 }
