@@ -69,11 +69,43 @@ td, th {
 	text-align: right
 }
 
+.otm {
+	background: white;
+	text-align: right
+}
+
+.redNumberitm{
+	background: #ededf9;
+	text-align: right;
+	color:red
+}
+
+.greenNumberitm{
+	background: #ededf9;
+	text-align: right;
+	color:green
+}
+
+.redNumberotm{
+	background: white;
+	text-align: right;
+	color:red
+}
+
+.greenNumberotm{
+	background: white;
+	text-align: right;
+	color:green
+}
+
+
 .evenRow {
 	background: #ededf9;
 	padding: 4px;
 	color: #333333;
 }
+
+
 
 .oddRow {
 	padding: 4px;
@@ -100,10 +132,7 @@ td, th {
 	background: #ccffdd !important;
 }
 
-.otm {
-	background: white;
-	text-align: right
-}
+
 
 .otmMaxOI {
 	background: #4dff4d;

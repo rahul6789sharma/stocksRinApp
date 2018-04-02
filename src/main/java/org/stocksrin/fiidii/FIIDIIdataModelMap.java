@@ -47,7 +47,7 @@ public class FIIDIIdataModelMap {
 			while ((line = br.readLine()) != null) {
 				if (i != 0) {
 					// use comma as separator
-					FIIDIIDataModle fIIDIIDataModle = CommonUtils.getModelFromCSV(line);
+					FIIDIIDataModle fIIDIIDataModle = CommonUtils.getFIIModelFromCSV(line);
 					addData(fIIDIIDataModle.getDate(), fIIDIIDataModle);
 				}
 				i++;

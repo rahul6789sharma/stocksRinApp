@@ -18,7 +18,8 @@ public class Scheduler {
 	
 	@PostConstruct
 	public void init() {
-		System.out.println("Conf Bhav Copy Downloader");
+		
+		/*System.out.println("Conf Bhav Copy Downloader");
 
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today.set(Calendar.HOUR_OF_DAY, 17);
@@ -28,7 +29,7 @@ public class Scheduler {
 		// run every 5 PM
 		
 		timer.schedule(new DownloadDailyBhavCopyTask(), today.getTime(),
-				TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+				TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));*/
 
 	}
 	

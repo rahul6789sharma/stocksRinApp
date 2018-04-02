@@ -10,7 +10,7 @@ public class HTMLPageDocumentDownloader {
 
 	public static Document getDocument(String url) {
 		try {
-			System.out.println("HTTP request :" + url);
+			//System.out.println("HTTP request :" + url);
 			Document doc = Jsoup.connect(url).get();
 			return doc;
 		} catch (IOException e) {

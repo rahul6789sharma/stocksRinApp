@@ -1,11 +1,34 @@
 package org.stocksrin.utils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtils {
 
 	private DateUtils() {
+	}
+
+	public static String previousDayDate(String formate) {
+		DateFormat dateFormat = new SimpleDateFormat(formate);
+		return dateFormat.format(yesterday());
+	}
+
+	private static Date yesterday() {
+		final Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1);
+		return cal.getTime();
+	}
+
+	public static boolean isWeekEndDay() {
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static String dateToString(Date date, String formate) throws Exception {

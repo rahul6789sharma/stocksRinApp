@@ -20,6 +20,17 @@ public class FileUtils {
 
 	}
 
+	public static void makeDir(String dirPath) {
+		File file = new File(dirPath);
+		if (!file.exists()) {
+			if (file.mkdir()) {
+				System.out.println("Directory is created! " + dirPath);
+			} else {
+				System.out.println("Failed to create directory! " + dirPath);
+			}
+		}
+	}
+
 	public static void writeDataAsJson(Object data, String fileName) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -33,14 +44,37 @@ public class FileUtils {
 		Files.copy(source.toPath(), dest.toPath());
 	}
 
-	public static List<String> listFilesForFolder(final File folder) {
+	public static List<String> getSortedFileNamesfromFolder(final File folder) {
+		List<Date> dates = new ArrayList<>();
+		List<String> names = FileUtils.listFilesForFolder(folder);
+
+		for (String string : names) {
+			try {
+				dates.add(DateUtils.stringToDate(string, "dd_MM_yyyy"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		Collections.sort(dates);
+		List<String> sortedFileName = new ArrayList<>();
+		for (Date d : dates) {
+			try {
+				sortedFileName.add(DateUtils.dateToString(d, "dd_MM_yyyy"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return sortedFileName;
+	}
+
+	private static List<String> listFilesForFolder(final File folder) {
 		List<String> names = new ArrayList<>();
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
 				listFilesForFolder(fileEntry);
 			} else {
 				names.add(fileEntry.getName());
-
 			}
 		}
 		return names;

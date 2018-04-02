@@ -9,7 +9,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.option.currency.models.Columns;
 import org.option.currency.models.USDINRFuture;
-import org.option.db.USDINRDbFacade;
 import org.option.db.Usdinr;
 import org.smarttrade.options.utils.APPConstant;
 import org.smarttrade.options.utils.DateComparator;
@@ -126,7 +125,7 @@ public class UsdInrService {
 		return null;
 	}
 	
-	public HistoricalOI getOIHistoricalData(String expiry, float strick){
+/*	public HistoricalOI getOIHistoricalData(String expiry, float strick){
 		HistoricalOI historicalOI = new HistoricalOI();
 		
 		List<Usdinr> tmp = USDINRDbFacade.getInstance().getDataByExpiry(expiry);
@@ -153,7 +152,7 @@ public class UsdInrService {
 		historicalOI.setExpiry(DateUtils.getInstance().getDateStringBYDate(result.get(0).getId().getExpiry()));
 		System.out.println(historicalOI);
 		return historicalOI;
-	}
+	}*/
 		
 	private List<Usdinr> filterResultForStrick(List<Usdinr> result, float strick){
 		//List<Usdinr> result = USDINRDbFacade.getInstance().getDataByExpiry(expiry);

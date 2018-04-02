@@ -2,7 +2,7 @@ package org.stocksrin.live;
 
 public class Nifty {
 
-	private String change;
+	/*private String change;
 	private String lastTradedPrice;
 
 	public String getChange() {
@@ -25,5 +25,5 @@ public class Nifty {
 	public String toString() {
 		return "Nifty [change=" + change + ", lastTradedPrice=" + lastTradedPrice + "]";
 	}
-
+*/
 }

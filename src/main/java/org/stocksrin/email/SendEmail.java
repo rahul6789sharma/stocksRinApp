@@ -1,6 +1,9 @@
 package org.stocksrin.email;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -9,24 +12,21 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-
-/*@Singleton
-@Startup*/
 public class SendEmail {
 
-/*	@PostConstruct
-	public void init() {
+	private static String toMail = "stocksrin@gmail.com";
 
-		System.out.println("************ sending email ***********");
-		sentMail("stocksrin@gmail.com", "bhav Copy Downloaded");
-		System.out.println("************ sending email ***********");
+	static String hostName;
 
-	}*/
+	static {
+		try {
+			hostName = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+	}
 
-	public static void sentMail(String toMail, String subject, String body) {
+	public static void sentMail(String subject, String body) {
 
 		final String username = "rahul6789sharma@gmail.com";
 		final String password = "8971323434@123";
@@ -49,7 +49,8 @@ public class SendEmail {
 			message.setFrom(new InternetAddress("rahul6789sharma@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toMail));
 			message.setSubject(subject);
-			message.setText(body);
+			String finalBody = body + "\n \n" + "*******************\n\n" + hostName;
+			message.setText(finalBody);
 
 			Transport.send(message);
 

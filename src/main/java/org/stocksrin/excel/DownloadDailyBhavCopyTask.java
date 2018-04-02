@@ -13,7 +13,7 @@ import org.stocksrin.utils.ExcelUtils;
 
 public class DownloadDailyBhavCopyTask extends TimerTask {
 
-	public static boolean isWeekEndDay() {
+/*	public static boolean isWeekEndDay() {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 
 		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
@@ -22,11 +22,11 @@ public class DownloadDailyBhavCopyTask extends TimerTask {
 			return false;
 		}
 
-	}
+	}*/
 
 	@Override
 	public void run() {
-		if (!isWeekEndDay()) {
+		if (!DateUtils.isWeekEndDay()) {
 			System.out.println("Downloading ... " + new Date());
 			
 			System.out.println("conf dir-------------->" + APPConstant.STOCKSRIN_NSE_CONF_DIR_BHAVDIR);
@@ -41,10 +41,8 @@ public class DownloadDailyBhavCopyTask extends TimerTask {
 			System.out.println("Start Downloading " + fileName);
 			try {
 				NSEBhavCopyDownloadUtil.downloadBhavCopy(fileName);
-				SendEmail.sentMail("stocksrin@gmail.com", "SUCCESS! Bhav Copy Downloaded",
-						"File downloaded" + fileName);
 			} catch (Exception e) {
-				SendEmail.sentMail("stocksrin@gmail.com", "ERROR! Bhav Copy not Downloaded",
+				SendEmail.sentMail("ERROR! Bhav Copy not Downloaded",
 						"ERROR " + e.getMessage());
 				e.printStackTrace();
 			}

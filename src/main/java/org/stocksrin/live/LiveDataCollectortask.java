@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.TimerTask;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class LiveDataCollectortask extends TimerTask {
 	
 	public static boolean isWeekEndDay() {

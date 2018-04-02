@@ -5,43 +5,28 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.stocksrin.live.Nifty;
+import org.stocksrin.utils.APPConstant;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class NiftyIndicesDataColloctor {
 
-	private static final String NIFTY_INDICES = "https://nseindia.com/homepage/Indices1.json";
 
-	public static void main(String[] args) {
-		getData();
-	}
+	public static NSEIndice getData(String indice) throws Exception {
 
-	public static Nifty getData() {
+		String data = sendGet(APPConstant.NIFTY_INDICES);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		String data;
-		try {
-			data = getLiveAdvacnedDeclineData();
-
-			String[] nifty = data.split("\"NIFTY 50\"");
-
-			String[] lastPrice = nifty[1].split("\"change\"");
-
-			Nifty niftyData = new Nifty();
-			niftyData.setChange(
-					lastPrice[1].split("\"pChange\"")[0].replaceAll("\"", "").replaceAll(",", "").replaceAll(":", ""));
-			niftyData.setLastTradedPrice(lastPrice[0].split("\"lastPrice\"")[1].replaceAll("\"", "").replaceAll(",", "")
-					.replaceAll(":", ""));
-
-			return niftyData;
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		NSEIndicesData obj = mapper.readValue(data, NSEIndicesData.class);
+		NSEIndice[] d = obj.getData();
+		for (NSEIndice data2 : d) {
+			if (data2.getName().equals(indice)) {
+				return data2;
+			}
 		}
 		return null;
-
-	}
-
-	public static String getLiveAdvacnedDeclineData() throws Exception {
-		return sendGet(NIFTY_INDICES);
 	}
 
 	// HTTP GET request

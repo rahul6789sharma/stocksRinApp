@@ -6,20 +6,12 @@ import org.jsoup.select.Elements;
 import org.smarttrade.options.utils.HTMLPageUtils;
 import org.stocksrin.Exception.StocksRinException;
 import org.stocksrin.live.LiveMarketAdvancedDecline;
-import org.stocksrin.live.Nifty;
 import org.stocksrin.live.Rows;
+import org.stocksrin.nifty.indices.NSEIndice;
 import org.stocksrin.nifty.indices.NiftyIndicesDataColloctor;
 import org.stocksrin.utils.APPConstant;
 
 public class FIIDIIDailyReportUtils {
-
-	public static void main(String[] args) {
-		try {
-			System.out.println(getData());
-		} catch (StocksRinException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public static FIIDIIDataModle getData() throws StocksRinException {
 		FIIDIIDataModle fIIDIIDataModle = new FIIDIIDataModle();
@@ -27,10 +19,14 @@ public class FIIDIIDailyReportUtils {
 		getFII_Data(APPConstant.FII_DATA_URL, fIIDIIDataModle);
 		getDII_Data(APPConstant.DII_DATA_URL, fIIDIIDataModle);
 		getAdvancedDeclineData(fIIDIIDataModle);
-		Nifty nifty = NiftyIndicesDataColloctor.getData();
 
-		fIIDIIDataModle.setNiftyChange(nifty.getChange());
-		fIIDIIDataModle.setNiftyprice(nifty.getLastTradedPrice());
+		try {
+			NSEIndice nifty = NiftyIndicesDataColloctor.getData("NIFTY 50");
+			fIIDIIDataModle.setNiftyChange(nifty.getChange());
+			fIIDIIDataModle.setNiftyprice(nifty.getLastPrice());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return fIIDIIDataModle;
 

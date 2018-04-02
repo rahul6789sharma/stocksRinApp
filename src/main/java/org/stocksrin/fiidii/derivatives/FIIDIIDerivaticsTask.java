@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.TimerTask;
 
-import org.stocksrin.fiidii.FIIDIIDailyReportUtils;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.CommonUtils;
 
@@ -23,9 +22,12 @@ public class FIIDIIDerivaticsTask extends TimerTask {
 	@Override
 	public void run() {
 		if (!isWeekEndDay()) {
-			FIIDIIDataDerivativesModle fiiDIIDataDerivativesModle = IndexFuture
-					.getFIIDIIDerivaticeData(APPConstant.FIIDII_DERIVATIVES_DATA_URL);
-			CommonUtils.appendData(fiiDIIDataDerivativesModle.toCsv(), APPConstant.FILE_NAME_DERIVATIVES);
+			try {
+				FIIDIIDataDerivativesModle fiiDIIDataDerivativesModle = IndexFuture.getFIIDIIDerivaticeData(APPConstant.FIIDII_DERIVATIVES_DATA_URL);
+				CommonUtils.appendData(fiiDIIDataDerivativesModle.toCsv(), APPConstant.FILE_NAME_DERIVATIVES);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

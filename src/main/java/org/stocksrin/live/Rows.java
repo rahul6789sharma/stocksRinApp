@@ -43,7 +43,6 @@ public class Rows {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [total = " + total + ", declines = " + declines + ", unchanged = " + unchanged
-				+ ", advances = " + advances + "]";
+		return "ClassPojo [total = " + total + ", declines = " + declines + ", unchanged = " + unchanged + ", advances = " + advances + "]";
 	}
 }

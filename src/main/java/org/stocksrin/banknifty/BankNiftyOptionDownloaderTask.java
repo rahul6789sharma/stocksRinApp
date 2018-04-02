@@ -1,9 +1,9 @@
 package org.stocksrin.banknifty;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.TimerTask;
 
 import org.jsoup.nodes.Document;
@@ -15,31 +15,22 @@ import org.stocksrin.option.model.OptionModle;
 import org.stocksrin.option.model.OptionModles;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.CommonHTMLDocParsher;
+import org.stocksrin.utils.CommonUtils;
+import org.stocksrin.utils.DateUtils;
 import org.stocksrin.utils.FileUtils;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
 
 public class BankNiftyOptionDownloaderTask extends TimerTask {
 
-	public static boolean isWeekEndDay() {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-
-		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	@Override
 	public void run() {
-		if (!isWeekEndDay()) {
+		if (!DateUtils.isWeekEndDay()) {
 			try {
-				String fileName = getdataFaced();
-				SendEmail.sentMail("stocksrin@gmail.com",
-						"SUCCESS! BankNifty Weekly Option Chain downloaded, " + fileName + "",
-						"File downloaded" + fileName);
+				List<String> fileNames = getdataFaced();
+				SendEmail.sentMail( "SUCCESS! BankNifty Weekly Option Chain downloaded,  ",
+						"File downloaded" + fileNames);
 			} catch (Exception e) {
-				SendEmail.sentMail("stocksrin@gmail.com", "BankNiftyOptionDownloaderTask Exception !",
+				SendEmail.sentMail( "BankNiftyOptionDownloaderTask Exception !",
 						"ERROR " + e.getMessage());
 				e.printStackTrace();
 			}
@@ -48,29 +39,53 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 
 	public static void main(String[] args) {
 		try {
-			getdataFaced();
+			System.out.println(getdataFaced());
 			System.out.println("done");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public static String getdataFaced() throws Exception {
+	public static List<String> getdataFaced() throws Exception {
+
 		Columns columns = getBankNiftyOptionChain(APPConstant.BANKNIFTY_WEEKLY_OPTION_URL);
 		OptionModles optionModles = bankNiftyOptionDataWrapper(columns);
-		String file = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY + APPConstant.FILE_NAME_BANKNIFTY_OPTION;
 
-		String date = getDate(optionModles.getLastDataUpdated());
-
-		String fileName = file + date + ".json";
-		FileUtils.writeDataAsJson(optionModles, fileName);
-		return fileName;
+		List<String> expiryList = optionModles.getExpiryList();
+		return otherExpiry(expiryList);
 	}
 
-	private static String getDate(String date) {
-		String[] a = date.split(" ");
-		return a[0];
+	private static List<String> otherExpiry(List<String> expiryList) {
+		int size = expiryList.size();
+		List<String> files = new ArrayList<>();
+		for (int i = 0; i < size; i++) {
+			FileUtils.makeDir(APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY + expiryList.get(i));
+			String url = APPConstant.BANKNIFTY_WEEKLY_OPTION_URL_BY_Expiry + expiryList.get(i);
+			Columns columns = getBankNiftyOptionChain(url);
+			OptionModles optionModles = bankNiftyOptionDataWrapper(columns);
+			String date = getDate(optionModles.getUnderlyingSpotPrice());
+			String optionFileDir = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY + expiryList.get(i) + File.separator+ date + ".json";
+
+			FileUtils.writeDataAsJson(optionModles, optionFileDir);
+			files.add(optionFileDir);
+
+		}
+		return files;
+	}
+
+	private static String getDate(String dateInString) {
+		String dateString = null;
+		try {
+			String dateForamte = "MMM dd, yyyy hh:mm:ss Z";
+			String a[] = dateInString.split("As on");
+			String d = a[1].trim();
+			Date date = DateUtils.stringToDate(d, dateForamte);
+			dateString = DateUtils.dateToString(date, APPConstant.DATEFORMATE_dd_MM_yyyy);
+			return dateString;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Date().toString();
 	}
 
 	private static OptionModles bankNiftyOptionDataWrapper(Columns columns) {
@@ -98,6 +113,7 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 		optionModles.setTotal_ce_oi(columns.getTotal_ce_oi());
 		optionModles.setTotal_pe_oi(columns.getTotal_pe_oi());
 		optionModles.setExpiry(columns.getExpiry());
+		optionModles.setExpiryList(columns.getExpiryList());
 		optionModles.setUnderlyingSpotPrice(columns.getUnderlyingSpotPrice());
 		optionModles.setLastDataUpdated(columns.getLastDataUpdated());
 		return optionModles;

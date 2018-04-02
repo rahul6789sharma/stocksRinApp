@@ -21,8 +21,8 @@ function findLargest3(ar) {
 function  genNiftyStrick(){
 	
 	var strickArray = new Array();
-	var startStrick = 8500;
-	var endStrick = 10000;
+	var startStrick = 9000;
+	var endStrick = 11000;
 	var temp=startStrick;
 	for (var i = 0; i < 50; i++) {
 		temp = temp+50;
@@ -37,8 +37,8 @@ function  genNiftyStrick(){
 function  genBankNiftyStrick(){
 	
 	var strickArray = new Array();
-	var startStrick = 19800;
-	var endStrick = 24500;
+	var startStrick = 22500;
+	var endStrick = 26500;
 	var temp=startStrick;
 	for (var i = 0; i < 50; i++) {
 		temp = temp+100;

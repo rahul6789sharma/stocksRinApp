@@ -26,7 +26,7 @@ public class LiveDataScheduler {
 		today.set(Calendar.MINUTE, 50);
 		today.set(Calendar.SECOND, 0);
 
-		timer.scheduleAtFixedRate(new LiveDataCollectortask(), 500, 300000);
+		//timer.scheduleAtFixedRate(new LiveDataCollectortask(), 500, 300000);
 	}
 
 	@PreDestroy

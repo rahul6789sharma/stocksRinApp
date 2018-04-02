@@ -18,6 +18,8 @@ public class OptionModles {
 
 	private List<OptionModle> optionModle = new ArrayList<>();
 
+	private String spot;
+	
 	public int getTotal_ce_oi() {
 		return total_ce_oi;
 	}
@@ -88,6 +90,15 @@ public class OptionModles {
 
 	public void setOptionModle(List<OptionModle> optionModle) {
 		this.optionModle = optionModle;
+	}
+
+	
+	public String getSpot() {
+		return spot;
+	}
+
+	public void setSpot(String spot) {
+		this.spot = spot;
 	}
 
 	@Override

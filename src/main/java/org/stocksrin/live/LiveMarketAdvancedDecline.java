@@ -5,11 +5,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.stocksrin.utils.APPConstant;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LiveMarketAdvancedDecline {
-
-	private static final String Live_Market_URL = "https://www.nseindia.com/live_market/dynaContent/live_analysis/changePercentage.json";
 
 	public static Rows getData() {
 
@@ -17,7 +17,6 @@ public class LiveMarketAdvancedDecline {
 		String data;
 		try {
 			data = LiveMarketAdvancedDecline.getLiveAdvacnedDeclineData();
-			
 			AdvancedDeclinePojo advancedDeclinePojo = mapper.readValue(data, AdvancedDeclinePojo.class);
 			Rows[] rows = advancedDeclinePojo.getRows();
 			return rows[0];
@@ -25,11 +24,10 @@ public class LiveMarketAdvancedDecline {
 			e.printStackTrace();
 		}
 		return null;
-
 	}
 
 	public static String getLiveAdvacnedDeclineData() throws Exception {
-		return sendGet(Live_Market_URL);
+		return sendGet(APPConstant.Live_Market_URL);
 	}
 
 	// HTTP GET request
@@ -58,6 +56,5 @@ public class LiveMarketAdvancedDecline {
 
 		return response.toString();
 		// print result
-
 	}
 }
