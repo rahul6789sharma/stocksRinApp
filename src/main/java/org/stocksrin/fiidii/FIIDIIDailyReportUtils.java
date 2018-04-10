@@ -4,12 +4,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.smarttrade.options.utils.HTMLPageUtils;
-import org.stocksrin.Exception.StocksRinException;
 import org.stocksrin.live.LiveMarketAdvancedDecline;
 import org.stocksrin.live.Rows;
 import org.stocksrin.nifty.indices.NSEIndice;
 import org.stocksrin.nifty.indices.NiftyIndicesDataColloctor;
 import org.stocksrin.utils.APPConstant;
+import org.stocksrin.utils.StocksRinException;
 
 public class FIIDIIDailyReportUtils {
 

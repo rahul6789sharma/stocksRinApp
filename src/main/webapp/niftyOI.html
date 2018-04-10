@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+<link rel="alternate" hreflang="x-default"
+	href="https://www.stocksrin.com" />
+<link rel="alternate" hreflang="en" href="https://www.stocksrin.com" />
+<meta property="og:locale" content="en_IN" />
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market
+	Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+
+<script async
+	src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client : "ca-pub-7270583781006956",
+		enable_page_level_ads : true
+	});
+</script>
+
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+
+
+			<div class="text-center">
+				<h4>
+					<span style="color: #333333;">Volume and OI combined Data for Two Months</span>
+				</h4>
+			</div>
+			
+			<div id="sdDiv" class="sdDiv"></div>
+			 
+			<p>
+				<br /> <br /> <br />
+			<div ng-include="'templets/add.html'"></div>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="navbar-default navbar-fixed-bottom"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+	$(document).ready(function() {
+		queryFIIDIIData();
+
+	});
+
+	function queryFIIDIIData() {
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+
+				var jsonResponse = JSON.parse(this.responseText);
+				addDataToTable(jsonResponse);
+			}
+		};
+
+		xhttp.open("GET", "/rest/oiService/oiData", true);
+		xhttp.send();
+	}
+	
+	function addDataToTable(jsonResponse) {
+		
+		var keyArr = Object.keys(jsonResponse);
+
+		var fiiTotalBuying = [];
+		var fiiTotalSell = [];
+		var fiiTotalNet = [];
+		
+		var diiTotalBuying = [];
+		var diiTotalSell= [];
+		var diiTotalNet = [];
+		
+		var niftyChangeTotal = [];
+
+		var tr;
+		for (var i = 0; i < keyArr.length; i++) {
+			tr = $('<tr/>');
+			var val = jsonResponse[keyArr[i]];
+
+			tr.append("<td class=oddRow>" + val.date + "</td>");
+			
+			tr.append("<td class=oddRow>" + val.volTotal + "</td>");
+	
+			
+			var volTotalPercentageChange1 = parseFloat(val.volTotalPercentageChange);
+			
+			if(volTotalPercentageChange1>0){
+				tr.append("<td class=positiveValue>" + volTotalPercentageChange1 + "</td>");	
+			}else{
+				tr.append("<td class=negitiveValue>" + volTotalPercentageChange1 + "</td>");
+			}
+			
+		
+			tr.append("<td class=oddRow>" + val.oiTotal + "</td>");
+	
+				
+			var oiChangePer = parseFloat(val.oiTotalPercentageChange);
+			
+			if(oiChangePer>0){
+				tr.append("<td class=positiveValue>" + oiChangePer + "</td>");	
+			}else{
+				tr.append("<td class=negitiveValue>" + oiChangePer + "</td>");
+			}
+			
+			
+			tr.append("<td class=oddRow>" + val.nifty + "</td>");
+			
+			
+			
+			var change = parseInt(val.niftyChange);
+			
+			if(change>0){
+				tr.append("<td class=positiveValue>" + change + "</td>");	
+			}else{
+				tr.append("<td class=negitiveValue>" + change + "</td>");
+			}
+			
+			$('table').append(tr);
+		}
+		
+
+		
+		tr = $('<tr/>');
+	
+	
+		$('table').append(tr);
+
+	}
+
+	createSDTable();
+	//addDataToSDTable(spotPrice);
+
+	function createSDTable() {
+		var x = document.createElement("TABLE");
+		x.setAttribute("id", "sdTable");
+		x.setAttribute("class", "opttbldata");
+		x.setAttribute("align", "center");
+		x.setAttribute("cellpadding", "40");
+		x.setAttribute("cellspacing", "2");
+		x.setAttribute("width", "80%");
+
+		$("#sdDiv").append(x);
+		// table header
+		$("#sdTable")
+				.append(
+						'<thead>'
+								+ '<tr class="optionHead"> <th colspan="1" class=whiteRightBorder> </th> <th colspan="4" class=whiteRightBorder> Nifty Open Interest Analysis </th> <th colspan="4" > NSE  </th></tr>'
+			
+								+ '<tr class="optionHead">'
+								+ '<th title="Date" class=whiteRightBorder>Date</th> '
+								+ '<th title="buyValue">Total Volume</th> <th title="SellValue" class=whiteRightBorder >% Change in volume</th>'
+								+ '<th title="buyValue">Total Open Interest</th> <th title="SellValue" class=whiteRightBorder> % Change in Oi</th>'
+								+ '<th title="buyValue">Nifty</th> <th title="SellValue"> Nifty Change</th>'
+								+ '</tr>' + '</thead>');
+
+		// table Fotter 
+	}
+</script>
+
+</html>

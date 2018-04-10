@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -20,9 +24,36 @@ import org.stocksrin.banknifty.option.alog2.StrategyModel;
 import org.stocksrin.banknifty.option.alog2.StrategyModel.OptionType;
 import org.stocksrin.fiidii.FIIDIIDataModle;
 import org.stocksrin.oi.future.NiftyOIDataModle;
+import org.stocksrin.option.model.BankNiftyDailyMaxPain;
 
 public class CommonUtils {
 
+	public static void downloadFile(String url, String toFile) throws Exception {
+		ReadableByteChannel rbc = null;
+
+		try (FileOutputStream fos = new FileOutputStream(toFile);) {
+
+			URL website = new URL(url);
+			rbc = Channels.newChannel(website.openStream());
+
+			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			fos.close();
+			rbc.close();
+
+		} catch (IOException e) {
+			throw new Exception("ERROR ! File download " + e.getMessage());
+		} finally {
+			try {
+				if (rbc != null) {
+					rbc.close();
+				}
+
+			} catch (IOException e) {
+
+				throw new Exception("ERROR ! File download " + e.getMessage());
+			}
+		}
+	}
 
 	private static final int MARKET_HR = 15;
 	private static final int MARKET_MINUTE = 35;
@@ -45,6 +76,7 @@ public class CommonUtils {
 		}
 
 	}
+
 	public static Map<Integer, List<StrategyModel>> getBankNiftyStrategy() {
 		List<StrategyModel> lst = getBankNiftyStrategyModel();
 
@@ -200,6 +232,27 @@ public class CommonUtils {
 
 	}
 
+	public static BankNiftyDailyMaxPain getMAXPAINFromCSV(String csvData) {
+
+		String cvsSplitBy = ",";
+		BankNiftyDailyMaxPain bankNiftyDailyMaxPain = new BankNiftyDailyMaxPain();
+		String[] data = csvData.split(cvsSplitBy);
+		bankNiftyDailyMaxPain.setDate(data[0]);
+		bankNiftyDailyMaxPain.setExpiry(data[1]);
+		bankNiftyDailyMaxPain.setExpiryType(data[2]);
+		bankNiftyDailyMaxPain.setMaxPain(Double.parseDouble(data[3]));
+		bankNiftyDailyMaxPain.setTotalCEOI(data[4]);
+		bankNiftyDailyMaxPain.setTotalPEOI(data[5]);
+		bankNiftyDailyMaxPain.setPcr(data[6]);
+		bankNiftyDailyMaxPain.setOi(data[7]);
+		bankNiftyDailyMaxPain.setChangeInOI(data[8]);
+		bankNiftyDailyMaxPain.setPerChangeInOI(data[9]);
+		bankNiftyDailyMaxPain.setSpot(data[10]);
+		bankNiftyDailyMaxPain.setChange(data[11]);
+
+		return bankNiftyDailyMaxPain;
+	}
+
 	public static FIIDIIDataModle getFIIModelFromCSV(String csvData) {
 
 		String cvsSplitBy = ",";
@@ -216,9 +269,7 @@ public class CommonUtils {
 		fIIDIIDataModle.setNiftyChange(data[8]);
 		fIIDIIDataModle.setStocks_Advance(data[9]);
 		fIIDIIDataModle.setStocks_Decline(data[10]);
-
 		return fIIDIIDataModle;
-
 	}
 
 	public static int totalNumberOfLine(String filepath) {
@@ -320,3 +371,4 @@ public class CommonUtils {
 		return lst;
 	}
 }
+

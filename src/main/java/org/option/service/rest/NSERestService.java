@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.ws.rs.GET;
@@ -19,7 +22,9 @@ import org.option.currency.models.NiftyData;
 import org.smarttrade.options.utils.DateUtils;
 import org.stocks.price.NseModel;
 import org.stocks.price.NsePrice;
+import org.stocksrin.banknifty.BankNiftyData;
 import org.stocksrin.banknifty.BankNiftyDataFileUtils;
+import org.stocksrin.banknifty.OptionAnalysisModle;
 import org.stocksrin.banknifty.TickData;
 import org.stocksrin.banknifty.option.alog.ContinuesOptionPriceGetter;
 import org.stocksrin.option.model.OptionModles;
@@ -29,10 +34,34 @@ import org.stocksrin.utils.HTMLPageDocumentDownloader;
 @Path("/nseservice")
 public class NSERestService {
 
+	// http://localhost:8080/rest/nseservice/bankNiftyMaxPain
+	@GET
+	@Path("/bankNiftyMaxPain")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Map<String, OptionAnalysisModle> getBankNiftyMaxPainData() throws Exception {
+		return getData();
+	}
+
+	private Map<String, OptionAnalysisModle> getData() {
+		Map<String, OptionAnalysisModle> map = new LinkedHashMap<>();
+
+		Set<String> expiryies = BankNiftyData.getMaxPainSerieas().keySet();
+		SortedSet<String> shortedSet = new TreeSet<>();
+		for (String string : expiryies) {
+			shortedSet.add(string);
+		}
+
+		for (String string : shortedSet) {
+			OptionAnalysisModle optionAnalysisModle = BankNiftyData.getMaxPainSerieas().get(string);
+			map.put(string, optionAnalysisModle);
+		}
+		return map;
+	}
+
 	@GET
 	@Path("/bankNiftyOptionTickData")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public LinkedHashMap<String, List<TickData>> getBankNiftyOptionTickData() throws Exception {
+	public Map<String, List<TickData>> getBankNiftyOptionTickData() throws Exception {
 		return ContinuesOptionPriceGetter.getOptionData();
 	}
 
@@ -50,7 +79,6 @@ public class NSERestService {
 	public List<OptionModles> getBankNiftyData() throws Exception {
 		return BankNiftyDataFileUtils.getBankNiftyAllData("1MAR2018");
 	}
-
 
 	@POST
 	@Path("/niftyOptionChain")

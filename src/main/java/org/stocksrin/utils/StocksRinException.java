@@ -1,4 +1,4 @@
-package org.stocksrin.Exception;
+package org.stocksrin.utils;
 
 public class StocksRinException extends Exception {
 

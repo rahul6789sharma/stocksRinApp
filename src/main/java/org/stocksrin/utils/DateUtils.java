@@ -8,7 +8,24 @@ import java.util.TimeZone;
 
 public class DateUtils {
 
+	public static void main(String[] args) {
+
+	}
+
 	private DateUtils() {
+	}
+
+	public static int getExpiryWeekOfMonth(String expiry) throws Exception {
+
+		String formate = "ddMMMyyyy";
+		Date date = stringToDate(expiry, formate);
+
+		String d = dateToString(date, "dd");
+
+		Integer date1 = Integer.parseInt(d);
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		now.set(Calendar.DATE, date1);
+		return now.get(Calendar.WEEK_OF_MONTH);
 	}
 
 	public static String previousDayDate(String formate) {

@@ -10,16 +10,15 @@ import org.stocksrin.utils.APPConstant;
 
 public class NSEBhavCopyDownloadUtil {
 
-	
 	public static void downloadBhavCopy(String toFile) throws Exception {
 
 		ReadableByteChannel rbc = null;
-		FileOutputStream fos = null;
-		try {
+
+		try (FileOutputStream fos = new FileOutputStream(toFile);) {
 
 			URL website = new URL(APPConstant.NSE_bhavdata_URL);
 			rbc = Channels.newChannel(website.openStream());
-			fos = new FileOutputStream(toFile);
+
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 			fos.close();
 			rbc.close();
@@ -31,16 +30,12 @@ public class NSEBhavCopyDownloadUtil {
 				if (rbc != null) {
 					rbc.close();
 				}
-				if (fos != null) {
-					fos.close();
-				}
 
 			} catch (IOException e) {
 
 				throw new Exception("ERROR ! downloadBhavCopy " + e.getMessage());
 			}
 		}
-
 	}
 
 }

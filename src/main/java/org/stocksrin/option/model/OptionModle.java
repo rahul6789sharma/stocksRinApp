@@ -104,10 +104,8 @@ public class OptionModle {
 
 	@Override
 	public String toString() {
-		return "OptionModle [c_oi=" + c_oi + ", c_change_oi=" + c_change_oi + ", c_volume=" + c_volume + ", c_ltp="
-				+ c_ltp + ", c_net_change=" + c_net_change + ", strike_price=" + strike_price + ", p_net_change="
-				+ p_net_change + ", p_ltp=" + p_ltp + ", p_volume=" + p_volume + ", p_change_oi=" + p_change_oi
-				+ ", p_oi=" + p_oi + "]";
+		return "OptionModle [c_oi=" + c_oi + ", c_change_oi=" + c_change_oi + ", c_volume=" + c_volume + ", c_ltp=" + c_ltp + ", c_net_change=" + c_net_change + ", strike_price=" + strike_price
+				+ ", p_net_change=" + p_net_change + ", p_ltp=" + p_ltp + ", p_volume=" + p_volume + ", p_change_oi=" + p_change_oi + ", p_oi=" + p_oi + "]";
 	}
 
 }

@@ -10,23 +10,18 @@ public class APPConstant {
 
 	public static final String NSE_bhavdata_URL = "https://www.nseindia.com/products/content/sec_bhavdata_full.csv";
 
-	private static final String STOCKSRIN_NSE_CONF_DIR = System.getProperty("user.home") + File.separator
-			+ "stocksRin_CONF" + File.separator;
-	public static final String STOCKSRIN_NSE_CONF_DIR_BHAVDIR = STOCKSRIN_NSE_CONF_DIR + File.separator
-			+ "nseOriginalData" + File.separator;
-	public static final String STOCKSRIN_NSE_CONF_DIR_StocksRInData = STOCKSRIN_NSE_CONF_DIR + File.separator
-			+ "stocksRinData" + File.separator;
+	private static final String STOCKSRIN_NSE_CONF_DIR = System.getProperty("user.home") + File.separator + "stocksRin_CONF" + File.separator;
+	public static final String STOCKSRIN_NSE_CONF_DIR_BHAVDIR = STOCKSRIN_NSE_CONF_DIR + File.separator + "nseOriginalData" + File.separator;
+	public static final String STOCKSRIN_NSE_CONF_DIR_StocksRInData = STOCKSRIN_NSE_CONF_DIR + File.separator + "stocksRinData" + File.separator;
 
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator;
 
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_TRADE_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty"
-			+ File.separator + "trade.csv";
-	
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_BNIFTY_STRATEGY_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty"
-			+ File.separator + "BNiftyStrategy.csv";
-	
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty"
-			+ File.separator + "BankNiftyOptionPrice.csv";
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_TRADE_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "trade.csv";
+
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_BNIFTY_STRATEGY_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BNiftyStrategy.csv";
+
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyOptionPrice.csv";
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyMaxPainDaily.csv";
 
 	public static final String FILE_NAME_updatedBhavCopy = "updatedBhavCopy.xlsx";
 
@@ -35,7 +30,8 @@ public class APPConstant {
 	public static final String FILE_NAME_FII = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "FII.csv";
 	public static final String FILE_NAME_DII = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "DII.csv";
 	public static final String FILE_NAME_FII_DII = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "FII_DII.csv";
-	public static final String FILE_NAME_NIFTY_OI_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData +"niftyOI"+File.separator+ "NiftyOI.csv";
+	public static final String FILE_NAME_NIFTY_OI_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "niftyOI" + File.separator + "NiftyOI.csv";
+	public static final String FO_OI_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator + "FO_OI" + File.separator;
 
 	public static final String FILE_NAME_DERIVATIVES = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "DERIVATIVES.csv";
 
@@ -55,7 +51,9 @@ public class APPConstant {
 
 	public static final String BANKNIFTY_WEEKLY_OPTION_URL_BY_Expiry = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=BANKNIFTY&date=";
 
-	public static final String NIFTY_URL="https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=NIFTY";
-	
-	public static final String NIFTY_FUTURE_URL="https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuoteFO.jsp?underlying=NIFTY&instrument=FUTIDX&type=-&strike=-&expiry=28MAR2018";
+	public static final String NIFTY_URL = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=NIFTY";
+
+	public static final String NIFTY_FUTURE_URL = "https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuoteFO.jsp?underlying=NIFTY&instrument=FUTIDX&type=-&strike=-&expiry=28MAR2018";
+
+	public static final String NSE_FO_OI_ALLPARTICAPENT = "https://www.nseindia.com/content/nsccl/";
 }

@@ -8,16 +8,35 @@ import org.jsoup.nodes.Document;
 
 public class HTMLPageDocumentDownloader {
 
-	public static Document getDocument(String url) {
-		try {
-			//System.out.println("HTTP request :" + url);
-			Document doc = Jsoup.connect(url).get();
-			return doc;
-		} catch (IOException e) {
+	private static final int RETRY = 3;
 
-			e.printStackTrace();
+	private HTMLPageDocumentDownloader() {
+
+	}
+
+	public static Document getDocument(String url) {
+		int retryCounter = 0;
+		while (retryCounter < RETRY) {
+			try {
+				return Jsoup.connect(url).get();
+
+			} catch (IOException e) {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				retryCounter++;
+				System.out.println("FAILED - Command failed on retry " + retryCounter + " of " + RETRY + " error: " + e);
+				e.printStackTrace();
+				if (retryCounter >= RETRY) {
+					System.out.println("Max retries exceeded.");
+					break;
+				}
+			}
 		}
-		return null;
+
+		throw new RuntimeException("Command failed on all of " + RETRY + " retries");
 	}
 
 	public static Document getDocumentFromFile(String filePath) {

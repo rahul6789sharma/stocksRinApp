@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+<link rel="alternate" hreflang="x-default"
+	href="https://www.stocksrin.com" />
+<link rel="alternate" hreflang="en" href="https://www.stocksrin.com" />
+<meta property="og:locale" content="en_IN" />
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market
+	Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+<meta name="google-site-verification"
+	content="RiMM3DplmIgwoDQbESmxiQeM8vPKaqAmUu2UkG6Hq0U" />
+</head>
+
+<script async
+	src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client : "ca-pub-7270583781006956",
+		enable_page_level_ads : true
+	});
+</script>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+			<div id="spinner" class="spinner" style="display: none;">
+				<div class="loader"></div>
+			</div>
+
+			<hr>
+			<div id="bankNiftyTableID" class="bankNiftyTableID"></div>
+			<hr>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+			<br />
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+	$(document).ready(function() {
+		creatTables();
+		getBankNiftyData();
+	});
+
+	function markHighOi() {
+		var table = document.getElementById("sdTable1");
+		var tbody = table.getElementsByTagName('tbody');
+
+		console.log("tbody");
+		console.log(tbody);
+
+		var rows = tbody.childNodes;
+
+		console.log(rows);
+
+		var tr;
+		for (var i = 0; i < tbody.length; i++) {
+			console.log(tbody[i]);
+		}
+	}
+
+	function getBankNiftyData() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var jsonResponse = JSON.parse(this.responseText);
+				addALLDataToTables(jsonResponse);
+			}
+		};
+		xhttp.open("POST", "/rest/nseservice/bankniftyOptionChain", true);
+		xhttp.send("1MAR2018");
+	}
+
+	function creatTables() {
+		var i;
+		for (i = 0; i < 5; i++) {
+			var div = document.createElement("div");
+			div.setAttribute("id", "div" + i);
+
+			var element = document.getElementById("bankNiftyTableID");
+			element.appendChild(div);
+
+			var hr = document.createElement("hr");
+			var divelement = document.getElementById("div" + 1);
+			element.appendChild(hr);
+		}
+
+		for (i = 0; i < 5; i++) {
+			createOptionTable(i);
+		}
+
+		//createOptionTable();
+	}
+
+	function addALLDataToTables(jsonResponse) {
+		
+		addDataToTable(jsonResponse[0], 1);
+	}
+
+	function addDataToTable(jsonResponse, i) {
+		console.log(jsonResponse);
+
+		spot = jsonResponse.spot;
+		var tr;
+		for (var i = 0; i < jsonResponse.optionModle.length; i++) {
+			tr = $('<tr/>');
+			var val = jsonResponse.optionModle[i];
+
+			// calls if 
+			if (parseFloat(spot) > parseFloat(val.strike_price)) {
+
+				tr.append("<td class=itm>" + val.c_oi + "</td>");
+				tr.append("<td class=itm>" + val.c_change_oi + "</td>");
+				tr.append("<td class=itm>" + val.c_volume + "</td>");
+				tr.append("<td class=itm>" + val.c_ltp + "</td>");
+
+				if (val.c_net_change.indexOf("-") == 0) {
+					tr.append("<td class=redNumberitm>" + val.c_net_change
+							+ "</td>");
+				} else {
+					tr.append("<td class=greenNumberitm>" + val.c_net_change
+							+ "</td>");
+				}
+
+			} else {
+				tr.append("<td class=otm>" + val.c_oi + "</td>");
+				tr.append("<td class=otm>" + val.c_change_oi + "</td>");
+				tr.append("<td class=otm>" + val.c_volume + "</td>");
+				tr.append("<td class=otm>" + val.c_ltp + "</td>");
+				if (val.c_net_change.indexOf("-") == 0) {
+					tr.append("<td class=redNumberotm>" + val.c_net_change
+							+ "</td>");
+				} else {
+					tr.append("<td class=greenNumberotm>" + val.c_net_change
+							+ "</td>");
+				}
+			}
+			tr.append("<td class=grybg>" + val.strike_price + "</td>");
+
+			//put iffs
+			if (parseFloat(spot) > parseFloat(val.strike_price)) {
+
+				if (val.p_net_change.indexOf("-") == 0) {
+					tr.append("<td class=redNumberotm>" + val.p_net_change
+							+ "</td>");
+				} else {
+					tr.append("<td class=greenNumberotm>" + val.p_net_change
+							+ "</td>");
+				}
+				tr.append("<td class=otm>" + val.p_ltp + "</td>");
+				tr.append("<td class=otm>" + val.p_volume + "</td>");
+				tr.append("<td class=otm>" + val.p_change_oi + "</td>");
+				tr.append("<td class=otm>" + val.p_oi + "</td>");
+			} else {
+				if (val.p_net_change.indexOf("-") == 0) {
+					tr.append("<td class=redNumberitm>" + val.p_net_change
+							+ "</td>");
+				} else {
+					tr.append("<td class=greenNumberitm>" + val.p_net_change
+							+ "</td>");
+				}
+
+				tr.append("<td class=itm>" + val.p_ltp + "</td>");
+				tr.append("<td class=itm>" + val.p_volume + "</td>");
+				tr.append("<td class=itm>" + val.p_change_oi + "</td>");
+				tr.append("<td class=itm>" + val.p_oi + "</td>");
+			}
+
+			$('#sdTable' + 1).append(tr);
+		}
+
+	}
+
+	function createOptionTable(divID) {
+		var x = document.createElement("TABLE");
+		x.setAttribute("id", "sdTable" + divID);
+		x.setAttribute("class", "opttbldata");
+		x.setAttribute("align", "center");
+		x.setAttribute("cellpadding", "40");
+		x.setAttribute("cellspacing", "2");
+		x.setAttribute("width", "80%");
+
+		$("#div" + divID).append(x);
+		// table header
+		$("#sdTable" + divID)
+				.append(
+						'<thead>'
+								+ '<tr class="optionHead"><th colspan="11"> BankNifty Option Chain</th></tr>'
+								+ '<tr class="optionHead"><th colspan="5"  class=whiteRightBorder > CALL </th><th colspan="1"  class=whiteRightBorder > </th>  <th colspan="5" > PUT </th></tr>'
+
+								+ '<tr class="optionHead">'
+
+								+ '<th title="buyValue">OI</th> <th title="SellValue"> Change in OI </th><th title="net" > Volume</th> <th title="net" > LTP</th> <th title="net" class=whiteRightBorder > net Change</th>'
+								+ '<th title="buyValue" class=whiteRightBorder>Strike Price</th> <th title="net"> net Change</th> <th title="SellValue"> LTP</th><th title="net" > Volume</th><th title="net"  >Change in OI</th><th title="net" > OI</th>'
+
+								+ '</tr>'
+								+ '<tr class="optionHead"><th colspan="11"></th></tr>'
+								+ '</thead>');
+
+		// table Fotter 
+		var hr = document.createElement("hr");
+		$("#div" + divID).append(x);
+	}
+</script>
+
+</html>
+

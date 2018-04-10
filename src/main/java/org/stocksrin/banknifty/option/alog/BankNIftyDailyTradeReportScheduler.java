@@ -1,4 +1,4 @@
-package org.stocksrin.common.schedulers;
+package org.stocksrin.banknifty.option.alog;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -10,31 +10,30 @@ import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
-import org.stocksrin.fiidii.FIIDIITask;
-
-@Singleton
-@Startup
-public class FIIDIIScheduler {
+//@Singleton
+//@Startup
+public class BankNIftyDailyTradeReportScheduler {
 
 	private Timer timer = new Timer();
 
 	@PostConstruct
 	public void init() {
-		System.out.println(" ***** FIIDIIScheduler starting *********");
+
+		System.out.println(" ***** BankNIftyDailyTradeReportScheduler Starting *********");
 
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		today.set(Calendar.HOUR_OF_DAY, 18);
-		today.set(Calendar.MINUTE, 45);
+		today.set(Calendar.HOUR_OF_DAY, 16);
+		today.set(Calendar.MINUTE, 5);
 		today.set(Calendar.SECOND, 0);
 
-		// run every 5 PM
+		// run every 4 PM
 
-		timer.schedule(new FIIDIITask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		//timer.schedule(new BankNiftyCsvReportTask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 	}
 
 	@PreDestroy
 	public void shutDown() {
-		System.out.println("**** FIIDIIScheduler Stoping*****");
+		System.out.println("**** BankNIftyDailyTradeReportScheduler Stoping*****");
 		timer.cancel();
 	}
 }

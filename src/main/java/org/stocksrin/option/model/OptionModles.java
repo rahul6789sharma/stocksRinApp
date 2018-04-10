@@ -15,6 +15,7 @@ public class OptionModles {
 
 	private String underlyingSpotPrice;
 	private String change;
+	private String type; // monthly or Weekly
 
 	private List<OptionModle> optionModle = new ArrayList<>();
 
@@ -99,6 +100,14 @@ public class OptionModles {
 
 	public void setSpot(String spot) {
 		this.spot = spot;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Override

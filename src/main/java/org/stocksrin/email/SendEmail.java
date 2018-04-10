@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
 
+	private static boolean sendEmail = false;
 	private static String toMail = "stocksrin@gmail.com";
 
 	static String hostName;
@@ -52,7 +53,9 @@ public class SendEmail {
 			String finalBody = body + "\n \n" + "*******************\n\n" + hostName;
 			message.setText(finalBody);
 
-			Transport.send(message);
+			if (sendEmail) {
+				Transport.send(message);
+			}
 
 			System.out.println("Sent email to :" + toMail);
 

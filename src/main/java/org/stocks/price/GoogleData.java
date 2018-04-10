@@ -1,7 +1,7 @@
 package org.stocks.price;
 
 public class GoogleData {
-	
+
 	private String lo;
 	private String avvo;
 	private String l_fix;

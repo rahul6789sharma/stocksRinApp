@@ -1,9 +1,7 @@
 package org.stocksrin.excel;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.TimerTask;
 
 import org.stocksrin.email.SendEmail;
@@ -13,27 +11,15 @@ import org.stocksrin.utils.ExcelUtils;
 
 public class DownloadDailyBhavCopyTask extends TimerTask {
 
-/*	public static boolean isWeekEndDay() {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-
-		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}*/
-
 	@Override
 	public void run() {
 		if (!DateUtils.isWeekEndDay()) {
 			System.out.println("Downloading ... " + new Date());
-			
+
 			System.out.println("conf dir-------------->" + APPConstant.STOCKSRIN_NSE_CONF_DIR_BHAVDIR);
 			String fileName = null;
 			try {
-				fileName = APPConstant.STOCKSRIN_NSE_CONF_DIR_BHAVDIR+ "sec_bhavdata_full_"
-						+ DateUtils.dateToString(new Date(), APPConstant.DATEFORMATE_dd_MM_yyyy) + ".csv";
+				fileName = APPConstant.STOCKSRIN_NSE_CONF_DIR_BHAVDIR + "sec_bhavdata_full_" + DateUtils.dateToString(new Date(), APPConstant.DATEFORMATE_dd_MM_yyyy) + ".csv";
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -42,8 +28,7 @@ public class DownloadDailyBhavCopyTask extends TimerTask {
 			try {
 				NSEBhavCopyDownloadUtil.downloadBhavCopy(fileName);
 			} catch (Exception e) {
-				SendEmail.sentMail("ERROR! Bhav Copy not Downloaded",
-						"ERROR " + e.getMessage());
+				SendEmail.sentMail("ERROR! Bhav Copy not Downloaded", "ERROR " + e.getMessage());
 				e.printStackTrace();
 			}
 			System.out.println("complete Downloading " + fileName);

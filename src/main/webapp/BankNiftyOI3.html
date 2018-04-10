@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+<link rel="alternate" hreflang="x-default"
+	href="https://www.stocksrin.com" />
+<link rel="alternate" hreflang="en" href="https://www.stocksrin.com" />
+<meta property="og:locale" content="en_IN" />
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market
+	Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+
+<script async
+	src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client : "ca-pub-7270583781006956",
+		enable_page_level_ads : true
+	});
+</script>
+<meta http-equiv="refresh" content="10000" />
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+			<div ng-include="'templets/header.htm'"></div>
+		</div>
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+
+		</div>
+		<!--/left-->
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+
+			<div class="text-center">
+				<h4>
+					<span style="color: #333333;">IntraDay Live MaxPain for Next
+						4 Expiry </span>
+				</h4>
+			</div>
+
+			<div id="maxPaincontainer"
+				style="min-width: 50%; height: 50%; margin: 0 auto"></div>
+
+			<p>
+			<div id="pcrcontainer"
+				style="min-width: 50%; height: 50%; margin: 0 auto"></div>
+			<br /> <br /> <br />
+			<div ng-include="'templets/add.html'"></div>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="navbar-default navbar-fixed-bottom"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+	$(document).ready(function() {
+
+		bankniftyData();
+
+	});
+
+	function fortest(data) {
+		//console.log(data);
+
+		var expiryData = [];
+		var toalCEData = [];
+		var toalPEData = [];
+
+		var expiry0;
+		var maxpainData0 = [];
+		var toaltceOIData0 = [];
+		var toaltpeOIData0 = [];
+
+		var expiry1;
+		var maxpainData1 = [];
+		var toaltceOIData1 = [];
+		var toaltpeOIData1 = [];
+
+		var expiry2;
+		var maxpainData2 = [];
+		var toaltceOIData2 = [];
+		var toaltpeOIData2 = [];
+
+		var expiry3;
+		var maxpainData3 = [];
+		var toaltceOIData3 = [];
+		var toaltpeOIData3 = [];
+
+		var index = 0;
+		for (i in data) {
+			//console.log(data);
+			console.log(data[i]);
+			console.log(index == 0);
+
+			if (index == 0) {
+
+				var d = data[i];
+				for (j in d) {
+					console.log(d[j]);
+					expiry0 = d[j].expiry;
+					maxpainData0.push(d[j].maxPain);
+					toaltceOIData0.push(d[j].totalCEOI);
+					toaltpeOIData0.push(d[j].totalPEOI);
+				}
+			}
+			if (index == 1) {
+
+				var d = data[i];
+				for (j in d) {
+					console.log(d[j]);
+					expiry1 = d[j].expiry;
+					maxpainData1.push(d[j].maxPain)
+					toaltceOIData1.push(d[j].totalCEOI);
+					toaltpeOIData1.push(d[j].totalPEOI);
+				}
+			}
+
+			if (index == 2) {
+
+				var d = data[i];
+				for (j in d) {
+					console.log(d[j]);
+					expiry2 = d[j].expiry;
+					maxpainData2.push(d[j].maxPain)
+					toaltceOIData2.push(d[j].totalCEOI);
+					toaltpeOIData2.push(d[j].totalPEOI);
+				}
+			}
+
+			if (index == 3) {
+
+				var d = data[i];
+				for (j in d) {
+					console.log(d[j]);
+					expiry3 = d[j].expiry;
+					maxpainData3.push(d[j].maxPain)
+					toaltceOIData3.push(d[j].totalCEOI);
+					toaltpeOIData3.push(d[j].totalPEOI);
+				}
+			}
+			index++;
+		}
+
+		console.log(expiry0);
+		console.log(maxpainData0);
+		console.log(toaltceOIData0);
+		console.log(toaltpeOIData0);
+
+		draw(expiry0, expiry1, expiry2, expiry3, maxpainData0, maxpainData1,
+				maxpainData2, maxpainData2);
+		//draw(expiryData[0], expiryData[1], expiryData[2], expiryData[3],maxpainData[0], maxpainData[1], maxpainData[2], maxpainData[3]);
+
+	}
+
+	function bankniftyData() {
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+
+				var jsonResponse = JSON.parse(this.responseText);
+				fortest(jsonResponse);
+			}
+		};
+
+		xhttp.open("GET", "/rest/bankNiftyService/bankNiftyDailyMaxPain", true);
+		xhttp.send();
+	}
+
+	function draw(label1, label2, label3, label4, maxpainData1, maxpainData2,
+			maxpainData3, maxpainData4) {
+
+		Highcharts.chart('maxPaincontainer', {
+			chart : {
+				type : 'line'
+			},
+			title : {
+				text : ''
+			},
+			subtitle : {
+				text : ''
+			},
+			xAxis : {
+				categories : [ '9:15', '9:30', '9:45', '10', '10:15', '10:30',
+						'10:45', '11', '11:15', '11:30', '11:45', '12',
+						'12:15', '12:30', '12:45', '1', '1:15', '1:30', '1:45',
+						'2', '2:15', '2:30', '2:40', '3', '3:15', '3:30' ]
+			},
+			yAxis : {
+				title : {
+					text : 'Strike Price'
+				}
+			},
+			plotOptions : {
+				line : {
+					dataLabels : {
+						enabled : true
+					},
+					enableMouseTracking : false
+				}
+			},
+			series : [ {
+				name : label1,
+				data : maxpainData1
+			}, {
+				name : label2,
+				data : maxpainData2
+			}, {
+				name : label3,
+				data : maxpainData3
+			}, {
+				name : label4,
+				data : maxpainData4
+			} ]
+		});
+	}
+</script>
+
+</html>
+
