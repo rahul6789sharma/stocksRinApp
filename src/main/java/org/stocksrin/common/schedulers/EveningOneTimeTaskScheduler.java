@@ -12,7 +12,6 @@ import javax.ejb.Startup;
 
 import org.stocksrin.banknifty.BankNiftyOptionDownloaderTask;
 import org.stocksrin.banknifty.DailyMaxPainSaveTask;
-import org.stocksrin.excel.DownloadDailyBhavCopyTask;
 import org.stocksrin.fiidii.FIIDIITask;
 import org.stocksrin.fiidii.derivatives.FIIDIIDerivaticsTask;
 import org.stocksrin.oi.allParticapent.FoOiTask;

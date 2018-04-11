@@ -18,9 +18,12 @@ import org.stocksrin.utils.CommonUtils;
 
 public class BNiftyAlgo {
 
+	private static double targetProfit = 800;
+	private static double targetLoss = -800;
+	public static boolean flag = true;
+
 	public static synchronized List<TickData> getData(List<StrategyModel> strategyModels, String expiry) throws Exception {
-		//String url = APPConstant.BANKNIFTY_WEEKLY_OPTION_URL_BY_Expiry + expiry;
-		// Columns columns = BankNiftyUtils.getBankNiftyOptionChain(url);
+
 		Columns columns = BankNiftyData.getBankNiftyCurrentTimeData2().get(expiry);
 		List<TickData> values = new ArrayList<>(3);
 		List<Column> data = columns.getDataset();
@@ -54,10 +57,6 @@ public class BNiftyAlgo {
 
 		return values;
 	}
-
-	private static double targetProfit = 800;
-	private static double targetLoss = -800;
-	public static boolean flag = true;
 
 	private static void targetMail(Double totalPandL, String string) {
 		if (totalPandL > targetProfit) {

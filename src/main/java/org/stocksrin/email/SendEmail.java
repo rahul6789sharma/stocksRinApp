@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
 
-	private static boolean sendEmail = false;
+	private static boolean sendEmail = true;
 	private static String toMail = "stocksrin@gmail.com";
 
 	static String hostName;

@@ -52,7 +52,6 @@ public class Calculation {
 		Double maxPainStrick = findMaxPain(maxPainList);
 		maxPains.setMaxPainStrick(maxPainStrick);
 		maxPains.setExpiry(expiry);
-		System.out.println(maxPains);
 		return maxPains;
 
 	}

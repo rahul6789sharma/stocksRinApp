@@ -18,22 +18,22 @@ public class BankNiftyMaxPainThread extends TimerTask {
 
 	@Override
 	public void run() {
-	/*	if (!DateUtils.isWeekEndDay()) {
-			if (CommonUtils.getEveningTime()) {*/
+		if (!DateUtils.isWeekEndDay()) {
+			if (CommonUtils.getEveningTime()) {
 				try {
 
 					Timer timer = null;
 					timer = new Timer();
-					timer.scheduleAtFixedRate(new OptionDataCollectorTask2(), 1l, 900000l);
+					timer.scheduleAtFixedRate(new OptionDataCollectorTask2(), 0l, 600000);
 					allTimers.add(timer);
 					OptionTask.addTimerTask(timer);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			/*} else {
+			} else {
 				System.out.println("");
 			}
-		}*/
+		}
 	}
 
 	public List<Timer> getAllTimers() {
