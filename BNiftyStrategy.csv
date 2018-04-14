@@ -1,0 +1,3 @@
+strategySerial,expiry,type,strike,close_price,quantity,target,stopLoss,spot_close,desc
+1.1,28MAR2018,PUT,23500,50.00,-40,500,-400,24141.50,500 point diff 2
+1.2,28MAR2018,CALL,24600,61.25,-40,500,-400,24141.50,500 point diff
