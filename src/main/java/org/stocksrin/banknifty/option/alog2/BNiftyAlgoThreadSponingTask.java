@@ -8,12 +8,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.annotation.PreDestroy;
-import javax.ejb.Singleton;
 
 import org.stocksrin.utils.CommonUtils;
 import org.stocksrin.utils.DateUtils;
 
-@Singleton
 public class BNiftyAlgoThreadSponingTask extends TimerTask {
 
 	private List<Timer> allTimers = new ArrayList<>(2);

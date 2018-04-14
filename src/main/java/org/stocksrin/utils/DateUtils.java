@@ -8,11 +8,30 @@ import java.util.TimeZone;
 
 public class DateUtils {
 
-	public static void main(String[] args) {
-
-	}
 
 	private DateUtils() {
+	}
+
+
+	public static String getCurrentMonth() {
+		SimpleDateFormat format = new SimpleDateFormat("MMM");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, 0);
+		return format.format(cal.getTime());
+	}
+	
+	public static String getCurrentYear() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, 0);
+		return format.format(cal.getTime());
+	}
+	
+	public static String getPreviousMonth(int previousMonth) {
+		SimpleDateFormat format = new SimpleDateFormat("MMM");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, previousMonth);
+		return format.format(cal.getTime());
 	}
 
 	public static int getExpiryWeekOfMonth(String expiry) throws Exception {
@@ -77,4 +96,31 @@ public class DateUtils {
 		return stringToDate(stringDate, APPConstant.DATEFORMATE_dd_MM_yyyy);
 	}
 
+	public static String getTodayString() {
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+
+		int i = now.get(Calendar.DAY_OF_WEEK);
+		System.out.println(i);
+		if (i == 1) {
+			return "SUNDAY";
+		} else if (i == 2) {
+			return "MONDAY";
+		} else if (i == 3) {
+			return "TUESDAY";
+		} else if (i == 4) {
+			return "WEDNESDAY";
+		} else if (i == 5) {
+			return "THURSDAY";
+		} else if (i == 6) {
+			return "FRIDAY";
+		} else if (i == 7) {
+			return "SATURDAY";
+		}
+
+		return null;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(getCurrentYear());
+	}
 }

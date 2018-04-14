@@ -9,7 +9,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.option.currency.models.Columns;
 import org.option.currency.models.USDINRFuture;
-import org.option.db.Usdinr;
 import org.smarttrade.options.utils.APPConstant;
 import org.smarttrade.options.utils.DateComparator;
 import org.smarttrade.options.utils.DateUtils;
@@ -125,45 +124,5 @@ public class UsdInrService {
 		return null;
 	}
 	
-/*	public HistoricalOI getOIHistoricalData(String expiry, float strick){
-		HistoricalOI historicalOI = new HistoricalOI();
-		
-		List<Usdinr> tmp = USDINRDbFacade.getInstance().getDataByExpiry(expiry);
-		//List<Float> stricks = new ArrayList<Float>();
-		
-		List<Usdinr> result = filterResultForStrick(tmp, strick);
-		System.out.println("Expiry :" + result.get(0).getId().getExpiry());
-		
-		
-		
-		List<String> dates = new ArrayList<String>();
-		List<Integer> ce_oi= new ArrayList<Integer>();
-		List<Integer> pe_oi= new ArrayList<Integer>();
-		
-		for (Usdinr usdinr : result) {
-			ce_oi.add(usdinr.getCeOiValue());
-			pe_oi.add(usdinr.getPeOiValue());
-			dates.add(DateUtils.getInstance().getDateStringBYDate(usdinr.getId().getDate()));		
-		}
-		historicalOI.setCe_oi(ce_oi);
-		historicalOI.setPe_oi(pe_oi);
-		historicalOI.setDates(dates);
-		historicalOI.setStrick(result.get(0).getId().getStrick());
-		historicalOI.setExpiry(DateUtils.getInstance().getDateStringBYDate(result.get(0).getId().getExpiry()));
-		System.out.println(historicalOI);
-		return historicalOI;
-	}*/
-		
-	private List<Usdinr> filterResultForStrick(List<Usdinr> result, float strick){
-		//List<Usdinr> result = USDINRDbFacade.getInstance().getDataByExpiry(expiry);
-		List<Usdinr> lst = new ArrayList<Usdinr>();
-		for (Usdinr usdinr : result) {
-			if(usdinr.getId().getStrick() == strick){
-				lst.add(usdinr);
-			}
-			
-		}
-		return lst;
-		
-	}
+
 }

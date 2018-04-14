@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.stocksrin.banknifty.option.alog.BNiftyOptionLastDayTrade;
 import org.stocksrin.banknifty.option.alog2.StrategyModel;
 import org.stocksrin.banknifty.option.alog2.StrategyModel.OptionType;
 import org.stocksrin.fiidii.FIIDIIDataModle;
@@ -43,16 +42,12 @@ public class CommonUtils {
 		} catch (IOException e) {
 			throw new Exception("ERROR ! File download " + e.getMessage());
 		} finally {
-			try {
-				if (rbc != null) {
-					rbc.close();
-				}
 
-			} catch (IOException e) {
-
-				throw new Exception("ERROR ! File download " + e.getMessage());
+			if (rbc != null) {
+				rbc.close();
 			}
 		}
+
 	}
 
 	private static final int MARKET_HR = 15;
@@ -70,8 +65,6 @@ public class CommonUtils {
 			System.out.println("Time is more then 3:30 pm");
 			return false;
 		} else {
-			// System.out.println("IST Time " + now.get(Calendar.HOUR_OF_DAY) +
-			// ":" + now.get(Calendar.MINUTE));
 			return true;
 		}
 
@@ -134,101 +127,40 @@ public class CommonUtils {
 		return result;
 	}
 
-	public static List<BNiftyOptionLastDayTrade> getBankNiftyLastTradeData2() {
-		List<BNiftyOptionLastDayTrade> result = new ArrayList<>(5);
+	public static NiftyOIDataModle getOIModelFromCSV(String csvData) throws Exception {
 
-		List<String[]> lst = CommonUtils.getCSVData(APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_TRADE_FILE);
+		try {
+			String cvsSplitBy = ",";
+			String[] data = csvData.split(cvsSplitBy);
 
-		for (String[] strings : lst) {
-			BNiftyOptionLastDayTrade bNiftyOptionLastDayTrade = new BNiftyOptionLastDayTrade();
-			bNiftyOptionLastDayTrade.setExpiry(strings[0]);
+			NiftyOIDataModle niftyOIDataModle = new NiftyOIDataModle();
+			niftyOIDataModle.setDate(data[0]);
 
-			double putStrike = Double.parseDouble(strings[1]);
-			bNiftyOptionLastDayTrade.setPut_strike(putStrike);
+			niftyOIDataModle.setVol1(Integer.parseInt(data[1]));
+			niftyOIDataModle.setVol1PercentageChange(Double.parseDouble(data[2]));
 
-			bNiftyOptionLastDayTrade.setPut_close_price(Double.parseDouble(strings[2]));
+			niftyOIDataModle.setOi1(Integer.parseInt(data[3]));
+			niftyOIDataModle.setOi1PercentageChange(Double.parseDouble(data[4]));
 
-			double callStrike = Double.parseDouble(strings[3]);
+			niftyOIDataModle.setVol2(Integer.parseInt(data[5]));
+			niftyOIDataModle.setVol2PercentageChange(Double.parseDouble(data[6]));
 
-			bNiftyOptionLastDayTrade.setCall_strike(callStrike);
+			niftyOIDataModle.setOi2(Integer.parseInt(data[7]));
+			niftyOIDataModle.setOi2PercentageChange(Double.parseDouble(data[8]));
 
-			bNiftyOptionLastDayTrade.setCall_close_price(Double.parseDouble(strings[4]));
+			niftyOIDataModle.setVolTotal(Integer.parseInt(data[9]));
+			niftyOIDataModle.setVolTotalPercentageChange(Double.parseDouble(data[10]));
 
-			double tar = Double.parseDouble(strings[5]);
-			bNiftyOptionLastDayTrade.setTarget(tar);
+			niftyOIDataModle.setOiTotal(Integer.parseInt(data[11]));
+			niftyOIDataModle.setOiTotalPercentageChange(Double.parseDouble(data[12]));
 
-			double loss = Double.parseDouble(strings[6]);
-			bNiftyOptionLastDayTrade.setLoss(loss);
+			niftyOIDataModle.setNifty(Double.parseDouble(data[13]));
+			niftyOIDataModle.setNiftyChange(Double.parseDouble(data[14]));
 
-			double spotClose = Double.parseDouble(strings[7]);
-
-			bNiftyOptionLastDayTrade.setSpot_close(spotClose);
-
-			bNiftyOptionLastDayTrade.setSpot_close(spotClose);
-			bNiftyOptionLastDayTrade.setDes(strings[8]);
-
-			result.add(bNiftyOptionLastDayTrade);
+			return niftyOIDataModle;
+		} catch (Exception e) {
+			throw new Exception("ERROR! getOIModelFromCSV " + e.getMessage());
 		}
-
-		return result;
-	}
-
-	/*
-	 * public static BNiftyOptionLastDayTrade getBankNiftyLastTradeData() {
-	 * 
-	 * BNiftyOptionLastDayTrade bNiftyOptionLastDayTrade = new
-	 * BNiftyOptionLastDayTrade(); List<String[]> lst =
-	 * CommonUtils.getCSVData(APPConstant.
-	 * STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_TRADE_FILE); String[] strings =
-	 * lst.get(0); bNiftyOptionLastDayTrade.setExpiry(strings[0]);
-	 * 
-	 * double putStrike = Double.parseDouble(strings[1]);
-	 * bNiftyOptionLastDayTrade.setPut_strike(putStrike);
-	 * bNiftyOptionLastDayTrade.setPut_close_price(strings[2]);
-	 * 
-	 * double callStrike = Double.parseDouble(strings[3]);
-	 * bNiftyOptionLastDayTrade.setCall_strike(callStrike);
-	 * bNiftyOptionLastDayTrade.setCall_close_price(strings[4]);
-	 * bNiftyOptionLastDayTrade.setTarget(strings[5]);
-	 * bNiftyOptionLastDayTrade.setLoss(strings[6]); double spotClose =
-	 * Double.parseDouble(strings[7]);
-	 * 
-	 * bNiftyOptionLastDayTrade.setSpot_close(spotClose);
-	 * 
-	 * bNiftyOptionLastDayTrade.setDes(strings[8]); return
-	 * bNiftyOptionLastDayTrade; }
-	 */
-
-	public static NiftyOIDataModle getOIModelFromCSV(String csvData) {
-
-		String cvsSplitBy = ",";
-		String[] data = csvData.split(cvsSplitBy);
-
-		NiftyOIDataModle niftyOIDataModle = new NiftyOIDataModle();
-		niftyOIDataModle.setDate(data[0]);
-
-		niftyOIDataModle.setVol1(Integer.parseInt(data[1]));
-		niftyOIDataModle.setVol1PercentageChange(Double.parseDouble(data[2]));
-
-		niftyOIDataModle.setOi1(Integer.parseInt(data[3]));
-		niftyOIDataModle.setOi1PercentageChange(Double.parseDouble(data[4]));
-
-		niftyOIDataModle.setVol2(Integer.parseInt(data[5]));
-		niftyOIDataModle.setVol2PercentageChange(Double.parseDouble(data[6]));
-
-		niftyOIDataModle.setOi2(Integer.parseInt(data[7]));
-		niftyOIDataModle.setOi2PercentageChange(Double.parseDouble(data[8]));
-
-		niftyOIDataModle.setVolTotal(Integer.parseInt(data[9]));
-		niftyOIDataModle.setVolTotalPercentageChange(Double.parseDouble(data[10]));
-
-		niftyOIDataModle.setOiTotal(Integer.parseInt(data[11]));
-		niftyOIDataModle.setOiTotalPercentageChange(Double.parseDouble(data[12]));
-
-		niftyOIDataModle.setNifty(Double.parseDouble(data[13]));
-		niftyOIDataModle.setNiftyChange(Double.parseDouble(data[14]));
-
-		return niftyOIDataModle;
 
 	}
 
@@ -301,6 +233,48 @@ public class CommonUtils {
 		return linenumber;
 	}
 
+	public static void appendData2(String data, String fileName) {
+
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+
+		try {
+
+			File file = new File(fileName);
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				throw new RuntimeException(fileName + " File not exist");
+			}
+
+			// true = append file
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+
+			bw.write(data);
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+		}
+
+	}
+
 	public static void appendData(String data, String fileName) {
 
 		BufferedWriter bw = null;
@@ -365,10 +339,7 @@ public class CommonUtils {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-
 		}
 		return lst;
 	}
 }
-

@@ -24,9 +24,10 @@ public class OptionDataCollectorTask extends TimerTask {
 			Map<Integer, List<StrategyModel>> strategyMap = CommonUtils.getBankNiftyStrategy();
 			List<StrategyModel> lst = strategyMap.get(strategySerial);
 			String expiry = lst.get(0).getExpiry();
+			String name = lst.get(0).getDes();
 			try {
 				List<TickData> result = BNiftyAlgo.getData(lst, expiry);
-				BNiftyAlgo.algo2(result, lst);
+				BNiftyAlgo.algo2(result, lst, name);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

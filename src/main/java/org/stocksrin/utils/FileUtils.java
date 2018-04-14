@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +20,32 @@ public class FileUtils {
 
 	private FileUtils() {
 
+	}
+
+	public static void backup(String sourceFile, String targetFile) throws IOException {
+		Path source = Paths.get(sourceFile);
+		Path target = Paths.get(targetFile);
+
+		Files.copy(source, target);
+
+	}
+
+	public static boolean makeFile(String filepath) {
+		try {
+
+			File file = new File(filepath);
+			if (file.createNewFile()) {
+				System.out.println("File is created! " + filepath);
+				return true;
+			} else {
+				System.out.println("File already exists." + filepath);
+				return false;
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public static void makeDir(String dirPath) {
@@ -97,8 +125,7 @@ public class FileUtils {
 		List<String> sortedFileName = new ArrayList<>();
 		for (Date d : dates) {
 			try {
-				sortedFileName.add(APPConstant.STOCKSRIN_NSE_CONF_DIR_BHAVDIR + "sec_bhavdata_full_"
-						+ DateUtils.dateToString(d, "dd_MM_yyyy") + ".csv");
+				sortedFileName.add(APPConstant.STOCKSRIN_NSE_CONF_DIR_BHAVDIR + "sec_bhavdata_full_" + DateUtils.dateToString(d, "dd_MM_yyyy") + ".csv");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -177,10 +204,8 @@ public class FileUtils {
 						DELIV_PER = "0";
 					}
 
-					NseStock nseStock = new NseStock(symbol, series, date, Float.parseFloat(previous_close_price),
-							Float.parseFloat(open_price), Float.parseFloat(high_price), Float.parseFloat(low_price),
-							Float.parseFloat(CLOSE_PRICE), Long.parseLong(TOTAL_TRADED_QUANTITY),
-							Long.parseLong(TOTAL_Delivery_QUANTITY), Float.parseFloat(DELIV_PER));
+					NseStock nseStock = new NseStock(symbol, series, date, Float.parseFloat(previous_close_price), Float.parseFloat(open_price), Float.parseFloat(high_price),
+							Float.parseFloat(low_price), Float.parseFloat(CLOSE_PRICE), Long.parseLong(TOTAL_TRADED_QUANTITY), Long.parseLong(TOTAL_Delivery_QUANTITY), Float.parseFloat(DELIV_PER));
 					lst.add(nseStock);
 				}
 

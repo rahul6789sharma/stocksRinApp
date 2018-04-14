@@ -10,11 +10,8 @@ import org.stocksrin.banknifty.BankNiftyData;
 import org.stocksrin.banknifty.BankNiftyUtils;
 import org.stocksrin.banknifty.TickData;
 import org.stocksrin.banknifty.TickData.Type;
-import org.stocksrin.banknifty.option.alog.BNiftyOptionLastDayTrade;
-import org.stocksrin.banknifty.option.alog.ContinuesOptionPriceGetter;
 import org.stocksrin.banknifty.option.alog2.StrategyModel.OptionType;
 import org.stocksrin.email.SendEmail;
-import org.stocksrin.utils.CommonUtils;
 
 public class BNiftyAlgo {
 
@@ -58,27 +55,27 @@ public class BNiftyAlgo {
 		return values;
 	}
 
-	private static void targetMail(Double totalPandL, String string) {
+	private static void targetMail(Double totalPandL, String string, String algoName) {
 		if (totalPandL > targetProfit) {
 
-			SendEmail.sentMail(" Profit " + totalPandL, string);
+			SendEmail.sentMail(algoName + ", Profit " + totalPandL, string);
 
 			System.out.println("Target Achived of : " + targetProfit);
-			targetProfit = targetProfit + 200;
+			targetProfit = totalPandL + 200;
 			System.out.println("Next target is Target : " + targetProfit);
 		} else if (totalPandL < targetLoss) {
 
-			SendEmail.sentMail(" Loss " + totalPandL, string);
-			targetLoss = targetLoss - 200;
+			SendEmail.sentMail(algoName + ", Loss " + totalPandL, string);
+			targetLoss = totalPandL - 200;
 		}
 		if (flag) {
-			SendEmail.sentMail("Market Open Status:" + totalPandL, string);
+			SendEmail.sentMail(algoName + ", Market Open Status:" + totalPandL, string);
 			flag = false;
 		}
 
 	}
 
-	public static StringBuilder algo2(List<TickData> tickDatas, List<StrategyModel> lst) {
+	public static StringBuilder algo2(List<TickData> tickDatas, List<StrategyModel> lst, String algoName) {
 		StringBuilder string = new StringBuilder();
 
 		DecimalFormat df = new DecimalFormat("#00.00");
@@ -94,8 +91,8 @@ public class BNiftyAlgo {
 		double totalltp = 0.00;
 		double totalPL = 0.00;
 
-		string.append(
-				"Time: " + dat.getLastUpdateTime() + "              BankNifty Spot : " + dat.getUnderlyingIndexSpotPrice() + " [" + df.format(bankNiftyDiff) + "]" + ", L/H:" + bankNIftyRange + "\n");
+		string.append(algoName + ": Time: " + dat.getLastUpdateTime() + "              BankNifty Spot : " + dat.getUnderlyingIndexSpotPrice() + " [" + df.format(bankNiftyDiff) + "]" + ", L/H:"
+				+ bankNIftyRange + "\n");
 		string.append("-------------------------------------------------------------------------------------" + "\n");
 		string.append("type      sell      ltp        P&L        change      Qty      strike      strikeDiff" + "\n");
 		string.append("-------------------------------------------------------------------------------------" + "\n");
@@ -134,56 +131,8 @@ public class BNiftyAlgo {
 				+ profitRange + "\n");
 		string.append("-------------------------------------------------------------------------------------" + "\n");
 		System.out.println(string);
-		targetMail(totalPL, string.toString());
+		targetMail(totalPL, string.toString(), algoName);
 		return string;
-	}
-
-	public StringBuilder algo(List<TickData> tickData, BNiftyOptionLastDayTrade bNiftyOptionLastDayTrade) {
-
-		TickData putData = tickData.get(0);
-		TickData callData = tickData.get(1);
-
-		double totalSellPoints = bNiftyOptionLastDayTrade.getPut_close_price() + bNiftyOptionLastDayTrade.getCall_close_price();
-		double totalltp = putData.getLtp() + callData.getLtp();
-		double totalchange = putData.getChange() + callData.getChange();
-		DecimalFormat df = new DecimalFormat("###.##");
-
-		double putProfit = (bNiftyOptionLastDayTrade.getPut_close_price() - putData.getLtp()) * 40;
-		double callProfit = (bNiftyOptionLastDayTrade.getCall_close_price() - callData.getLtp()) * 40;
-
-		double totalPandL = putProfit + callProfit;
-
-		double bniftyDiff = putData.getUnderlyingIndexSpotPrice() - bNiftyOptionLastDayTrade.getSpot_close();
-
-		String bniftyDiff2 = df.format(bniftyDiff);
-
-		double putstrikeDiff = putData.getUnderlyingIndexSpotPrice() - putData.getStrike();
-		double callstrikeDiff = callData.getStrike() - callData.getUnderlyingIndexSpotPrice();
-
-		StringBuilder string = new StringBuilder();
-		string.append("                              BankNifty Spot : " + putData.getUnderlyingIndexSpotPrice() + " [" + bniftyDiff2 + "] " + "\n");
-		string.append("-------------------------------------------------------------------" + "\n");
-		string.append("type     sell     ltp     change    P&L     strike    strikeDiff" + "\n");
-		string.append("-------------------------------------------------------------------" + "\n");
-		string.append("PUT      " + bNiftyOptionLastDayTrade.getPut_close_price() + "     " + putData.getLtp() + "    " + putData.getChange() + "    " + df.format(putProfit) + "      "
-				+ putData.getStrike() + "    " + df.format(putstrikeDiff) + "\n");
-		string.append("CALL     " + bNiftyOptionLastDayTrade.getCall_close_price() + "     " + callData.getLtp() + "    " + callData.getChange() + "    " + df.format(callProfit) + "      "
-				+ callData.getStrike() + "    " + df.format(callstrikeDiff) + "\n");
-		string.append("-------------------------------------------------------------------" + "\n");
-		string.append("Total    " + totalSellPoints + "    " + df.format(totalltp) + "    " + df.format(totalchange) + "    [" + df.format(totalPandL) + "]" + "   " + "P&LHighLow " + "\n");
-		string.append("-------------------------------------------------------------------" + "\n");
-
-		System.out.println(string);
-
-		return string;
-	}
-
-	public static void main(String[] args) throws InterruptedException {
-
-		List<BNiftyOptionLastDayTrade> lastDayTrade = CommonUtils.getBankNiftyLastTradeData2();
-		ContinuesOptionPriceGetter continuesOptionPriceGetter = new ContinuesOptionPriceGetter(lastDayTrade.get(0));
-		continuesOptionPriceGetter.fetchOptionData();
-
 	}
 
 }

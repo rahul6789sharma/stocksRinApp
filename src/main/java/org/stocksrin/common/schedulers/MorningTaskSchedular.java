@@ -10,7 +10,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.inject.Inject;
 
 import org.stocksrin.banknifty.option.alog2.BNiftyAlgoThreadSponingTask;
 import org.stocksrin.banknifty.option.alog2.BankNiftyMaxPainThread;
@@ -22,10 +21,8 @@ public class MorningTaskSchedular {
 	private Timer timer = new Timer();
 	private Timer timer2 = new Timer();
 
-	@Inject
 	private BNiftyAlgoThreadSponingTask niftyAlgoThreadSponingTask;
 
-	@Inject
 	private BankNiftyMaxPainThread bankNiftyMaxPainThread;
 
 	@PostConstruct
@@ -37,9 +34,21 @@ public class MorningTaskSchedular {
 		today.set(Calendar.MINUTE, 18);
 		today.set(Calendar.SECOND, 0);
 
-		timer2.schedule(bankNiftyMaxPainThread, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		try {
+			bankNiftyMaxPainThread = new BankNiftyMaxPainThread();
+			timer2.schedule(bankNiftyMaxPainThread, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			niftyAlgoThreadSponingTask = new BNiftyAlgoThreadSponingTask();
+			timer.schedule(niftyAlgoThreadSponingTask, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		// run every 4 AM
-		timer.schedule(niftyAlgoThreadSponingTask, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 
 	}
 

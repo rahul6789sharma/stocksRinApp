@@ -16,11 +16,11 @@ import org.stocksrin.fiidii.FIIDIIdataModelMap;
 import org.stocksrin.option.model.BankNiftyDailyMaxPain;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.CommonUtils;
+import org.stocksrin.utils.DateUtils;
 
 @Singleton
 @Startup
 public class AppGlobalInit {
-
 
 	public static void main(String[] args) {
 		String csvFile = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE;
@@ -38,14 +38,41 @@ public class AppGlobalInit {
 		String csvFile = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE;
 		pullMAXPAIN_data(csvFile);
 
-		String csvFile2 = APPConstant.FILE_NAME_FII_DII;
-		pullFII_DII_data(csvFile2);
+		pullFII_DII_data();
+		String month = DateUtils.getPreviousMonth(-1);
+		String yr = DateUtils.getCurrentYear();
+		String file = APPConstant.FILE_NAME_FII_DIR_MONTHLY + month + "_" + yr + ".csv";
+		pullPreviousMonthFII_DII_data(file);
 	}
 
-	public static void pullFII_DII_data(String csvFile) {
+	public static void pullPreviousMonthFII_DII_data(String file) {
 
 		String line = "";
-		try (BufferedReader br = new BufferedReader(new FileReader(csvFile));) {
+		try (BufferedReader br = new BufferedReader(new FileReader(file));) {
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+				if (i != 0) {
+					// use comma as separator
+					FIIDIIDataModle fIIDIIDataModle = CommonUtils.getFIIModelFromCSV(line);
+					FIIDIIdataModelMap.addPreviousMonthData(fIIDIIDataModle.getDate(), fIIDIIDataModle);
+				}
+				i++;
+
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+		}
+
+	}
+
+	public static void pullFII_DII_data() {
+
+		String line = "";
+		try (BufferedReader br = new BufferedReader(new FileReader(APPConstant.FILE_NAME_FII_DIR_MONTHLY + DateUtils.getCurrentMonth() + "_" + DateUtils.getCurrentYear() + ".csv"));) {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				if (i != 0) {

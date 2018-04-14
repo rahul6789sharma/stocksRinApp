@@ -11,6 +11,7 @@ import org.option.currency.models.MaxPains;
 import org.stocksrin.option.model.BankNiftyDailyMaxPain;
 import org.stocksrin.option.model.OptionModles;
 
+// data for intraday and data for interday
 public class BankNiftyData {
 
 	private BankNiftyData() {
@@ -41,6 +42,15 @@ public class BankNiftyData {
 			lst.add(bankNiftyDailyMaxPain);
 			BankNiftyData.getMaxpPainSortedData().put(bankNiftyDailyMaxPain.getExpiry(), lst);
 		}
+	}
+
+	public static void dailyMorningCleanData() {
+		bankNiftyCurrentTimeData.clear();
+		bankNiftyCurrentTimeData2.clear();
+		bankNiftyMaxPainData.clear();
+		maxPain.clear();
+		maxPainSerieas.clear();
+		maxpPainSortedData.clear();
 	}
 
 	public static Map<String, OptionAnalysisModle> getMaxPainSerieas() {

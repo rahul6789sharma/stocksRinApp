@@ -25,8 +25,6 @@ import org.stocks.price.NsePrice;
 import org.stocksrin.banknifty.BankNiftyData;
 import org.stocksrin.banknifty.BankNiftyDataFileUtils;
 import org.stocksrin.banknifty.OptionAnalysisModle;
-import org.stocksrin.banknifty.TickData;
-import org.stocksrin.banknifty.option.alog.ContinuesOptionPriceGetter;
 import org.stocksrin.option.model.OptionModles;
 import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
@@ -56,13 +54,6 @@ public class NSERestService {
 			map.put(string, optionAnalysisModle);
 		}
 		return map;
-	}
-
-	@GET
-	@Path("/bankNiftyOptionTickData")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public Map<String, List<TickData>> getBankNiftyOptionTickData() throws Exception {
-		return ContinuesOptionPriceGetter.getOptionData();
 	}
 
 	@POST

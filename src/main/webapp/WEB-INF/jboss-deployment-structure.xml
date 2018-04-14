@@ -3,14 +3,12 @@
 	<deployment name="Parser">
 
 		<dependencies>
-			<!-- <module name="com.m"/> -->
 			<module name="org.jsoup" />
-			<!-- <module name="org.hibernate" /> -->
-			<module name="org.javassist"/>
+			<module name="org.javassist" />
 		</dependencies>
-	
-	
+
+
 	</deployment>
-	
-	
+
+
 </jboss-deployment-structure>

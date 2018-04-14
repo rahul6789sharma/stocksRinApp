@@ -19,7 +19,7 @@ public class OptionDataCollectorTask2 extends TimerTask {
 	@Override
 	public void run() {
 		try {
-			// bankNifty first expiry data witout providing expiry
+			// bankNifty first expiry data without providing expiry
 			Columns columns = getOptionDataData(null);
 			OptionModles optionModles = BankNiftyUtils.bankNiftyOptionDataWrapper(columns);
 

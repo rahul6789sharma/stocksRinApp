@@ -28,8 +28,11 @@ public class BankNIftyOptionTaskCancleScheduler {
 		today.set(Calendar.SECOND, 0);
 
 		// run every 4 AM
-		timer.schedule(new OptionTask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
-
+		try {
+			timer.schedule(new OptionTask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@PreDestroy

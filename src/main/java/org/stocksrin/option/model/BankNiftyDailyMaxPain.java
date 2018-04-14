@@ -125,6 +125,10 @@ public class BankNiftyDailyMaxPain {
 		this.perChangeInOI = perChangeInOI;
 	}
 
+	public String toCSVForWeeklyEOD() {
+		return date + "," + expiry + "," + expiryType + "," + maxPain + "," + totalCEOI + "," + totalPEOI + "," + pcr + "," + spot + "," + change;
+	}
+
 	public String toCSV() {
 		return date + "," + expiry + "," + expiryType + "," + maxPain + "," + totalCEOI + "," + totalPEOI + "," + pcr + "," + oi + "," + changeInOI + "," + perChangeInOI + "," + spot + "," + change;
 	}

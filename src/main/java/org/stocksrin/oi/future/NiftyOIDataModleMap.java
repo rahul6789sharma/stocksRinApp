@@ -34,7 +34,7 @@ public class NiftyOIDataModleMap {
 		oiDataMap.put(date, niftyOIDataModle);
 	}
 
-	private static void pullOIdata(String csvFile) {
+	private static void pullOIdata(String csvFile) throws Exception {
 
 		String line = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile));) {

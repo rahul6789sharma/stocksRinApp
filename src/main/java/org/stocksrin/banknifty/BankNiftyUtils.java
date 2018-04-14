@@ -8,12 +8,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.option.currency.models.Column;
 import org.option.currency.models.Columns;
+import org.stocksrin.option.model.BankNiftyDailyMaxPain;
 import org.stocksrin.option.model.OptionModle;
 import org.stocksrin.option.model.OptionModles;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.DateUtils;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
+import org.stocksrin.utils.NumFormater;
 
 public class BankNiftyUtils {
 
@@ -130,5 +132,27 @@ public class BankNiftyUtils {
 		optionModles.setUnderlyingSpotPrice(columns.getUnderlyingSpotPrice());
 		optionModles.setLastDataUpdated(columns.getLastDataUpdated());
 		return optionModles;
+	}
+	
+	public static BankNiftyDailyMaxPain convertData(OptionAnalysisModle optionAnalysisModle, String expiry, String spotPrice) throws Exception {
+		Double maxPain = optionAnalysisModle.getMaxPains().get(optionAnalysisModle.getMaxPains().size() - 1);
+		Integer totalCE = optionAnalysisModle.getTotalCE();
+		Integer totalPE = optionAnalysisModle.getTotalPE();
+
+		String date = DateUtils.dateToString(new Date(), APPConstant.DATEFORMATE_BN_EXPIRY);
+		BankNiftyDailyMaxPain bankNiftyDailyMaxPain = new BankNiftyDailyMaxPain(date, expiry, getExpiryType(expiry), maxPain, totalCE.toString(), totalPE.toString());
+		bankNiftyDailyMaxPain.setSpot(spotPrice);
+		Double pcr = ((double) totalPE / (double) totalCE);
+		bankNiftyDailyMaxPain.setPcr(NumFormater.formatNumber1(pcr));
+		return bankNiftyDailyMaxPain;
+	}
+
+	private static String getExpiryType(String expiry) throws Exception {
+		int a = DateUtils.getExpiryWeekOfMonth(expiry);
+		if (a < 4) {
+			return "W";
+		} else {
+			return "M";
+		}
 	}
 }

@@ -6,12 +6,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.annotation.PreDestroy;
-import javax.ejb.Singleton;
 
+import org.stocksrin.banknifty.BankNiftyData;
 import org.stocksrin.utils.CommonUtils;
 import org.stocksrin.utils.DateUtils;
 
-@Singleton
 public class BankNiftyMaxPainThread extends TimerTask {
 
 	private List<Timer> allTimers = new ArrayList<>(2);
@@ -21,7 +20,7 @@ public class BankNiftyMaxPainThread extends TimerTask {
 		if (!DateUtils.isWeekEndDay()) {
 			if (CommonUtils.getEveningTime()) {
 				try {
-
+					BankNiftyData.dailyMorningCleanData();
 					Timer timer = null;
 					timer = new Timer();
 					timer.scheduleAtFixedRate(new OptionDataCollectorTask2(), 0l, 600000);

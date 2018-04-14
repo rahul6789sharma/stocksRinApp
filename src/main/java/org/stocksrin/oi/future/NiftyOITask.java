@@ -69,7 +69,7 @@ public class NiftyOITask extends TimerTask {
 		return niftyOIDataModle;
 	}
 
-	private static void updateNiftyOIDataModle(NiftyOIDataModle niftyOIDataModle) {
+	private static void updateNiftyOIDataModle(NiftyOIDataModle niftyOIDataModle) throws Exception {
 
 		niftyOIDataModle.setVolTotal(niftyOIDataModle.getVol1() + niftyOIDataModle.getVol2());
 		niftyOIDataModle.setOiTotal(niftyOIDataModle.getOi1() + niftyOIDataModle.getOi2());
@@ -132,7 +132,7 @@ public class NiftyOITask extends TimerTask {
 
 	}
 
-	private static NiftyOIDataModle pullLastDayOIdata(String csvFile) {
+	private static NiftyOIDataModle pullLastDayOIdata(String csvFile) throws Exception {
 		int lastLine = CommonUtils.totalNumberOfLine(csvFile) - 1;
 		String line = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile));) {

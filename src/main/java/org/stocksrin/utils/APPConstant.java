@@ -22,14 +22,18 @@ public class APPConstant {
 
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyOptionPrice.csv";
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyMaxPainDaily.csv";
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE2 = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain.csv";
 
 	public static final String FILE_NAME_updatedBhavCopy = "updatedBhavCopy.xlsx";
 
+	public static final String DATEFORMATE_BN_EXPIRY = "ddMMMyyyy";
 	public static final String DATEFORMATE_dd_MM_yyyy = "dd_MM_yyyy";
+	public static final String FILE_NAME_FII_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "FII_DII_BUY_SELL" + File.separator;
+	public static final String FILE_NAME_FII_DIR_BACKUP = FILE_NAME_FII_DIR + "backup" + File.separator;
+	public static final String FILE_NAME_FII_DIR_MONTHLY = FILE_NAME_FII_DIR + "monthly" + File.separator;
 
-	public static final String FILE_NAME_FII = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "FII.csv";
-	public static final String FILE_NAME_DII = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "DII.csv";
-	public static final String FILE_NAME_FII_DII = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "FII_DII.csv";
+	public static final String FILE_NAME_FII_DIR_YEARLY = FILE_NAME_FII_DIR + "yearly" + File.separator;
+
 	public static final String FILE_NAME_NIFTY_OI_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "niftyOI" + File.separator + "NiftyOI.csv";
 	public static final String FO_OI_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator + "FO_OI" + File.separator;
 

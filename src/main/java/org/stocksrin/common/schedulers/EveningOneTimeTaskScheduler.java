@@ -10,6 +10,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
+import org.stocksrin.banknifty.BNWeeklyExpiryMaxPainTask;
 import org.stocksrin.banknifty.BankNiftyOptionDownloaderTask;
 import org.stocksrin.banknifty.DailyMaxPainSaveTask;
 import org.stocksrin.fiidii.FIIDIITask;
@@ -27,7 +28,7 @@ public class EveningOneTimeTaskScheduler {
 	private Timer timer4 = new Timer();
 	private Timer timer5 = new Timer();
 	private Timer timer6 = new Timer();
-	private Timer timer7 = new Timer();
+	private Timer timer8 = new Timer();
 
 	@PostConstruct
 	public void init() {
@@ -40,21 +41,50 @@ public class EveningOneTimeTaskScheduler {
 
 		// run every 5 PM
 
-		timer.schedule(new BankNiftyOptionDownloaderTask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		try {
+			timer.schedule(new BankNiftyOptionDownloaderTask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		Calendar today2 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today2.set(Calendar.HOUR_OF_DAY, 17);
 		today2.set(Calendar.MINUTE, 10);
 		today2.set(Calendar.SECOND, 0);
 
-		timer2.schedule(new DailyMaxPainSaveTask(), today2.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		try {
+			timer2.schedule(new DailyMaxPainSaveTask(), today2.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			timer.schedule(new BankNiftyOptionDownloaderTask(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Calendar today8 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		today8.set(Calendar.HOUR_OF_DAY, 17);
+		today8.set(Calendar.MINUTE, 20);
+		today8.set(Calendar.SECOND, 0);
+
+		try {
+			timer8.schedule(new BNWeeklyExpiryMaxPainTask(), today8.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		Calendar today4 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today4.set(Calendar.HOUR_OF_DAY, 18);
 		today4.set(Calendar.MINUTE, 10);
 		today4.set(Calendar.SECOND, 0);
 
-		timer4.schedule(new FoOiTask(), today4.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		try {
+			timer4.schedule(new FoOiTask(), today4.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		Calendar today5 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today5.set(Calendar.HOUR_OF_DAY, 18);
@@ -63,21 +93,33 @@ public class EveningOneTimeTaskScheduler {
 
 		// run every 5 PM
 
-		timer5.schedule(new FIIDIITask(), today5.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		try {
+			timer5.schedule(new FIIDIITask(), today5.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		Calendar today3 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today3.set(Calendar.HOUR_OF_DAY, 20);
 		today3.set(Calendar.MINUTE, 00);
 		today3.set(Calendar.SECOND, 0);
 
-		timer3.schedule(new NiftyOITask(), today3.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		try {
+			timer3.schedule(new NiftyOITask(), today3.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		Calendar today6 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today6.set(Calendar.HOUR_OF_DAY, 18);
 		today6.set(Calendar.MINUTE, 30);
 		today6.set(Calendar.SECOND, 0);
 
-		timer6.schedule(new FIIDIIDerivaticsTask(), today6.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		try {
+			timer6.schedule(new FIIDIIDerivaticsTask(), today6.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		Calendar today7 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today7.set(Calendar.HOUR_OF_DAY, 17);
@@ -86,7 +128,8 @@ public class EveningOneTimeTaskScheduler {
 
 		// run every 5 PM
 
-		//timer7.schedule(new DownloadDailyBhavCopyTask(), today7.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		// timer7.schedule(new DownloadDailyBhavCopyTask(), today7.getTime(),
+		// TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 
 	}
 
@@ -99,5 +142,6 @@ public class EveningOneTimeTaskScheduler {
 		timer4.cancel();
 		timer5.cancel();
 		timer6.cancel();
+		timer8.cancel();
 	}
 }
