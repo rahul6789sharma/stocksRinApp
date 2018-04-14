@@ -36,7 +36,8 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
 	<dependencies>
-		<!-- As updates are released for EAP the version of the provided jboss-javaee-6.0 
+		<!-- test
+		As updates are released for EAP the version of the provided jboss-javaee-6.0 
 			jar can change. To ensure your application is compiling against the same 
 			jars that the runtime provides the <version> element below should match the 
 			installed version of EAP on the node hosting your application. To determine 
