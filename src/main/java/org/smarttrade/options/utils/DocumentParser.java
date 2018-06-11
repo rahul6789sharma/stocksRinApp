@@ -14,6 +14,7 @@ import org.option.currency.models.Data;
 import org.option.currency.models.USDINRFuture;
 import org.option.currency.models.UsdInrFutureJson;
 import org.stocksrin.oi.future.NiftyFutureModel;
+import org.stocksrin.utils.LoggerSysOut;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,8 +37,8 @@ public class DocumentParser {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			Element elementSelectBox = doc.getElementById("responseDiv");
-			System.out.println(elementSelectBox);
-			System.out.println("data " + elementSelectBox.ownText());
+			LoggerSysOut.print(elementSelectBox);
+			LoggerSysOut.print("data " + elementSelectBox.ownText());
 
 			 obj = mapper.readValue(elementSelectBox.ownText(), NiftyFutureModel.class);
 		} catch (Exception e) {
@@ -97,7 +98,7 @@ public class DocumentParser {
 		Elements rows = table.select("tr");
 		List<Column> lst = new ArrayList<>();
 
-		for (int i = 2; i < rows.size() - 1; i++) { // first, second and last
+		for (int i = 2; i < rows.size() - 1; i++) { // first second and last
 													// row is the col names so
 													// skip it.
 
@@ -135,7 +136,7 @@ public class DocumentParser {
 			int ce_oi = 0;
 			int pu_oi = 0;
 			try {
-				ce_oi = Integer.parseInt(c.getCE_OI().replaceAll("[,]", ""));
+				ce_oi = Integer.parseInt(c.getCE_OI().replaceAll("[]", ""));
 				/*
 				 * if (max_ce_oi < ce_oi) { max_ce_oi = ce_oi; }
 				 */
@@ -144,7 +145,7 @@ public class DocumentParser {
 
 			}
 			try {
-				pu_oi = Integer.parseInt(c.getPE_OI().replaceAll("[,]", ""));
+				pu_oi = Integer.parseInt(c.getPE_OI().replaceAll("[]", ""));
 				/*
 				 * if (max_pe_oi < pu_oi) { max_pe_oi = pu_oi; }
 				 */

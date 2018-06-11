@@ -1,9 +1,14 @@
 package org.stocks.price;
 
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
-import java.io.*;
+
+import org.stocksrin.utils.LoggerSysOut;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -12,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class HTTPClient {
 
 	public static GoogleData[] getData() {
-		String data = getDateFromGoogle("NSE:NIFTY,NSE:BANKNIFTY,NSE:INDIAVIX");
+		String data = getDateFromGoogle("NSE:NIFTYNSE:BANKNIFTYNSE:INDIAVIX");
 		String data2 = data.replaceAll("//", "");
 		GoogleData[] object = parseDatString(data2);
 		return object;
@@ -34,7 +39,7 @@ public class HTTPClient {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getDateFromGoogle("NSE:NIFTY"));
+		LoggerSysOut.print(getDateFromGoogle("NSE:NIFTY"));
 	}
 	private static String getDateFromGoogle(String query) {
 		try {
@@ -55,7 +60,7 @@ public class HTTPClient {
 				if (!responseHeader.get(0).contains("200 OK") && retryCount < 10) {
 					retryCount++;
 					try {
-						System.out.println("Cant make Connection to Google Retrying after 10 second");
+						LoggerSysOut.print("Cant make Connection to Google Retrying after 10 second");
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();

@@ -1,8 +1,9 @@
 package org.stocks.price;
 
-// Generated May 26, 2017 8:48:47 PM by Hibernate Tools 3.4.0.CR1
+// Generated May 26 2017 8:48:47 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -27,7 +28,7 @@ public class NsePriceId implements java.io.Serializable {
 		this.nseDate = nseDate;
 	}
 
-	@Column(name = "nse_symbol", nullable = false, length = 50)
+	@Column(name = "nse_symbol", nullable = false,length = 50)
 	public String getNseSymbol() {
 		return this.nseSymbol;
 	}
@@ -36,7 +37,7 @@ public class NsePriceId implements java.io.Serializable {
 		this.nseSymbol = nseSymbol;
 	}
 
-	@Column(name = "nse_date", nullable = false, length = 10)
+	@Column(name = "nse_date" ,nullable = false, length = 10)
 	public Date getNseDate() {
 		return this.nseDate;
 	}
@@ -70,7 +71,7 @@ public class NsePriceId implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "NsePriceId [nseSymbol=" + nseSymbol + ", nseDate=" + nseDate + "]";
+		return "NsePriceId [nseSymbol=" + nseSymbol + " nseDate=" + nseDate + "]";
 	}
 
 }

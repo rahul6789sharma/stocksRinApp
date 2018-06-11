@@ -16,15 +16,15 @@ public class DateComparator implements Comparator<String>{
 	/*public static void main(String[] args) {
 		Date date1=DateUtils.getDateFromString("28MAY2017");
 		Date date2=DateUtils.getDateFromString("29MAY2017");
-		System.out.println(date1.compareTo(date2));
-		//System.out.println(d);
+		LoggerSysOut.print(date1.compareTo(date2));
+		//LoggerSysOut.print(d);
 		List<String> lst = new ArrayList<>();
 		lst.add("29JUNE2017");
 		lst.add("28MAY2017");
 		lst.add("20MAY2017");
 		lst.add("29MAY2017");
-		Collections.sort(lst, new DateComparator());
-		System.out.println(lst);
+		Collections.sort(lst new DateComparator());
+		LoggerSysOut.print(lst);
 	}
 */
 }

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+<link rel="alternate" hreflang="x-default"
+	href="https://www.stocksrin.com" />
+<link rel="alternate" hreflang="en" href="https://www.stocksrin.com" />
+<meta property="og:locale" content="en_IN" />
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market
+	Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+
+<script async
+	src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client : "ca-pub-7270583781006956",
+		enable_page_level_ads : true
+	});
+</script>
+<meta http-equiv="refresh" content="300" />
+</head>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+			<div ng-include="'templets/header.htm'"></div>
+		</div>
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+			<div id="totalOIData"></div>
+
+			<div id="totalCallsPutsDiv"></div>
+
+
+		</div>
+		<!--/left-->
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+
+			<div class="text-center">
+				<h4>
+					<span style="color: #333333;">FNO Data Analysis</span>
+				</h4>
+			</div>
+
+			<div id="sdDiv" class="sdDiv"></div>
+
+			<br />
+			<div id="callPutTotalOI" style="height: 600px;"></div>
+
+
+			<div class="col-xs-12 col-sm-8 col-md-6" id="callchangeINOIcontainer"
+				style="height: 500px;"></div>
+
+			<div class="col-xs-12 col-sm-8 col-md-6" id="putchangeINOIcontainer"
+				style="height: 500px;"></div>
+
+
+
+
+
+
+			<div ng-include="'templets/add.html'"></div>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="navbar-default navbar-fixed-bottom"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+
+
+<script>
+	$(document).ready(function() {
+
+		bankniftyData();
+
+	});
+
+	function bankniftyData() {
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				var jsonResponse = JSON.parse(this.responseText);
+				drawCallOI(jsonResponse);
+				addDataToTable(jsonResponse);
+			}
+		};
+
+		xhttp.open("GET", "/rest/bankNiftyService/bankNiftyWeeklyOptionChain",
+				true);
+		xhttp.send();
+	}
+
+	function drawCallOI(jsonResponse) {
+		console.log(jsonResponse);
+		var strikePrice = [];
+		var callOI = [];
+		var putOI = [];
+		var callChangeINoI = [];
+		var putChangeINoI = [];
+
+		var calltotalOI;
+		var puttotalOI;
+		var expiry;
+		for ( var key in jsonResponse) {
+			//console.log( key, jsonResponse[key] );
+			//console.log( key, jsonResponse[key].optionModle );
+			expiry = jsonResponse[key].expiry;
+			var optionModle = jsonResponse[key].optionModle;
+
+			calltotalOI = jsonResponse[key].total_ce_oi;
+			puttotalOI = jsonResponse[key].total_pe_oi;
+			for ( var key2 in optionModle) {
+				if (optionModle[key2].c_change_oi != 0
+						|| optionModle[key2].p_change_oi) {
+
+					strikePrice.push(optionModle[key2].strike_price);
+					callOI.push(getLacks(optionModle[key2].c_oi));
+					putOI.push(getLacks(optionModle[key2].p_oi));
+					callChangeINoI.push(getLacks(optionModle[key2].c_change_oi));
+					putChangeINoI.push(getLacks(optionModle[key2].p_change_oi));
+				}
+			}
+		}
+	
+	
+		drawCallChangeINOI(strikePrice, callChangeINoI)
+		drawPutChangeINOI(strikePrice, putChangeINoI)
+		drawcallPUTTotalOI(strikePrice, callOI, putOI, expiry)
+		var pcr = parseFloat(puttotalOI / calltotalOI).toFixed(2)
+
+		drawCallsPuts(getLacks(calltotalOI), getLacks(puttotalOI));
+
+	}
+
+	function getLacks(num) {
+		return parseFloat((num / 100000).toFixed(2));
+	}
+	function drawCallChangeINOI(strikePrice, callChangeINoI) {
+
+		var chart = new Highcharts.Chart({
+			chart : {
+				renderTo : 'callchangeINOIcontainer',
+				type : 'bar',
+				inverted : true
+			},
+			title : {
+				text : 'Call : Change In OI'
+			},
+			plotOptions : {
+				bar : {
+					dataLabels : {
+						enabled : true
+					}
+				}
+			},
+			plotOptions : {
+				bar : {
+					dataLabels : {
+						enabled : true
+					}
+				},
+				series : {
+					dataLabels : {
+						crop : false,
+						enabled : true,
+						overflow : 'none'
+
+					}
+				}
+			},
+
+			xAxis : {
+				categories : strikePrice
+			},
+
+			series : [ {
+				data : callChangeINoI
+			} ]
+		});
+
+	}
+
+	function drawPutChangeINOI(strikePrice, callOI) {
+
+		var chart = new Highcharts.Chart({
+			chart : {
+				renderTo : 'putchangeINOIcontainer',
+				type : 'bar',
+				inverted : false
+			},
+			title : {
+				text : 'Put : Change In OI'
+			},
+
+			plotOptions : {
+				series : {
+					dataLabels : {
+						enabled : true,
+						align : 'right',
+						color : '#FFFFFF',
+						x : -10
+					},
+					pointPadding : 0.1,
+					groupPadding : 0
+				}
+			},
+
+			xAxis : {
+				categories : strikePrice
+			},
+
+			plotOptions : {
+				bar : {
+					dataLabels : {
+						enabled : true
+					}
+				},
+				series : {
+					dataLabels : {
+						crop : false,
+						enabled : true,
+						overflow : 'none'
+
+					}
+				}
+			},
+
+			series : [ {
+				data : callOI
+			} ]
+		});
+
+	}
+	function drawcallPUTTotalOI(strikePrice, callOI, putOI, expiry) {
+
+		Highcharts.chart('callPutTotalOI', {
+			chart : {
+				type : 'bar',
+				inverted : false
+			},
+			title : {
+				text : 'Total OI'
+			},
+			subtitle : {
+				text : 'Expiry:' + expiry
+			},
+			xAxis : {
+				categories : strikePrice
+			},
+			yAxis : {
+				title : {
+					text : 'Open Interest'
+				}
+			},
+			plotOptions : {
+				bar : {
+					dataLabels : {
+						enabled : true
+					},
+					enableMouseTracking : true
+				}
+
+			},
+			series : [ {
+				name : 'CALL',
+				data : callOI
+			}, {
+				name : 'PUT',
+				data : putOI
+			} ]
+		});
+	}
+
+	function addDataToTable(jsonResponse) {
+		var expiry;
+		var total_ce_oi;
+		var total_pe_oi;
+
+		var highest_CE_OI = 0;
+		var highest_CE_OI_STRIKE = 0;
+		var highestCEValue;
+
+		var highest_CE_Change_IN_OI = 0;
+		var highest_CE_OI_Change_IN_STRIKE = 0;
+		var highestCEValue_Change_IN;
+
+		var highest_PE_Change_IN_OI = 0;
+		var highest_PE_OI_Change_IN_STRIKE = 0;
+		var highestPEValue_Change_IN;
+
+		var highest_PE_OI = 0;
+		var highest_PE_OI_STRIKE = 0;
+		var highestPEValue;
+		var maxPain;
+		for ( var key in jsonResponse) {
+			maxPain = jsonResponse[key].maxPainStrick;
+			//console.log( key, jsonResponse[key] );
+			//console.log( key, jsonResponse[key].optionModle );
+			expiry = jsonResponse[key].expiry;
+			total_ce_oi = jsonResponse[key].total_ce_oi;
+			total_pe_oi = jsonResponse[key].total_pe_oi;
+
+			//console.log(key, jsonResponse[key].total_ce_oi);
+			//console.log(key, jsonResponse[key].total_pe_oi);
+			//console.log(key, jsonResponse[key].spot);
+			var optionModle = jsonResponse[key].optionModle;
+
+			//console.log(optionModle);
+			for ( var key2 in optionModle) {
+
+				if (highest_CE_OI < optionModle[key2].c_oi) {
+					highest_CE_OI = optionModle[key2].c_oi;
+					highest_CE_OI_STRIKE = optionModle[key2].strike_price;
+				}
+
+				if (highest_CE_Change_IN_OI < optionModle[key2].c_change_oi) {
+					highest_CE_Change_IN_OI = optionModle[key2].c_change_oi;
+					highest_CE_OI_Change_IN_STRIKE = optionModle[key2].strike_price;
+				}
+
+				if (highest_PE_Change_IN_OI < optionModle[key2].p_change_oi) {
+					highest_PE_Change_IN_OI = optionModle[key2].p_change_oi;
+					highest_PE_OI_Change_IN_STRIKE = optionModle[key2].strike_price;
+				}
+
+				if (highest_PE_OI < optionModle[key2].p_oi) {
+					highest_PE_OI = optionModle[key2].p_oi;
+					highest_PE_OI_STRIKE = optionModle[key2].strike_price;
+				}
+			}
+
+		}
+		highestCEValue = highest_CE_OI_STRIKE + "->" + highest_CE_OI;
+		highestPEValue = highest_PE_OI_STRIKE + "->" + highest_PE_OI;
+
+		highestCEValue_Change_IN = highest_CE_OI_Change_IN_STRIKE + "->"
+				+ highest_CE_Change_IN_OI;
+		highestPEValue_Change_IN = highest_PE_OI_Change_IN_STRIKE + "->"
+				+ highest_PE_Change_IN_OI;
+		var tr = $('<tr/>');
+		tr.append("<td class=oddRow>" + "BankNifty" + "</td>");
+		tr.append("<td class=oddRow>" + expiry + "</td>");
+		tr.append("<td class=oddRow>" + total_ce_oi + "</td>");
+		tr.append("<td class=oddRow>" + total_pe_oi + "</td>");
+
+		tr.append("<td class=oddRow>"
+				+ parseFloat(total_pe_oi / total_ce_oi).toFixed(2) + "</td>");
+
+		tr.append("<td class=oddRow>" + highestCEValue + "</td>");
+		tr.append("<td class=oddRow>" + highestPEValue + "</td>");
+		tr.append("<td class=oddRow>" + maxPain + "</td>");
+
+		tr.append("<td class=oddRow>" + highestCEValue_Change_IN + "</td>");
+		tr.append("<td class=oddRow>" + highestPEValue_Change_IN + "</td>");
+		$('#sdTable').append(tr);
+
+	}
+
+	function drawCallsPuts(calls, puts) {
+
+		var largest = 0;
+		if (calls >= puts) {
+			largest = calls;
+		} else {
+			largest = puts;
+		}
+
+		Highcharts.chart('totalCallsPutsDiv', {
+			chart : {
+				type : 'column'
+			},
+			title : {
+				text : ''
+			},
+			subtitle : {
+				text : 'Numbers are in lacks'
+			},
+			xAxis : {
+				type : 'category',
+				labels : {
+					rotation : -0,
+					style : {
+						fontSize : '13px',
+					// fontFamily: 'Verdana, sans-serif'
+					}
+				}
+			},
+			yAxis : {
+				labels : {
+					enabled : false
+				},
+
+				title : {
+					text : ''
+				},
+				visible : false
+			},
+			legend : {
+				enabled : false
+			},
+
+			exporting : {
+				enabled : false
+			},
+			tooltip : {
+				pointFormat : '<b>{point.y:.1f} </b>'
+			},
+			plotOptions : {
+				column : {
+					zones : [ {
+						value : largest, // Values up to 10 (not including) ...
+						color : '#7cb5ec' // ... have the color blue.
+					}, {
+						color : '#434348' // Values from 10 (including) and up have the color red
+
+					} ]
+				}
+			},
+			series : [ {
+				name : 'OI',
+				data : [ [ 'Calls', calls, ], [ 'Puts', puts ]
+
+				],
+				dataLabels : {
+					enabled : true,
+					rotation : -90,
+					color : '#FFFFFF',
+					align : 'right',
+					format : '{point.y:.1f}', // one decimal
+					y : 10, // 10 pixels down from the top
+					style : {
+						fontSize : '13px',
+						fontFamily : 'Verdana, sans-serif'
+					}
+				}
+			} ]
+		});
+
+	}
+
+	createSDTable();
+
+	function createSDTable() {
+		var x = document.createElement("TABLE");
+		x.setAttribute("id", "sdTable");
+		x.setAttribute("class", "opttbldata");
+		x.setAttribute("align", "center");
+		x.setAttribute("cellpadding", "40");
+		x.setAttribute("cellspacing", "2");
+		x.setAttribute("width", "80%");
+
+		$("#sdDiv").append(x);
+		// table header
+		$("#sdTable")
+				.append(
+						'<thead>'
+
+								+ '<tr class="optionHead"> <th colspan="1" class=whiteRightBorder > Index</th><th colspan="1" class=whiteRightBorder > Expiry</th> <th colspan="3"  class=whiteRightBorder > Total OI </th> <th colspan="3" class=whiteRightBorder > Highest OI </th> <th colspan="2" > Highest Increase in OI </th>  </tr>'
+								+ '<tr class="optionHead">'
+
+								+ '<th title="Index" class=whiteRightBorder></th> '
+								+ '<th title="Index" class=whiteRightBorder></th> '
+
+								+ '<th title="buyValue">CE</th> <th title="buyValue">PE</th> <th title="buyValue" class=whiteRightBorder >PCR</th>'
+								+ '<th title="buyValue">CE</th><th title="buyValue">PE</th><th title="buyValue" class=whiteRightBorder >Max Pain</th>'
+								+ '<th title="buyValue">CE</th><th title="buyValue" >PE</th>'
+
+								+ '</tr>' + '</thead>');
+
+		// table Fotter 
+	}
+</script>
+
+</html>
+

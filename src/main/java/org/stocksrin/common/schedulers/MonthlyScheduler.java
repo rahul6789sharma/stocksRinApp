@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 
 import org.stocksrin.fiidii.CollectMonthlyDataTask;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class MonthlyScheduler {
 
@@ -15,7 +16,7 @@ public class MonthlyScheduler {
 
 	@PostConstruct
 	public void init() {
-		System.out.println(" ***** MorningTaskSchedular Starting *********");
+		LoggerSysOut.print(" ***** MorningTaskSchedular Starting *********");
 
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today.set(Calendar.DAY_OF_MONTH, 1);

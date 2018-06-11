@@ -15,6 +15,7 @@ import org.option.currency.usdinr.UsdInrData;
 import org.option.currency.usdinr.UsdInrService;
 import org.smarttrade.options.utils.Calculation;
 import org.smarttrade.options.utils.DateUtils;
+import org.stocksrin.utils.LoggerSysOut;
 
 @Path("/usdinrService")
 public class USDINRRest {
@@ -32,7 +33,7 @@ public class USDINRRest {
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Set<String> getExpiryList() {
 		Set<String> expiry = UsdInrService.getInstance().getExpiries();
-		System.out.println("Getting expiry :" + expiry);
+		LoggerSysOut.print("Getting expiry :" + expiry);
 		return expiry;
 	}
 

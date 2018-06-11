@@ -3,11 +3,15 @@ package org.stocksrin.banknifty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionAnalysisModle {
+public class LiveMaxPainModle {
 
 	private List<Double> maxPains = new ArrayList<>();
+
 	private Integer totalCE;
 	private Integer totalPE;
+
+	private List<Integer> higestOICE = new ArrayList<>();
+	private List<Integer> higestOIPE = new ArrayList<>();
 
 	public List<Double> getMaxPains() {
 		return maxPains;
@@ -35,7 +39,7 @@ public class OptionAnalysisModle {
 
 	@Override
 	public String toString() {
-		return "OptionAnalysisModle [maxPains=" + maxPains + ", totalCE=" + totalCE + ", totalPE=" + totalPE + "]";
+		return "LiveMaxPainModle [maxPains=" + maxPains + " totalCE=" + totalCE + " totalPE=" + totalPE + "]";
 	}
 
 }

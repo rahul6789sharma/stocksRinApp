@@ -6,20 +6,25 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.annotation.PreDestroy;
+import javax.ejb.Singleton;
 
 import org.stocksrin.banknifty.BankNiftyData;
 import org.stocksrin.utils.CommonUtils;
 import org.stocksrin.utils.DateUtils;
+import org.stocksrin.utils.LoggerSysOut;
 
+@Singleton
 public class BankNiftyMaxPainThread extends TimerTask {
 
 	private List<Timer> allTimers = new ArrayList<>(2);
 
 	@Override
 	public void run() {
+		LoggerSysOut.print("BankNiftyMaxPainThread  starting");
 		if (!DateUtils.isWeekEndDay()) {
 			if (CommonUtils.getEveningTime()) {
 				try {
+					allTimers.clear();
 					BankNiftyData.dailyMorningCleanData();
 					Timer timer = null;
 					timer = new Timer();
@@ -30,7 +35,7 @@ public class BankNiftyMaxPainThread extends TimerTask {
 					e.printStackTrace();
 				}
 			} else {
-				System.out.println("");
+				LoggerSysOut.print("");
 			}
 		}
 	}

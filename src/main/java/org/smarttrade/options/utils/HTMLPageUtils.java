@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class HTMLPageUtils {
 
@@ -27,11 +28,10 @@ public class HTMLPageUtils {
 
 	public static Document getHTMLDocument(String url) {
 		try {
-			System.out.println("HTTP request :" + url);
+			LoggerSysOut.print("HTTP request :" + url);
 			Document doc = Jsoup.connect(url).get();
 			return doc;
 		} catch (IOException e) {
-
 			e.printStackTrace();
 		}
 		return null;

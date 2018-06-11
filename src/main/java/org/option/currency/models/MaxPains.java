@@ -44,7 +44,7 @@ public class MaxPains {
 
 	@Override
 	public String toString() {
-		return "MaxPains [expiry=" + expiry + ", symbol=" + symbol + ", maxPainStrick=" + maxPainStrick + ", dataSet=" + dataSet + "]";
+		return "MaxPains [expiry=" + expiry + " symbol=" + symbol + " maxPainStrick=" + maxPainStrick + " dataSet=" + dataSet + "]";
 	}
 
 }

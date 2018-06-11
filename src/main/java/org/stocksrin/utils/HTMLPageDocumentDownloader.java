@@ -27,10 +27,10 @@ public class HTMLPageDocumentDownloader {
 					e1.printStackTrace();
 				}
 				retryCounter++;
-				System.out.println("FAILED - Command failed on retry " + retryCounter + " of " + RETRY + " error: " + e);
+				LoggerSysOut.print("FAILED - Command failed on retry " + retryCounter + " of " + RETRY + " error: " + e);
 				e.printStackTrace();
 				if (retryCounter >= RETRY) {
-					System.out.println("Max retries exceeded.");
+					LoggerSysOut.print("Max retries exceeded.");
 					break;
 				}
 			}

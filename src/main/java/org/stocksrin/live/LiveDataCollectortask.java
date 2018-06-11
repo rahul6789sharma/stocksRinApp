@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.TimerTask;
 
+import org.stocksrin.utils.LoggerSysOut;
+
 public class LiveDataCollectortask extends TimerTask {
 	
 	public static boolean isWeekEndDay() {
@@ -29,16 +31,16 @@ public class LiveDataCollectortask extends TimerTask {
 					AdvancedDeclined.addAdvanced(row.getAdvances());
 					AdvancedDeclined.addDeclined(row.getDeclines());
 
-					System.out.println("Advanced " + AdvancedDeclined.getAdvanced());
-					System.out.println("Declined " + AdvancedDeclined.getDeclined());
-					System.out.println("********");
+					LoggerSysOut.print("Advanced " + AdvancedDeclined.getAdvanced());
+					LoggerSysOut.print("Declined " + AdvancedDeclined.getDeclined());
+					LoggerSysOut.print("********");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 
 			else if (isClearTime()) {
-				System.out.println("clearing all Advanced and declined data");
+				LoggerSysOut.print("clearing all Advanced and declined data");
 				AdvancedDeclined.creaAall();
 			}
 		}
@@ -59,12 +61,12 @@ public class LiveDataCollectortask extends TimerTask {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 
 		/*
-		 * now.set(Calendar.HOUR_OF_DAY, 8); now.set(Calendar.MINUTE, 30);
-		 * now.set(Calendar.SECOND, 0);
+		 * now.set(Calendar.HOUR_OF_DAY 8); now.set(Calendar.MINUTE 30);
+		 * now.set(Calendar.SECOND 0);
 		 */
 
 		if (now.getTime().after(morningTime.getTime()) && now.getTime().before(eveningTime.getTime())) {
-			System.out.println("isClearTime IN Between");
+			LoggerSysOut.print("isClearTime IN Between");
 			return true;
 		} else {
 
@@ -88,8 +90,8 @@ public class LiveDataCollectortask extends TimerTask {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 
 		/*
-		 * now.set(Calendar.HOUR_OF_DAY, 8); now.set(Calendar.MINUTE, 30);
-		 * now.set(Calendar.SECOND, 0);
+		 * now.set(Calendar.HOUR_OF_DAY 8); now.set(Calendar.MINUTE 30);
+		 * now.set(Calendar.SECOND 0);
 		 */
 
 		if (now.getTime().after(morningTime.getTime()) && now.getTime().before(eveningTime.getTime())) {

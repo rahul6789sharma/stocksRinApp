@@ -32,6 +32,6 @@ public class AdvancedDeclinePojo {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [results = " + results + ", success = " + success + ", rows = " + rows + "]";
+		return "ClassPojo [results = " + results + " success = " + success + " rows = " + rows + "]";
 	}
 }

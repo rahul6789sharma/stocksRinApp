@@ -26,8 +26,8 @@ public class ExcelUtils {
 					String date = stock[2].trim();
 
 					String d = DateUtils.dateToString(new Date(), "dd-MMM-yyyy");
-					System.out.println("File Date" + date);
-					System.out.println("internal  Date" + d);
+					LoggerSysOut.print("File Date" + date);
+					LoggerSysOut.print("internal  Date" + d);
 					if (date.equals(d)) {
 						status = true;
 					}

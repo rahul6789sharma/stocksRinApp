@@ -24,10 +24,11 @@ import org.stocks.price.NseModel;
 import org.stocks.price.NsePrice;
 import org.stocksrin.banknifty.BankNiftyData;
 import org.stocksrin.banknifty.BankNiftyDataFileUtils;
-import org.stocksrin.banknifty.OptionAnalysisModle;
+import org.stocksrin.banknifty.LiveMaxPainModle;
 import org.stocksrin.option.model.OptionModles;
 import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
+import org.stocksrin.utils.LoggerSysOut;
 
 @Path("/nseservice")
 public class NSERestService {
@@ -36,12 +37,12 @@ public class NSERestService {
 	@GET
 	@Path("/bankNiftyMaxPain")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public Map<String, OptionAnalysisModle> getBankNiftyMaxPainData() throws Exception {
+	public Map<String, LiveMaxPainModle> getBankNiftyMaxPainData() throws Exception {
 		return getData();
 	}
 
-	private Map<String, OptionAnalysisModle> getData() {
-		Map<String, OptionAnalysisModle> map = new LinkedHashMap<>();
+	private Map<String, LiveMaxPainModle> getData() {
+		Map<String, LiveMaxPainModle> map = new LinkedHashMap<>();
 
 		Set<String> expiryies = BankNiftyData.getMaxPainSerieas().keySet();
 		SortedSet<String> shortedSet = new TreeSet<>();
@@ -50,7 +51,7 @@ public class NSERestService {
 		}
 
 		for (String string : shortedSet) {
-			OptionAnalysisModle optionAnalysisModle = BankNiftyData.getMaxPainSerieas().get(string);
+			LiveMaxPainModle optionAnalysisModle = BankNiftyData.getMaxPainSerieas().get(string);
 			map.put(string, optionAnalysisModle);
 		}
 		return map;
@@ -60,7 +61,7 @@ public class NSERestService {
 	@Path("/bankniftyOptionChain")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public List<OptionModles> getBankNiftyData(String expiry) throws Exception {
-		System.out.println("expiry " + expiry);
+		LoggerSysOut.print("expiry " + expiry);
 		return BankNiftyDataFileUtils.getBankNiftyAllData(expiry);
 	}
 
@@ -80,13 +81,13 @@ public class NSERestService {
 
 	public Columns getNIftyOC(String expiry) {
 
-		System.out.println(NiftyData.getData().keySet());
+		LoggerSysOut.print(NiftyData.getData().keySet());
 
 		Columns optionChain = NiftyData.getData().get(expiry);
 
 		if (optionChain == null) {
 			// go and fetch data from nse
-			System.out.println("Data is null request Data");
+			LoggerSysOut.print("Data is null request Data");
 			return getNiftyOptionChain(expiry);
 		} else {
 			String lastUpdateDate = optionChain.getLastDataUpdated();
@@ -140,7 +141,7 @@ public class NSERestService {
 		for (NsePrice nsePrice : lst) {
 			dates.add(nsePrice.getId().getNseDate());
 		}
-		System.out.println(dates);
+		LoggerSysOut.print(dates);
 		for (Date date : dates) {
 			NseModel nseModel = new NseModel();
 			nseModel.setDate(DateUtils.getInstance().getDateStringBYDate(date));
@@ -174,7 +175,7 @@ public class NSERestService {
 			resultList.add(nseModel);
 		}
 
-		System.out.println(resultList);
+		LoggerSysOut.print(resultList);
 		return resultList;
 	}
 }

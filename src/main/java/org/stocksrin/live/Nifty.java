@@ -23,7 +23,7 @@ public class Nifty {
 
 	@Override
 	public String toString() {
-		return "Nifty [change=" + change + ", lastTradedPrice=" + lastTradedPrice + "]";
+		return "Nifty [change=" + change + " lastTradedPrice=" + lastTradedPrice + "]";
 	}
 */
 }

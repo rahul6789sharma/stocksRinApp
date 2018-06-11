@@ -233,18 +233,14 @@ function createOptionTable() {
 }
 
 function drawCallsPuts(calls, puts) {
-	console.log(calls);
-	console.log(puts);
+
 	var largest = 0;
 	if(calls>=puts){
 		largest=calls;
 	}else{
 		largest=puts;
 	}
-	
-	
-	
-	console.log(largest);
+
 	Highcharts.chart('totalCallsPutsDiv', {
 	    chart: {
 	        type: 'column'

@@ -2,19 +2,19 @@ package org.stocksrin.fiidii.sectors;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.smarttrade.options.utils.HTMLPageUtils;
-import org.stocksrin.fiidii.derivatives.FIIDIIDataDerivativesModle;
+import org.stocksrin.oi.allparticapent.ParticipantOIFutureModel;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class SectorsFIIUtils {
 
-	public static FIIDIIDataDerivativesModle getFIIDIIDerivaticeData(String url) {
+	public static ParticipantOIFutureModel getFIIDIIDerivaticeData(String url) {
 		//Document doc = HTMLPageUtils.getHTMLDocument(url);
 		 Document doc = HTMLPageUtils.getDocumentFromFile("C:\\Users\\rahulksh\\Desktop\\graph\\sector.html");
 		 
-		 System.out.println(doc.body());
+		 LoggerSysOut.print(doc.body());
 		Element e = doc.getElementById("dvFortnightly");
-		System.out.println(e);
+		LoggerSysOut.print(e);
 
 
 		return null;

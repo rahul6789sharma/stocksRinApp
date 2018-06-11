@@ -9,6 +9,7 @@ import org.smarttrade.options.utils.DocumentParser;
 import org.smarttrade.options.utils.HTMLPageUtils;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.DateUtils;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class NiftyFutureLiveOI {
 
@@ -28,7 +29,7 @@ public class NiftyFutureLiveOI {
 
 			Document doc = HTMLPageUtils.getHTMLDocument(APPConstant.NIFTY_FUTURE_URL);
 			NiftyFutureModel niftyFutureModel = DocumentParser.getInstance().getNiftyFutureData(doc);
-			System.out.println(niftyFutureModel);
+			LoggerSysOut.print(niftyFutureModel);
 			niftyFutureData.put(niftyFutureModel.getLastUpdateTime(), niftyFutureModel);
 
 		} catch (Exception e) {

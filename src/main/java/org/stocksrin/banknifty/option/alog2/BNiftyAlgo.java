@@ -12,6 +12,7 @@ import org.stocksrin.banknifty.TickData;
 import org.stocksrin.banknifty.TickData.Type;
 import org.stocksrin.banknifty.option.alog2.StrategyModel.OptionType;
 import org.stocksrin.email.SendEmail;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class BNiftyAlgo {
 
@@ -58,18 +59,18 @@ public class BNiftyAlgo {
 	private static void targetMail(Double totalPandL, String string, String algoName) {
 		if (totalPandL > targetProfit) {
 
-			SendEmail.sentMail(algoName + ", Profit " + totalPandL, string);
+			SendEmail.sentMail(algoName + " Profit " + totalPandL, string);
 
-			System.out.println("Target Achived of : " + targetProfit);
+			LoggerSysOut.print("Target Achived of : " + targetProfit);
 			targetProfit = totalPandL + 200;
-			System.out.println("Next target is Target : " + targetProfit);
+			LoggerSysOut.print("Next target is Target : " + targetProfit);
 		} else if (totalPandL < targetLoss) {
 
-			SendEmail.sentMail(algoName + ", Loss " + totalPandL, string);
+			SendEmail.sentMail(algoName + " Loss " + totalPandL, string);
 			targetLoss = totalPandL - 200;
 		}
 		if (flag) {
-			SendEmail.sentMail(algoName + ", Market Open Status:" + totalPandL, string);
+			SendEmail.sentMail(algoName + " Market Open Status:" + totalPandL, string);
 			flag = false;
 		}
 
@@ -91,7 +92,7 @@ public class BNiftyAlgo {
 		double totalltp = 0.00;
 		double totalPL = 0.00;
 
-		string.append(algoName + ": Time: " + dat.getLastUpdateTime() + "              BankNifty Spot : " + dat.getUnderlyingIndexSpotPrice() + " [" + df.format(bankNiftyDiff) + "]" + ", L/H:"
+		string.append(algoName + ": Time: " + dat.getLastUpdateTime() + "              BankNifty Spot : " + dat.getUnderlyingIndexSpotPrice() + " [" + df.format(bankNiftyDiff) + "]" + " L/H:"
 				+ bankNIftyRange + "\n");
 		string.append("-------------------------------------------------------------------------------------" + "\n");
 		string.append("type      sell      ltp        P&L        change      Qty      strike      strikeDiff" + "\n");
@@ -130,7 +131,7 @@ public class BNiftyAlgo {
 		string.append("Total     " + df.format(totalSellPoints) + "     " + df.format(totalltp) + "      " + df.format(totalPL) + "      " + df.format(mytradechnage) + "       " + "P&LHighLow "
 				+ profitRange + "\n");
 		string.append("-------------------------------------------------------------------------------------" + "\n");
-		System.out.println(string);
+		LoggerSysOut.print(string);
 		targetMail(totalPL, string.toString(), algoName);
 		return string;
 	}

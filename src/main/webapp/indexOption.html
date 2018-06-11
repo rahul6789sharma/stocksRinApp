@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+<link rel="alternate" hreflang="x-default"
+	href="https://www.stocksrin.com" />
+<link rel="alternate" hreflang="en" href="https://www.stocksrin.com" />
+<meta property="og:locale" content="en_IN" />
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market
+	Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+<meta name="google-site-verification"
+	content="RiMM3DplmIgwoDQbESmxiQeM8vPKaqAmUu2UkG6Hq0U" />
+</head>
+
+<script async
+	src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client : "ca-pub-7270583781006956",
+		enable_page_level_ads : true
+	});
+</script>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+			</br>
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+			<div class="text-center">
+				<h4>
+					<span style="color: #333333;">NSE Index Option Open Interest
+						Analysis (Numbers are in Contracts)</span>
+				</h4>
+			</div>
+
+			<div id="sdDiv" class="sdDiv"></div>
+
+			<br /> </br>
+			<div ng-include="'templets/add.html'"></div>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+			<br />
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+<script>
+	$(document).ready(function() {
+		queryFIIDIIData();
+
+	});
+
+	function queryFIIDIIData() {
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+
+				var jsonResponse = JSON.parse(this.responseText);
+				addDataToTable(jsonResponse);
+			}
+		};
+
+		xhttp.open("GET", "/rest/fiiDiiService/participantFNOData", true);
+		xhttp.send();
+	}
+
+	function addDataToTable(jsonResponse) {
+		var tr;
+		for ( var key in jsonResponse) {
+			console.log(key);
+			/* 
+			 console.log(jsonResponse[key]);
+			 console.log(jsonResponse[key][0]);
+			 console.log(jsonResponse[key][1]);
+			 console.log(jsonResponse[key][2]);
+			 console.log(jsonResponse[key][3]); */
+
+			tr = $('<tr/>');
+			tr.append("<td class=blackRightBorder2>" + key + "</td>");
+
+			//console.log(jsonResponse[key].length);
+			var keyArr = jsonResponse[key];
+
+			var fii_call_long;
+			var fii_call_Short;
+			var fii_put_long;
+			var fii_put_Short;
+
+			var pro_call_long;
+			var pro_call_Short;
+			var pro_put_long;
+			var pro_put_Short;
+
+			var dii_call_long;
+			var dii_call_Short;
+			var dii_put_long;
+			var dii_put_Short;
+
+			var client_call_long;
+			var client_call_Short;
+			var client_put_long;
+			var client_put_Short;
+
+			for (var i = 0; i < keyArr.length; i++) {
+
+				console.log(keyArr[i].participantType);
+
+				if (keyArr[i].participantType == "FII") {
+					console.log(keyArr[i]);
+					fii_call_long = keyArr[i].optionIndexCallLong;
+					fii_call_Short = keyArr[i].optionIndexCallShort;
+
+					fii_put_long = keyArr[i].optionIndexPutLong;
+					fii_put_Short = keyArr[i].optionIndexPutShort;
+
+				} else if (keyArr[i].participantType == "DII") {
+					dii_call_long = keyArr[i].optionIndexCallLong;
+					dii_call_Short = keyArr[i].optionIndexCallShort;
+
+					dii_put_long = keyArr[i].optionIndexPutLong;
+					dii_put_Short = keyArr[i].optionIndexPutShort;
+
+				} else if (keyArr[i].participantType == "CLIENT") {
+					client_call_long = keyArr[i].optionIndexCallLong;
+					client_call_Short = keyArr[i].optionIndexCallShort;
+
+					client_put_long = keyArr[i].optionIndexPutLong;
+					client_put_Short = keyArr[i].optionIndexPutShort;
+
+				} else if (keyArr[i].participantType == "PRO") {
+
+					pro_call_long = keyArr[i].optionIndexCallLong;
+					pro_call_Short = keyArr[i].optionIndexCallShort;
+
+					pro_put_long = keyArr[i].optionIndexPutLong;
+					pro_put_Short = keyArr[i].optionIndexPutShort;
+				}
+			}
+
+			// FII
+			tr.append("<td class=oddRow>" + fii_call_long + "</td>");
+			tr.append("<td class=oddRow>" + fii_call_Short + "</td>");
+			tr.append("<td class=blackRightBorder1>" + (fii_call_long - fii_call_Short)
+					+ "</td>");
+
+			tr.append("<td class=oddRow>" + fii_put_long + "</td>");
+			tr.append("<td class=oddRow>" + fii_put_Short + "</td>");
+			tr.append("<td  class=blackRightBorder2>" + (fii_put_long - fii_put_Short)
+					+ "</td>");
+
+			//PRO
+			tr.append("<td class=oddRow>" + pro_call_long + "</td>");
+			tr.append("<td class=oddRow>" + pro_call_Short + "</td>");
+			tr.append("<td class=blackRightBorder1>" + (pro_call_long - pro_call_Short)
+					+ "</td>");
+
+			tr.append("<td class=oddRow>" + pro_put_long + "</td>");
+			tr.append("<td class=oddRow>" + pro_put_Short + "</td>");
+			tr.append("<td class=blackRightBorder2>" + (pro_put_long - pro_put_Short)
+					+ "</td>");
+
+			//client
+			tr.append("<td class=oddRow>" + client_call_long + "</td>");
+			tr.append("<td class=oddRow>" + client_call_Short + "</td>");
+			tr.append("<td class=blackRightBorder1>"
+					+ (client_call_long - client_call_Short) + "</td>");
+
+			tr.append("<td class=oddRow>" + client_put_long + "</td>");
+			tr.append("<td class=oddRow>" + client_put_Short + "</td>");
+			tr.append("<td class=blackRightBorder2>"
+					+ (client_put_long - client_put_Short) + "</td>");
+
+			//DII
+			tr.append("<td class=oddRow>" + dii_call_long + "</td>");
+			tr.append("<td class=oddRow>" + dii_call_Short + "</td>");
+			tr.append("<td class=blackRightBorder1>" + (dii_call_long - dii_call_Short)
+					+ "</td>");
+
+			tr.append("<td class=oddRow>" + dii_put_long + "</td>");
+			tr.append("<td class=oddRow>" + dii_put_Short + "</td>");
+			tr.append("<td class=blackRightBorder2>" + (dii_put_long - dii_put_Short)
+					+ "</td>");
+
+			tr.append("<td class=oddRow>" + "-" + "</td>");
+			tr.append("<td class=oddRow>" + "-" + "</td>");
+			tr.append("<td class=oddRow>" + "-" + "</td>");
+
+			$('#sdTable').append(tr);
+
+		}
+	}
+
+	createSDTable();
+
+	function createSDTable() {
+		var x = document.createElement("TABLE");
+		x.setAttribute("id", "sdTable");
+		x.setAttribute("class", "opttbldata");
+		x.setAttribute("align", "center");
+		x.setAttribute("cellpadding", "40");
+		x.setAttribute("cellspacing", "2");
+		x.setAttribute("width", "80%");
+
+		$("#sdDiv").append(x);
+		// table header
+		$("#sdTable")
+				.append(
+						'<thead>'
+
+								+ '<tr class="optionHead"><th colspan="1" class=whiteRightBorder ></th> <th colspan="6"  class=whiteRightBorder > FII </th> <th colspan="6" class=whiteRightBorder > PRO </th> <th colspan="6" class=whiteRightBorder > Client </th><th colspan="6" class=whiteRightBorder > DII </th><th colspan="6" >  </th></tr>'
+								+ '<tr class="optionHead"><th colspan="1" class=whiteRightBorder ></th> <th colspan="3"  class=whiteRightBorder >Call</th> <th colspan="3" class=whiteRightBorder > Put </th></th> <th colspan="3"  class=whiteRightBorder >Call</th> <th colspan="3" class=whiteRightBorder > Put </th></th> <th colspan="3"  class=whiteRightBorder >Call</th> <th colspan="3" class=whiteRightBorder > Put </th></th> <th colspan="3"  class=whiteRightBorder >Call</th> <th colspan="3" class=whiteRightBorder > Put </th></tr>'
+								+ '<tr class="optionHead">'
+								+ '<tr class="optionHead">'
+								+ '<th title="Date" class=whiteRightBorder>Date</th> '
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+								+ '<th title="buyValue">Long</th> <th title="SellValue">Short</th><th title="net"class=whiteRightBorder > Net</th>'
+
+								+ '</tr>' + '</thead>');
+
+		// table Fotter 
+	}
+</script>
+
+</html>
+

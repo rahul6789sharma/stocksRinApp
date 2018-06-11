@@ -3,6 +3,8 @@ package org.stocksrin.websockets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.stocksrin.utils.LoggerSysOut;
+
 public class Data {
 	
 	private static Map<Integer, String> map = new LinkedHashMap<>();
@@ -31,7 +33,7 @@ public class Data {
 				"Total    " + i + "    " + i+ "    " + i + "    [" + i + "]" + "   " + "P&LHighLow " + i + "\n");
 		string.append("-------------------------------------------------------------------" + "\n");
 
-		System.out.println(string);
+		LoggerSysOut.print(string);
 		return string.toString();
 	}
 

@@ -14,28 +14,27 @@ public class Calculation {
 
 		MaxPains maxPains = new MaxPains();
 		List<MaxPain> maxPainList = new ArrayList<>();
-		List<OptionModle> optionModle2 = formate(optionModle);
 
-		for (int i = 0; i < optionModle2.size(); i++) {
-			String strikePrice = optionModle2.get(i).getStrike_price().trim();
+		for (int i = 0; i < optionModle.size(); i++) {
+			Double strikePrice = optionModle.get(i).getStrike_price();
 
-			String ceOI = optionModle2.get(i).getC_oi();
-			String peOI = optionModle2.get(i).getP_oi();
+			String ceOI = optionModle.get(i).getC_oi().toString();
+			String peOI = optionModle.get(i).getP_oi().toString();
 
-			MaxPain maxPain = new MaxPain(Double.parseDouble(strikePrice), Double.parseDouble(ceOI), Double.parseDouble(peOI));
+			MaxPain maxPain = new MaxPain(strikePrice, Double.parseDouble(ceOI), Double.parseDouble(peOI));
 			Double total = 0.0;
 
 			Double callCuresult = 0.0;
 			for (int j = 0; j < i; j++) {
-				String a1 = optionModle2.get(j).getC_oi();
+				String a1 = optionModle.get(j).getC_oi().toString();
 
 				callCuresult = callCuresult + ((Double.parseDouble(a1)) * ((strickDiff * i) - (strickDiff * j)));
 				maxPain.setCumulativeCe(callCuresult);
 			}
 
 			Double putCuresult = 0.0;
-			for (int j = i; j < optionModle2.size(); j++) {
-				String a1 = optionModle2.get(j).getP_oi();
+			for (int j = i; j < optionModle.size(); j++) {
+				String a1 = optionModle.get(j).getP_oi().toString();
 
 				putCuresult = putCuresult + ((Double.parseDouble(a1)) * ((strickDiff * j) - (strickDiff * i)));
 				maxPain.setCumulativePe(putCuresult);
@@ -43,7 +42,7 @@ public class Calculation {
 
 			total = putCuresult + callCuresult;
 			maxPain.setTotal(total);
-			maxPain.setStrickPrice(Double.parseDouble(strikePrice));
+			maxPain.setStrickPrice(strikePrice);
 			maxPainList.add(maxPain);
 
 		}
@@ -124,35 +123,6 @@ public class Calculation {
 		}
 		return strickPrice;
 
-	}
-
-	private static List<OptionModle> formate(List<OptionModle> optionModle) {
-		List<OptionModle> lst = new ArrayList<>();
-		for (OptionModle e : optionModle) {
-			OptionModle option = new OptionModle();
-
-			String ceOI = e.getC_oi();
-			String peOI = e.getP_oi();
-
-			if (ceOI.equals("-")) {
-				ceOI = "0";
-			} else {
-				ceOI = e.getC_oi().replaceAll(",", "");
-			}
-			if (peOI.equals("-")) {
-				peOI = "0";
-			} else {
-				peOI = e.getP_oi().replaceAll(",", "");
-			}
-
-			option.setStrike_price(e.getStrike_price().trim());
-			option.setC_oi(ceOI);
-			option.setP_oi(peOI);
-
-			lst.add(option);
-
-		}
-		return lst;
 	}
 
 }

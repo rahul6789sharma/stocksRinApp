@@ -22,6 +22,7 @@ import java.util.TimeZone;
 import org.stocksrin.banknifty.option.alog2.StrategyModel;
 import org.stocksrin.banknifty.option.alog2.StrategyModel.OptionType;
 import org.stocksrin.fiidii.FIIDIIDataModle;
+import org.stocksrin.fiidii.FIIDIIDataYrModle;
 import org.stocksrin.oi.future.NiftyOIDataModle;
 import org.stocksrin.option.model.BankNiftyDailyMaxPain;
 
@@ -40,6 +41,7 @@ public class CommonUtils {
 			rbc.close();
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new Exception("ERROR ! File download " + e.getMessage());
 		} finally {
 
@@ -53,6 +55,7 @@ public class CommonUtils {
 	private static final int MARKET_HR = 15;
 	private static final int MARKET_MINUTE = 35;
 
+	// return true in market hr// after market hr it will retunr false
 	public static boolean getEveningTime() {
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today.set(Calendar.HOUR_OF_DAY, MARKET_HR);
@@ -62,7 +65,7 @@ public class CommonUtils {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 
 		if (now.after(today)) {
-			System.out.println("Time is more then 3:30 pm");
+			LoggerSysOut.print("Time is more then 3:30 pm");
 			return false;
 		} else {
 			return true;
@@ -173,22 +176,21 @@ public class CommonUtils {
 		bankNiftyDailyMaxPain.setExpiry(data[1]);
 		bankNiftyDailyMaxPain.setExpiryType(data[2]);
 		bankNiftyDailyMaxPain.setMaxPain(Double.parseDouble(data[3]));
-		bankNiftyDailyMaxPain.setTotalCEOI(data[4]);
-		bankNiftyDailyMaxPain.setTotalPEOI(data[5]);
-		bankNiftyDailyMaxPain.setPcr(data[6]);
-		bankNiftyDailyMaxPain.setOi(data[7]);
-		bankNiftyDailyMaxPain.setChangeInOI(data[8]);
-		bankNiftyDailyMaxPain.setPerChangeInOI(data[9]);
-		bankNiftyDailyMaxPain.setSpot(data[10]);
-		bankNiftyDailyMaxPain.setChange(data[11]);
+		bankNiftyDailyMaxPain.setTotalCEOI(Integer.parseInt(data[4]));
+		bankNiftyDailyMaxPain.setTotalPEOI(Integer.parseInt(data[5]));
+		bankNiftyDailyMaxPain.setPcr(Double.parseDouble(data[6]));
+		bankNiftyDailyMaxPain.setSpot(Double.parseDouble(data[7]));
+		bankNiftyDailyMaxPain.setChange(data[8]);
+		bankNiftyDailyMaxPain.setDay(data[9]);
+		bankNiftyDailyMaxPain.setIsExpiryDay(data[10]);
 
 		return bankNiftyDailyMaxPain;
 	}
 
 	public static FIIDIIDataModle getFIIModelFromCSV(String csvData) {
-
-		String cvsSplitBy = ",";
 		FIIDIIDataModle fIIDIIDataModle = new FIIDIIDataModle();
+		String cvsSplitBy = ",";
+
 		String[] data = csvData.split(cvsSplitBy);
 		fIIDIIDataModle.setDate(data[0]);
 		fIIDIIDataModle.setFii_BuyValue(data[1]);
@@ -202,6 +204,25 @@ public class CommonUtils {
 		fIIDIIDataModle.setStocks_Advance(data[9]);
 		fIIDIIDataModle.setStocks_Decline(data[10]);
 		return fIIDIIDataModle;
+	}
+
+	public static FIIDIIDataYrModle getFIIModelYearlyFromCSV(String csvData) {
+
+		String cvsSplitBy = ",";
+		FIIDIIDataYrModle fiiDIIDataYrModle = new FIIDIIDataYrModle();
+		String[] data = csvData.split(cvsSplitBy);
+		fiiDIIDataYrModle.setMonth(data[0]);
+		fiiDIIDataYrModle.setFii_BuyValue(data[1]);
+		fiiDIIDataYrModle.setFii_SellValue(data[2]);
+		fiiDIIDataYrModle.setFii_net(data[3]);
+		fiiDIIDataYrModle.setDii_BuyValue(data[4]);
+		fiiDIIDataYrModle.setDii_SellValue(data[5]);
+		fiiDIIDataYrModle.setDii_net(data[6]);
+		fiiDIIDataYrModle.setNiftyStartMonth(data[7]);
+		fiiDIIDataYrModle.setNiftyStartEnd(data[8]);
+		fiiDIIDataYrModle.setNifty_change(data[9]);
+
+		return fiiDIIDataYrModle;
 	}
 
 	public static int totalNumberOfLine(String filepath) {
@@ -219,12 +240,12 @@ public class CommonUtils {
 					linenumber++;
 				}
 
-				System.out.println("Total number of lines : " + linenumber);
+				LoggerSysOut.print("Total number of lines : " + linenumber);
 
 				lnr.close();
 
 			} else {
-				System.out.println("File does not exists!");
+				LoggerSysOut.print("File does not exists!");
 			}
 
 		} catch (IOException e) {
@@ -317,6 +338,32 @@ public class CommonUtils {
 
 	}
 
+	public static String[] getCSVData_FirstLine(String csvFile) {
+
+		String line = "";
+		String cvsSplitBy = ",";
+		List<String[]> lst = new ArrayList<>(2);
+		try (BufferedReader br = new BufferedReader(new FileReader(csvFile));) {
+
+			int i = 0;
+			while ((line = br.readLine()) != null) {
+
+				// use comma as separator
+				String[] data = line.split(cvsSplitBy);
+				return data;
+				//break;
+
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	
+	}
+
 	public static List<String[]> getCSVData(String csvFile) {
 
 		String line = "";
@@ -332,7 +379,6 @@ public class CommonUtils {
 					lst.add(data);
 				}
 				i++;
-
 			}
 
 		} catch (FileNotFoundException e) {

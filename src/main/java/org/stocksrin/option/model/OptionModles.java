@@ -1,26 +1,26 @@
 package org.stocksrin.option.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class OptionModles {
 
-	private int total_ce_oi;
-	private int total_pe_oi;
-	private Date date;
+	private String date;
 	private String expiry;
 	private List<String> expiryList = new ArrayList<>();
 	private String lastDataUpdated;
 
 	private String underlyingSpotPrice;
+	private Double spot;
+
 	private String change;
 	private String type; // monthly or Weekly
 
+	private int total_ce_oi;
+	private int total_pe_oi;
+	private Double maxPainStrick;
 	private List<OptionModle> optionModle = new ArrayList<>();
 
-	private String spot;
-	
 	public int getTotal_ce_oi() {
 		return total_ce_oi;
 	}
@@ -37,11 +37,11 @@ public class OptionModles {
 		this.total_pe_oi = total_pe_oi;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -93,12 +93,11 @@ public class OptionModles {
 		this.optionModle = optionModle;
 	}
 
-	
-	public String getSpot() {
+	public Double getSpot() {
 		return spot;
 	}
 
-	public void setSpot(String spot) {
+	public void setSpot(Double spot) {
 		this.spot = spot;
 	}
 
@@ -110,11 +109,18 @@ public class OptionModles {
 		this.type = type;
 	}
 
+	public Double getMaxPainStrick() {
+		return maxPainStrick;
+	}
+
+	public void setMaxPainStrick(Double maxPainStrick) {
+		this.maxPainStrick = maxPainStrick;
+	}
+
 	@Override
 	public String toString() {
-		return "OptionModles [total_ce_oi=" + total_ce_oi + ", total_pe_oi=" + total_pe_oi + ", date=" + date
-				+ ", expiry=" + expiry + ", expiryList=" + expiryList + ", lastDataUpdated=" + lastDataUpdated
-				+ ", underlyingSpotPrice=" + underlyingSpotPrice + ", change=" + change + ", optionModle=" + optionModle
+		return "OptionModles [date=" + date + ", expiry=" + expiry + ", expiryList=" + expiryList + ", lastDataUpdated=" + lastDataUpdated + ", underlyingSpotPrice=" + underlyingSpotPrice + ", spot="
+				+ spot + ", change=" + change + ", type=" + type + ", total_ce_oi=" + total_ce_oi + ", total_pe_oi=" + total_pe_oi + ", maxPainStrick=" + maxPainStrick + ", optionModle=" + optionModle
 				+ "]";
 	}
 

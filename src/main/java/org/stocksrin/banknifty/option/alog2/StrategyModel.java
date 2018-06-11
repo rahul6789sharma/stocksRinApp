@@ -105,8 +105,8 @@ public class StrategyModel {
 
 	@Override
 	public String toString() {
-		return "StrategyModel [strategySerial=" + strategySerial + ", expiry=" + expiry + ", type=" + type + ", strike=" + strike + ", close_price=" + close_price + ", quantity=" + quantity
-				+ ", target=" + target + ", stopLoss=" + stopLoss + ", spot_close=" + spot_close + ", des=" + des + "]";
+		return "StrategyModel [strategySerial=" + strategySerial + " expiry=" + expiry + " type=" + type + " strike=" + strike + " close_price=" + close_price + " quantity=" + quantity
+				+ " target=" + target + " stopLoss=" + stopLoss + " spot_close=" + spot_close + " des=" + des + "]";
 	}
 
 }

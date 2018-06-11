@@ -286,12 +286,12 @@ public class Column {
 
 	@Override
 	public String toString() {
-		return "Column [CE_OI=" + CE_OI + ", CE_Change_in_OI=" + CE_Change_in_OI + ", CE_Volume=" + CE_Volume
-				+ ", CE_IV=" + CE_IV + ", CE_LTP=" + CE_LTP + ", CE_Net_Change=" + CE_Net_Change + ", CE_deta="
-				+ CE_deta + ", CE_theta=" + CE_theta + ", CE_rho=" + CE_rho + ", Strike_Price=" + Strike_Price
-				+ ", PE_Net_Change=" + PE_Net_Change + ", PE_LTP=" + PE_LTP + ", PE_IV=" + PE_IV + ", PE_Volume="
-				+ PE_Volume + ", PE_Change_in_OI=" + PE_Change_in_OI + ", PE_OI=" + PE_OI + ", PE_deta=" + PE_deta
-				+ ", PE_theta=" + PE_theta + ", PE_rho=" + PE_rho + "]";
+		return "Column [CE_OI=" + CE_OI + " CE_Change_in_OI=" + CE_Change_in_OI + " CE_Volume=" + CE_Volume
+				+ " CE_IV=" + CE_IV + " CE_LTP=" + CE_LTP + " CE_Net_Change=" + CE_Net_Change + " CE_deta="
+				+ CE_deta + " CE_theta=" + CE_theta + " CE_rho=" + CE_rho + " Strike_Price=" + Strike_Price
+				+ " PE_Net_Change=" + PE_Net_Change + " PE_LTP=" + PE_LTP + " PE_IV=" + PE_IV + " PE_Volume="
+				+ PE_Volume + " PE_Change_in_OI=" + PE_Change_in_OI + " PE_OI=" + PE_OI + " PE_deta=" + PE_deta
+				+ " PE_theta=" + PE_theta + " PE_rho=" + PE_rho + "]";
 	}
 
 

@@ -41,7 +41,7 @@ public class NSEIndice {
 	}
 
 	public String getLastPrice() {
-		return lastPrice.replace(",", "");
+		return lastPrice.replace("", "");
 	}
 
 	public void setLastPrice(String lastPrice) {
@@ -50,8 +50,8 @@ public class NSEIndice {
 
 	@Override
 	public String toString() {
-		return "NSEIndice [change=" + change + ", imgFileName=" + imgFileName + ", name=" + name + ", pChange="
-				+ pChange + ", lastPrice=" + lastPrice + "]";
+		return "NSEIndice [change=" + change + " imgFileName=" + imgFileName + " name=" + name + " pChange="
+				+ pChange + " lastPrice=" + lastPrice + "]";
 	}
 
 	

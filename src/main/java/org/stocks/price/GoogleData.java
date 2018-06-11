@@ -311,11 +311,11 @@ public class GoogleData {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [lo = " + lo + ", avvo = " + avvo + ", l_fix = " + l_fix + ", cp_fix = " + cp_fix + ", lt = " + lt + ", hi = " + hi
-				+ ", type = " + type + ", beta = " + beta + ", fwpe = " + fwpe + ", ltt = " + ltt + ", vo = " + vo + ", id = " + id + ", inst_own = "
-				+ inst_own + ", mc = " + mc + ", lt_dts = " + lt_dts + ", name = " + name + ", ccol = " + ccol + ", e = " + e + ", op = " + op
-				+ ", c = " + c + ", pcls_fix = " + pcls_fix + ", l = " + l + ", shares = " + shares + ", eps = " + eps + ", pe = " + pe
-				+ ", c_fix = " + c_fix + ", t = " + t + ", cp = " + cp + ", lo52 = " + lo52 + ", s = " + s + ", l_cur = " + l_cur + ", eo = " + eo
-				+ ", delay = " + delay + ", hi52 = " + hi52 + "]";
+		return "ClassPojo [lo = " + lo + " avvo = " + avvo + " l_fix = " + l_fix + " cp_fix = " + cp_fix + " lt = " + lt + " hi = " + hi
+				+ " type = " + type + " beta = " + beta + " fwpe = " + fwpe + " ltt = " + ltt + " vo = " + vo + " id = " + id + " inst_own = "
+				+ inst_own + " mc = " + mc + " lt_dts = " + lt_dts + " name = " + name + " ccol = " + ccol + " e = " + e + " op = " + op
+				+ " c = " + c + " pcls_fix = " + pcls_fix + " l = " + l + " shares = " + shares + " eps = " + eps + " pe = " + pe
+				+ " c_fix = " + c_fix + " t = " + t + " cp = " + cp + " lo52 = " + lo52 + " s = " + s + " l_cur = " + l_cur + " eo = " + eo
+				+ " delay = " + delay + " hi52 = " + hi52 + "]";
 	}
 }

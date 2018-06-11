@@ -8,13 +8,16 @@ public class FIIDIIdataModelMap {
 	private FIIDIIdataModelMap() {
 	}
 
-	// private static List<Map<String, FIIDIIDataModle>> monthlyData = new
-	// ArrayList<>();
+	private static Map<String, FIIDIIDataYrModle> fIIDIIYearlyData = new LinkedHashMap<>();
 
 	private static Map<String, FIIDIIDataModle> fIIDIIPreviousMOnthData = new LinkedHashMap<>();
 
 	// current month data
 	private static Map<String, FIIDIIDataModle> fIIDIIDataModleData = new LinkedHashMap<>();
+
+	public static void addYearlyData(String date, FIIDIIDataYrModle fiiDIIDataYrModle) {
+		fIIDIIYearlyData.put(date, fiiDIIDataYrModle);
+	}
 
 	public static void addPreviousMonthData(String date, FIIDIIDataModle fIIDIIDataModle) {
 		fIIDIIPreviousMOnthData.put(date, fIIDIIDataModle);
@@ -40,11 +43,19 @@ public class FIIDIIdataModelMap {
 		FIIDIIdataModelMap.fIIDIIPreviousMOnthData = fIIDIIPreviousMOnthData;
 	}
 
+	public static Map<String, FIIDIIDataYrModle> getfIIDIIYearlyData() {
+		return fIIDIIYearlyData;
+	}
+
+	public static void setfIIDIIYearlyData(Map<String, FIIDIIDataYrModle> fIIDIIYearlyData) {
+		FIIDIIdataModelMap.fIIDIIYearlyData = fIIDIIYearlyData;
+	}
+
 	/*
-	 * public static List<Map<String, FIIDIIDataModle>> getMonthlyData() {
+	 * public static List<Map<String FIIDIIDataModle>> getMonthlyData() {
 	 * return monthlyData; }
 	 * 
-	 * public static void setMonthlyData(List<Map<String, FIIDIIDataModle>>
+	 * public static void setMonthlyData(List<Map<String FIIDIIDataModle>>
 	 * monthlyData) { FIIDIIdataModelMap.monthlyData = monthlyData; }
 	 */
 

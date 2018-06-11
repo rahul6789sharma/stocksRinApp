@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import org.stocksrin.banknifty.TickData;
 import org.stocksrin.utils.CommonUtils;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class OptionDataCollectorTask extends TimerTask {
 
@@ -19,7 +20,7 @@ public class OptionDataCollectorTask extends TimerTask {
 
 	@Override
 	public void run() {
-		System.out.println(" Data Collection " + threadName);
+		LoggerSysOut.print(" Data Collection " + threadName);
 		if (CommonUtils.getEveningTime()) {
 			Map<Integer, List<StrategyModel>> strategyMap = CommonUtils.getBankNiftyStrategy();
 			List<StrategyModel> lst = strategyMap.get(strategySerial);
@@ -27,7 +28,10 @@ public class OptionDataCollectorTask extends TimerTask {
 			String name = lst.get(0).getDes();
 			try {
 				List<TickData> result = BNiftyAlgo.getData(lst, expiry);
-				BNiftyAlgo.algo2(result, lst, name);
+				if (result != null) {
+					BNiftyAlgo.algo2(result, lst, name);
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

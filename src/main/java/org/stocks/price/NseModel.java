@@ -1,7 +1,5 @@
 package org.stocks.price;
 
-import java.util.Date;
-
 public class NseModel {
 	
 	private String nifty_nseOpen;
@@ -123,11 +121,11 @@ public class NseModel {
 	}
 	@Override
 	public String toString() {
-		return "NseModel [nifty_nseOpen=" + nifty_nseOpen + ", nifty_nseHigh=" + nifty_nseHigh + ", nifty_nseLow=" + nifty_nseLow
-				+ ", nifty_nseChange=" + nifty_nseChange + ", nifty_nseClose=" + nifty_nseClose + ", nifty_percantageChange="
-				+ nifty_percantageChange + ", nifty_vol=" + nifty_vol + ", bNifty_nseOpen=" + bNifty_nseOpen + ", bNifty_nseHigh=" + bNifty_nseHigh
-				+ ", bNifty_nseLow=" + bNifty_nseLow + ", bNifty_nseChange=" + bNifty_nseChange + ", bNifty_nseClose=" + bNifty_nseClose
-				+ ", bNifty_percantageChange=" + bNifty_percantageChange + ", bNifty_vol=" + bNifty_vol + ", comments=" + comments + ", date=" + date
+		return "NseModel [nifty_nseOpen=" + nifty_nseOpen + " nifty_nseHigh=" + nifty_nseHigh + " nifty_nseLow=" + nifty_nseLow
+				+ " nifty_nseChange=" + nifty_nseChange + " nifty_nseClose=" + nifty_nseClose + " nifty_percantageChange="
+				+ nifty_percantageChange + " nifty_vol=" + nifty_vol + " bNifty_nseOpen=" + bNifty_nseOpen + " bNifty_nseHigh=" + bNifty_nseHigh
+				+ " bNifty_nseLow=" + bNifty_nseLow + " bNifty_nseChange=" + bNifty_nseChange + " bNifty_nseClose=" + bNifty_nseClose
+				+ " bNifty_percantageChange=" + bNifty_percantageChange + " bNifty_vol=" + bNifty_vol + " comments=" + comments + " date=" + date
 				+ "]";
 	}
 	

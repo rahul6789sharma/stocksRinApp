@@ -8,25 +8,42 @@ import java.util.TimeZone;
 
 public class DateUtils {
 
-
 	private DateUtils() {
 	}
 
-
+	public static String getCurrentDay() {
+		SimpleDateFormat format = new SimpleDateFormat("d");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, 0);
+		return format.format(cal.getTime()).toUpperCase();
+	}
+	
+	public static String getFullCurrentMonth() {
+		SimpleDateFormat format = new SimpleDateFormat("MMMM");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, 0);
+		return format.format(cal.getTime());
+	}
+	
 	public static String getCurrentMonth() {
 		SimpleDateFormat format = new SimpleDateFormat("MMM");
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, 0);
 		return format.format(cal.getTime());
 	}
-	
+
 	public static String getCurrentYear() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy");
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.YEAR, 0);
 		return format.format(cal.getTime());
 	}
-	
+
+	public static int getCurrentWeek() {
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.WEEK_OF_MONTH);
+	}
+
 	public static String getPreviousMonth(int previousMonth) {
 		SimpleDateFormat format = new SimpleDateFormat("MMM");
 		Calendar cal = Calendar.getInstance();
@@ -34,7 +51,7 @@ public class DateUtils {
 		return format.format(cal.getTime());
 	}
 
-	public static int getExpiryWeekOfMonth(String expiry) throws Exception {
+	public static int getWeekOfMonth(String expiry) throws Exception {
 
 		String formate = "ddMMMyyyy";
 		Date date = stringToDate(expiry, formate);
@@ -45,6 +62,12 @@ public class DateUtils {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		now.set(Calendar.DATE, date1);
 		return now.get(Calendar.WEEK_OF_MONTH);
+	}
+
+	public static int getNumberOfWeekInMonth() {
+		Calendar calendar = Calendar.getInstance();
+		return calendar.getActualMaximum(Calendar.WEEK_OF_MONTH);
+
 	}
 
 	public static String previousDayDate(String formate) {
@@ -60,6 +83,7 @@ public class DateUtils {
 
 	public static boolean isWeekEndDay() {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		System.out.println(now.get(Calendar.DAY_OF_WEEK));
 		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 			return true;
 		} else {
@@ -70,6 +94,7 @@ public class DateUtils {
 	public static String dateToString(Date date, String formate) throws Exception {
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat(formate);
+			formatter.setTimeZone(TimeZone.getTimeZone("IST"));
 			return formatter.format(date);
 		} catch (Exception e) {
 			throw new Exception("ERROR! dateToString " + e.getMessage());
@@ -79,7 +104,9 @@ public class DateUtils {
 
 	public static Date stringToDate(String sDate, String formate) throws Exception {
 		try {
-			return new SimpleDateFormat(formate).parse(sDate);
+			SimpleDateFormat formatter = new SimpleDateFormat(formate);
+			formatter.setTimeZone(TimeZone.getTimeZone("IST"));
+			return formatter.parse(sDate);
 		} catch (Exception e) {
 			throw new Exception("ERROR! StringToDate " + e.getMessage());
 		}
@@ -100,7 +127,7 @@ public class DateUtils {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 
 		int i = now.get(Calendar.DAY_OF_WEEK);
-		System.out.println(i);
+		LoggerSysOut.print(i);
 		if (i == 1) {
 			return "SUNDAY";
 		} else if (i == 2) {
@@ -120,7 +147,39 @@ public class DateUtils {
 		return null;
 	}
 
+	public static String getMonth(String s) throws Exception {
+		int month = Integer.parseInt(s);
+		if (month == 1) {
+			return "Jan";
+		} else if (month == 2) {
+			return "Feb";
+		} else if (month == 3) {
+			return "Mar";
+		} else if (month == 4) {
+			return "Apr";
+		} else if (month == 5) {
+			return "May";
+		} else if (month == 6) {
+			return "Jun";
+		} else if (month == 7) {
+			return "Jul";
+		} else if (month == 8) {
+			return "Aug";
+		} else if (month == 9) {
+			return "Sep";
+		} else if (month == 10) {
+			return "Oct";
+		} else if (month == 11) {
+			return "Nov";
+		} else if (month == 12) {
+			return "Dec";
+		} else {
+			throw new Exception("Error Month Out of range");
+		}
+
+	}
+
 	public static void main(String[] args) {
-		System.out.println(getCurrentYear());
+		LoggerSysOut.print(getCurrentYear());
 	}
 }

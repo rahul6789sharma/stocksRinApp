@@ -44,7 +44,7 @@ public class HistoricalOI {
 	}
 	@Override
 	public String toString() {
-		return "HistoricalOI [expiry=" + expiry + ", strick=" + strick + ", dates=" + dates + ", ce_oi=" + ce_oi + ", pe_oi=" + pe_oi + "]";
+		return "HistoricalOI [expiry=" + expiry + " strick=" + strick + " dates=" + dates + " ce_oi=" + ce_oi + " pe_oi=" + pe_oi + "]";
 	}
 	
 }

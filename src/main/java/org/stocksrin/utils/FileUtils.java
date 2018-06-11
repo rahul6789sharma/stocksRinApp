@@ -22,6 +22,24 @@ public class FileUtils {
 
 	}
 
+	public static void delete(String filePath) {
+		try {
+
+			File file = new File(filePath);
+
+			if (file.delete()) {
+				LoggerSysOut.print(file.getName() + " is deleted!");
+			} else {
+				LoggerSysOut.print("Delete operation is failed.");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+	}
+
 	public static void backup(String sourceFile, String targetFile) throws IOException {
 		Path source = Paths.get(sourceFile);
 		Path target = Paths.get(targetFile);
@@ -30,15 +48,20 @@ public class FileUtils {
 
 	}
 
+	public static boolean isFileExits(String filepath) {
+		File file = new File(filepath);
+		return file.exists();
+	}
+
 	public static boolean makeFile(String filepath) {
 		try {
 
 			File file = new File(filepath);
 			if (file.createNewFile()) {
-				System.out.println("File is created! " + filepath);
+				LoggerSysOut.print("File is created! " + filepath);
 				return true;
 			} else {
-				System.out.println("File already exists." + filepath);
+				LoggerSysOut.print("File already exists." + filepath);
 				return false;
 			}
 
@@ -48,21 +71,29 @@ public class FileUtils {
 		return false;
 	}
 
-	public static void makeDir(String dirPath) {
+	public static boolean makeDir(String dirPath) {
 		File file = new File(dirPath);
 		if (!file.exists()) {
 			if (file.mkdir()) {
-				System.out.println("Directory is created! " + dirPath);
+				LoggerSysOut.print("Directory is created! " + dirPath);
+				return true;
 			} else {
-				System.out.println("Failed to create directory! " + dirPath);
+				LoggerSysOut.print("Failed to create directory! " + dirPath);
+				return false;
 			}
+		} else {
+			return false;
 		}
+
 	}
 
 	public static void writeDataAsJson(Object data, String fileName) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(new File(fileName), data);
+
+			File file = new File(fileName);
+			// file.createNewFile();
+			mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,7 +127,7 @@ public class FileUtils {
 		return sortedFileName;
 	}
 
-	private static List<String> listFilesForFolder(final File folder) {
+	public static List<String> listFilesForFolder(final File folder) {
 		List<String> names = new ArrayList<>();
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
@@ -221,7 +252,7 @@ public class FileUtils {
 
 	public static void main(String[] args) {
 		String file = "C:\\nse\\fandO\\fno.txt";
-		System.out.println(readFnOList(file));
+		LoggerSysOut.print(readFnOList(file));
 
 	}
 }

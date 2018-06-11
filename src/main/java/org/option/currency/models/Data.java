@@ -500,21 +500,21 @@ public class Data {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [change = " + change + ", sellPrice1 = " + sellPrice1 + ", buyQuantity3 = " + buyQuantity3 + ", sellPrice2 = " + sellPrice2
-				+ ", buyQuantity4 = " + buyQuantity4 + ", buyQuantity1 = " + buyQuantity1 + ", ltp = " + ltp + ", buyQuantity2 = " + buyQuantity2
-				+ ", sellPrice5 = " + sellPrice5 + ", sellPrice3 = " + sellPrice3 + ", buyQuantity5 = " + buyQuantity5 + ", sellPrice4 = "
-				+ sellPrice4 + ", underlying = " + underlying + ", bestSell = " + bestSell + ", annualisedVolatility = " + annualisedVolatility
-				+ ", optionType = " + optionType + ", prevClose = " + prevClose + ", lastPrice = " + lastPrice + ", pChange = " + pChange
-				+ ", lowPrice = " + lowPrice + ", strikePrice = " + strikePrice + ", totalTurnover = " + totalTurnover + ", tradeCount = "
-				+ tradeCount + ", numberOfContractsTraded = " + numberOfContractsTraded + ", underlyingValue = " + underlyingValue
-				+ ", openInterest = " + openInterest + ", vwap = " + vwap + ", totalBuyQuantity = " + totalBuyQuantity + ", openPrice = " + openPrice
-				+ ", premiumTurnOver = " + premiumTurnOver + ", closePrice = " + closePrice + ", bestBuy = " + bestBuy + ", changeinOpenInterest = "
-				+ changeinOpenInterest + ", clientWisePositionLimits = " + clientWisePositionLimits + ", totalSellQuantity = " + totalSellQuantity
-				+ ", dailyVolatility = " + dailyVolatility + ", sellQuantity5 = " + sellQuantity5 + ", marketLot = " + marketLot + ", iv = " + iv
-				+ ", expiryDate = " + expiryDate + ", marketWidePositionLimits = " + marketWidePositionLimits + ", sellQuantity2 = " + sellQuantity2
-				+ ", sellQuantity1 = " + sellQuantity1 + ", buyPrice1 = " + buyPrice1 + ", sellQuantity4 = " + sellQuantity4 + ", buyPrice2 = "
-				+ buyPrice2 + ", sellQuantity3 = " + sellQuantity3 + ", buyPrice4 = " + buyPrice4 + ", buyPrice3 = " + buyPrice3 + ", buyPrice5 = "
-				+ buyPrice5 + ", turnoverinRsLakhs = " + turnoverinRsLakhs + ", pchangeinOpenInterest = " + pchangeinOpenInterest
-				+ ", settlementPrice = " + settlementPrice + ", instrumentType = " + instrumentType + ", highPrice = " + highPrice + "]";
+		return "ClassPojo [change = " + change + " sellPrice1 = " + sellPrice1 + " buyQuantity3 = " + buyQuantity3 + " sellPrice2 = " + sellPrice2
+				+ " buyQuantity4 = " + buyQuantity4 + " buyQuantity1 = " + buyQuantity1 + " ltp = " + ltp + " buyQuantity2 = " + buyQuantity2
+				+ " sellPrice5 = " + sellPrice5 + " sellPrice3 = " + sellPrice3 + " buyQuantity5 = " + buyQuantity5 + " sellPrice4 = "
+				+ sellPrice4 + " underlying = " + underlying + " bestSell = " + bestSell + " annualisedVolatility = " + annualisedVolatility
+				+ " optionType = " + optionType + " prevClose = " + prevClose + " lastPrice = " + lastPrice + " pChange = " + pChange
+				+ " lowPrice = " + lowPrice + " strikePrice = " + strikePrice + " totalTurnover = " + totalTurnover + " tradeCount = "
+				+ tradeCount + " numberOfContractsTraded = " + numberOfContractsTraded + " underlyingValue = " + underlyingValue
+				+ " openInterest = " + openInterest + " vwap = " + vwap + " totalBuyQuantity = " + totalBuyQuantity + " openPrice = " + openPrice
+				+ " premiumTurnOver = " + premiumTurnOver + " closePrice = " + closePrice + " bestBuy = " + bestBuy + " changeinOpenInterest = "
+				+ changeinOpenInterest + " clientWisePositionLimits = " + clientWisePositionLimits + " totalSellQuantity = " + totalSellQuantity
+				+ " dailyVolatility = " + dailyVolatility + " sellQuantity5 = " + sellQuantity5 + " marketLot = " + marketLot + " iv = " + iv
+				+ " expiryDate = " + expiryDate + " marketWidePositionLimits = " + marketWidePositionLimits + " sellQuantity2 = " + sellQuantity2
+				+ " sellQuantity1 = " + sellQuantity1 + " buyPrice1 = " + buyPrice1 + " sellQuantity4 = " + sellQuantity4 + " buyPrice2 = "
+				+ buyPrice2 + " sellQuantity3 = " + sellQuantity3 + " buyPrice4 = " + buyPrice4 + " buyPrice3 = " + buyPrice3 + " buyPrice5 = "
+				+ buyPrice5 + " turnoverinRsLakhs = " + turnoverinRsLakhs + " pchangeinOpenInterest = " + pchangeinOpenInterest
+				+ " settlementPrice = " + settlementPrice + " instrumentType = " + instrumentType + " highPrice = " + highPrice + "]";
 	}
 }

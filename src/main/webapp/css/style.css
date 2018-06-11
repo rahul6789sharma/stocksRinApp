@@ -29,6 +29,7 @@ table {
 	border: solid 1px #ACA99F;
 	font-size: 82%;
 	color: #000;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .opttbldata table {
@@ -40,6 +41,7 @@ table {
 	border: solid 1px #ACA99F;
 	font-size: 100% !important;
 	color: #000;
+	
 }
 
 td, th {
@@ -122,6 +124,15 @@ td, th {
 
 .whiteRightBorder {
 	border-right: 1px solid #fff;
+}
+
+.blackRightBorder1 {
+	border-right: 1px solid #000000;
+}
+
+
+.blackRightBorder2 {
+	border-right: 2px solid #000000;
 }
 
 .negitiveValue {

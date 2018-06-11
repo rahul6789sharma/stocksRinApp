@@ -116,10 +116,10 @@ public class FIIDIIDataModle {
 
 	@Override
 	public String toString() {
-		return "FIIDIIDataModle [date=" + date + ", fii_BuyValue=" + fii_BuyValue + ", fii_SellValue=" + fii_SellValue
-				+ ", fii_net=" + fii_net + ", dii_BuyValue=" + dii_BuyValue + ", dii_SellValue=" + dii_SellValue
-				+ ", dii_net=" + dii_net + ", niftyprice=" + niftyprice + ", niftyChange=" + niftyChange
-				+ ", stocks_Advance=" + stocks_Advance + ", stocks_Decline=" + stocks_Decline + "]";
+		return "FIIDIIDataModle [date=" + date + " fii_BuyValue=" + fii_BuyValue + " fii_SellValue=" + fii_SellValue
+				+ " fii_net=" + fii_net + " dii_BuyValue=" + dii_BuyValue + " dii_SellValue=" + dii_SellValue
+				+ " dii_net=" + dii_net + " niftyprice=" + niftyprice + " niftyChange=" + niftyChange
+				+ " stocks_Advance=" + stocks_Advance + " stocks_Decline=" + stocks_Decline + "]";
 	}
 
 }

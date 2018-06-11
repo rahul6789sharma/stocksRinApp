@@ -6,20 +6,19 @@ public class BankNiftyDailyMaxPain {
 	private String expiry;
 	private String expiryType;
 	private Double maxPain;
-	private String totalCEOI;
-	private String totalPEOI;
-	private String pcr;
-	private String oi;
-	private String changeInOI;
-	private String perChangeInOI;
-	private String spot;
+	private Integer totalCEOI;
+	private Integer totalPEOI;
+	private Double pcr;
+	private Double spot;
 	private String change;
+	private String day;
+	private String isExpiryDay;
 
 	public BankNiftyDailyMaxPain() {
 		super();
 	}
 
-	public BankNiftyDailyMaxPain(String date, String expiry, String expiryType, Double maxPain, String totalCEOI, String totalPEOI) {
+	public BankNiftyDailyMaxPain(String date, String expiry, String expiryType, Double maxPain, Integer totalCEOI, Integer totalPEOI) {
 		super();
 		this.date = date;
 		this.expiry = expiry;
@@ -61,35 +60,35 @@ public class BankNiftyDailyMaxPain {
 		this.maxPain = maxPain;
 	}
 
-	public String getTotalCEOI() {
+	public Integer getTotalCEOI() {
 		return totalCEOI;
 	}
 
-	public void setTotalCEOI(String totalCEOI) {
+	public void setTotalCEOI(Integer totalCEOI) {
 		this.totalCEOI = totalCEOI;
 	}
 
-	public String getTotalPEOI() {
+	public Integer getTotalPEOI() {
 		return totalPEOI;
 	}
 
-	public void setTotalPEOI(String totalPEOI) {
+	public void setTotalPEOI(Integer totalPEOI) {
 		this.totalPEOI = totalPEOI;
 	}
 
-	public String getPcr() {
+	public Double getPcr() {
 		return pcr;
 	}
 
-	public void setPcr(String pcr) {
+	public void setPcr(Double pcr) {
 		this.pcr = pcr;
 	}
 
-	public String getSpot() {
+	public Double getSpot() {
 		return spot;
 	}
 
-	public void setSpot(String spot) {
+	public void setSpot(Double spot) {
 		this.spot = spot;
 	}
 
@@ -101,42 +100,34 @@ public class BankNiftyDailyMaxPain {
 		this.change = change;
 	}
 
-	public String getOi() {
-		return oi;
+	public String getDay() {
+		return day;
 	}
 
-	public void setOi(String oi) {
-		this.oi = oi;
+	public void setDay(String day) {
+		this.day = day;
 	}
 
-	public String getChangeInOI() {
-		return changeInOI;
+	public String getIsExpiryDay() {
+		return isExpiryDay;
 	}
 
-	public void setChangeInOI(String changeInOI) {
-		this.changeInOI = changeInOI;
-	}
-
-	public String getPerChangeInOI() {
-		return perChangeInOI;
-	}
-
-	public void setPerChangeInOI(String perChangeInOI) {
-		this.perChangeInOI = perChangeInOI;
+	public void setIsExpiryDay(String isExpiryDay) {
+		this.isExpiryDay = isExpiryDay;
 	}
 
 	public String toCSVForWeeklyEOD() {
-		return date + "," + expiry + "," + expiryType + "," + maxPain + "," + totalCEOI + "," + totalPEOI + "," + pcr + "," + spot + "," + change;
+		return date + "," + expiry + "," + expiryType + "," + maxPain + "," + totalCEOI + "," + totalPEOI + "," + pcr + "," + spot + "," + change + "," + day + "," + isExpiryDay;
 	}
 
 	public String toCSV() {
-		return date + "," + expiry + "," + expiryType + "," + maxPain + "," + totalCEOI + "," + totalPEOI + "," + pcr + "," + oi + "," + changeInOI + "," + perChangeInOI + "," + spot + "," + change;
+		return date + "," + expiry + "," + expiryType + "," + maxPain + "," + totalCEOI + "," + totalPEOI + "," + pcr + "," + spot + "," + change;
 	}
 
 	@Override
 	public String toString() {
 		return "BankNiftyDailyMaxPain [date=" + date + ", expiry=" + expiry + ", expiryType=" + expiryType + ", maxPain=" + maxPain + ", totalCEOI=" + totalCEOI + ", totalPEOI=" + totalPEOI + ", pcr="
-				+ pcr + ", oi=" + oi + ", changeInOI=" + changeInOI + ", perChangeInOI=" + perChangeInOI + ", spot=" + spot + ", change=" + change + "]";
+				+ pcr + ", spot=" + spot + ", change=" + change + ", day=" + day + ", isExpiryDay=" + isExpiryDay + "]";
 	}
 
 }

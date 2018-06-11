@@ -98,10 +98,10 @@ public class Columns {
 
 	@Override
 	public String toString() {
-		return "Columns [total_ce_oi=" + total_ce_oi + ", total_pe_oi=" + total_pe_oi + ", expiry=" + expiry
-				+ ", interestRate=" + interestRate + ", uSDINRFuture=" + uSDINRFuture + ", lastDataUpdated="
-				+ lastDataUpdated + ", underlyingSpotPrice=" + underlyingSpotPrice + ", spotPrice=" + spotPrice
-				+ ", expiryList=" + expiryList + "]";
+		return "Columns [total_ce_oi=" + total_ce_oi + " total_pe_oi=" + total_pe_oi + " expiry=" + expiry
+				+ " interestRate=" + interestRate + " uSDINRFuture=" + uSDINRFuture + " lastDataUpdated="
+				+ lastDataUpdated + " underlyingSpotPrice=" + underlyingSpotPrice + " spotPrice=" + spotPrice
+				+ " expiryList=" + expiryList + "]";
 	}
 
 }

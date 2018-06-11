@@ -112,8 +112,8 @@ public class TickData {
 
 	@Override
 	public String toString() {
-		return "TickData [type=" + type + ", strike=" + strike + ", ltp=" + ltp + ", change=" + change + ", quantity=" + quantity + ", previousDayClosePrice=" + previousDayClosePrice
-				+ ", underlyingIndexSpotPrice=" + underlyingIndexSpotPrice + ", underlyingIndexPreviousDayClosePrice=" + underlyingIndexPreviousDayClosePrice + "]";
+		return "TickData [type=" + type + " strike=" + strike + " ltp=" + ltp + " change=" + change + " quantity=" + quantity + " previousDayClosePrice=" + previousDayClosePrice
+				+ " underlyingIndexSpotPrice=" + underlyingIndexSpotPrice + " underlyingIndexPreviousDayClosePrice=" + underlyingIndexPreviousDayClosePrice + "]";
 	}
 
 }

@@ -10,26 +10,28 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.stocksrin.utils.LoggerSysOut;
+
 @ServerEndpoint("/hello")
 public class HelloWorldEndpoint {
 
 	@OnMessage
 	public String hello(String message) {
-		System.out.println("Received : " + message);
+		LoggerSysOut.print("Received : " + message);
 		return message;
 	}
 
 	@OnOpen
 	public void myOnOpen(Session session) {
 		try{
-		System.out.println("WebSocket opened: " + session.getId());
+		LoggerSysOut.print("WebSocket opened: " + session.getId());
 
 		Map<String, BNiftyTradeData> map = BNiftyTradeData.getData();
 		
 
 		String lastkey = null;
 		for (Map.Entry<String, BNiftyTradeData> entry : map.entrySet()) {
-			System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+			LoggerSysOut.print("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 			lastkey = entry.getKey();
 			session.getBasicRemote().sendObject(entry.getValue().toString());
 		}
@@ -52,7 +54,7 @@ public class HelloWorldEndpoint {
 
 	@OnClose
 	public void myOnClose(CloseReason reason) {
-		System.out.println("Closing a WebSocket due to " + reason.getReasonPhrase());
+		LoggerSysOut.print("Closing a WebSocket due to " + reason.getReasonPhrase());
 	}
 
 }

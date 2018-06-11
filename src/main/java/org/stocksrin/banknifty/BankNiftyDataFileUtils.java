@@ -8,6 +8,7 @@ import org.stocksrin.option.model.OptionModle;
 import org.stocksrin.option.model.OptionModles;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.FileUtils;
+import org.stocksrin.utils.LoggerSysOut;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +17,7 @@ public class BankNiftyDataFileUtils {
 	public static void main(String[] args) {
 		try {
 			List<OptionModles> lst = getBankNiftyAllData("1MAR2018");
-			System.out.println(lst.size());
+			LoggerSysOut.print(lst.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,7 +32,7 @@ public class BankNiftyDataFileUtils {
 		List<String> files = FileUtils.getSortedFileNamesfromFolder(new File(dir));
 
 		for (String string : files) {
-			System.out.println("Files " + dir + File.separator + string);
+			LoggerSysOut.print("Files " + dir + File.separator + string);
 			OptionModles optionModles = getBankNiftyDataFromFile(dir + File.separator + string + ".json");
 			lst.add(optionModles);
 		}
@@ -45,7 +46,7 @@ public class BankNiftyDataFileUtils {
 		// JSON from file to Object
 		OptionModles obj = mapper.readValue(new File(fileName), OptionModles.class);
 		String spot = getSpot(obj.getUnderlyingSpotPrice());
-		obj.setSpot(spot);
+		obj.setSpot(Double.parseDouble(spot));
 		filterOptionData(obj);
 		return obj;
 	}
@@ -58,14 +59,14 @@ public class BankNiftyDataFileUtils {
 
 	public static void filterOptionData(OptionModles optionModles) {
 
-		String s = optionModles.getSpot();
-		double spot = Double.parseDouble(s);
+		Double spot = optionModles.getSpot();
+		//double spot = Double.parseDouble(s);
 		double put = -1200;
 		List<OptionModle> optionModle = optionModles.getOptionModle();
 		List<OptionModle> newLst = new ArrayList<>();
 
 		for (OptionModle optionModle2 : optionModle) {
-			double strike = Double.parseDouble(optionModle2.getStrike_price());
+			double strike = optionModle2.getStrike_price();
 			double diff = spot - strike;
 			if (diff < 1200 && diff > put) {
 				newLst.add(optionModle2);

@@ -7,7 +7,7 @@ public class APPConstant {
 	private APPConstant() {
 
 	}
-
+	public static double BNF_STRIKE_DIFF = 100d;
 	public static final String NSE_bhavdata_URL = "https://www.nseindia.com/products/content/sec_bhavdata_full.csv";
 
 	private static final String STOCKSRIN_NSE_CONF_DIR = System.getProperty("user.home") + File.separator + "stocksRin_CONF" + File.separator;
@@ -23,11 +23,15 @@ public class APPConstant {
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyOptionPrice.csv";
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyMaxPainDaily.csv";
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE2 = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain.csv";
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_MONTHLYMAXXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyMonthlyExpiryMaxPain.csv";
 
 	public static final String FILE_NAME_updatedBhavCopy = "updatedBhavCopy.xlsx";
 
+	public static final String DATEFORMATE_Logger = "dd-MMM hh:mm:ss";
+	
 	public static final String DATEFORMATE_BN_EXPIRY = "ddMMMyyyy";
 	public static final String DATEFORMATE_dd_MM_yyyy = "dd_MM_yyyy";
+	public static final String DATEFORMATE_dd_MMM_yyyy = "dd_MMM_yyyy";
 	public static final String FILE_NAME_FII_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "FII_DII_BUY_SELL" + File.separator;
 	public static final String FILE_NAME_FII_DIR_BACKUP = FILE_NAME_FII_DIR + "backup" + File.separator;
 	public static final String FILE_NAME_FII_DIR_MONTHLY = FILE_NAME_FII_DIR + "monthly" + File.separator;
@@ -35,7 +39,10 @@ public class APPConstant {
 	public static final String FILE_NAME_FII_DIR_YEARLY = FILE_NAME_FII_DIR + "yearly" + File.separator;
 
 	public static final String FILE_NAME_NIFTY_OI_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "niftyOI" + File.separator + "NiftyOI.csv";
-	public static final String FO_OI_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator + "FO_OI" + File.separator;
+	public static final String FO_OI_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator +"Participant_OI_Data"+ File.separator +"NSE_FO_OI" + File.separator;
+	public static final String FUTURE_OI_Participant_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator +"Participant_OI_Data"+ File.separator +"FUTURE_INDEX" + File.separator +"FUTURE_OI.csv";
+	public static final String OPTION_OI_Participant_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator +"Participant_OI_Data"+ File.separator +"OPTION_INDEX" + File.separator +"OPTION_OI.csv";
+	
 
 	public static final String FILE_NAME_DERIVATIVES = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "DERIVATIVES.csv";
 

@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import org.stocksrin.utils.LoggerSysOut;
+
 public class DateUtils {
 	
 	private static long priceUpdatepriod=60l; // in minitues
@@ -30,7 +32,7 @@ public class DateUtils {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		// expiry = "2017-05-02 23:59:00",
+		// expiry = "2017-05-02 23:59:00"
 		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd HH:mm:ss"); // Or
 																			// whatever
 																			// format
@@ -63,7 +65,7 @@ public class DateUtils {
 		 DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		 Date myDate = new Date();
 		 java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-		System.out.println(sqlDate);
+		LoggerSysOut.print(sqlDate);
 	}
 
 	public static String getTodayDateTime() {
@@ -121,7 +123,7 @@ public class DateUtils {
 		Date startDate = DateUtils.getTodayDateTime(dateString);
 		Date now = new Date();
 		long differenceInMinitues = TimeUnit.MILLISECONDS.toMinutes(now.getTime() - startDate.getTime());
-		System.out.println(differenceInMinitues);
+		LoggerSysOut.print(differenceInMinitues);
 		return differenceInMinitues;
 	}
 
@@ -136,22 +138,22 @@ public class DateUtils {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 
 		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			System.out.println("featchData Request but today is WeekEnds so returning false");
+			LoggerSysOut.print("featchData Request but today is WeekEnds so returning false");
 
 			return false;
 		} else {
 			if (now.get(Calendar.HOUR_OF_DAY) > closingTime || now.get(Calendar.HOUR_OF_DAY) < 9) {
 				// update only in market hrs
-				System.out.println("Market is closed, returning false");
+				LoggerSysOut.print("Market is closed returning false");
 				return false;
 			} else {
 				long timeDifference = getTimeDifferenceInMinitues(lastUpdatedtime);
 				if (timeDifference >= priceUpdatepriod) {
-					System.out.println("Update Data Requested, data was updated on " + lastUpdatedtime + ",  So returning true");
-					System.out.println("time difference in minuets is more then 60 min  :" + timeDifference);
+					LoggerSysOut.print("Update Data Requested data was updated on " + lastUpdatedtime + "  So returning true");
+					LoggerSysOut.print("time difference in minuets is more then 60 min  :" + timeDifference);
 					return true;
 				} else {
-					System.out.println("time difference in minuets is less then 60 min  :" + timeDifference);
+					LoggerSysOut.print("time difference in minuets is less then 60 min  :" + timeDifference);
 					return false;
 				}
 			}

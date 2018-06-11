@@ -68,7 +68,7 @@ public class UsdInrFutureJson {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [valid = " + valid + ", lastUpdateTime = " + lastUpdateTime + ", tradedDate = " + tradedDate + ", ocLink = " + ocLink
-				+ ", data = " + data + ", last_updated = " + last_updated + ", RBIrr = " + RBIrr + "]";
+		return "ClassPojo [valid = " + valid + " lastUpdateTime = " + lastUpdateTime + " tradedDate = " + tradedDate + " ocLink = " + ocLink
+				+ " data = " + data + " last_updated = " + last_updated + " RBIrr = " + RBIrr + "]";
 	}
 }

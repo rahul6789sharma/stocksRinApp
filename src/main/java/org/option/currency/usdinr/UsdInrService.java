@@ -15,6 +15,7 @@ import org.smarttrade.options.utils.DateUtils;
 import org.smarttrade.options.utils.DocumentParser;
 import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class UsdInrService {
 	
@@ -30,19 +31,19 @@ public class UsdInrService {
 		Set<String> expireis = UsdInrData.getData().keySet();
 		
 		TreeSet<String> lst = new TreeSet<String>(new DateComparator());
-		System.out.println(expireis.size());
+		LoggerSysOut.print(expireis.size());
 		for (String string : expireis) {
-			System.out.println("string" + string);
-			System.out.println("string" + string.length());
+			LoggerSysOut.print("string" + string);
+			LoggerSysOut.print("string" + string.length());
 			
 			if(!string.equals("-") && !(string.length()==0)){
-				System.out.println("string" + string);
+				LoggerSysOut.print("string" + string);
 				lst.add(string);
 			}
 		}
 		
 		if(lst.size() < 3 ){
-			System.out.println("All Expiry Data is not available ");
+			LoggerSysOut.print("All Expiry Data is not available ");
 			
 			Columns columns = getUSDINROC("-");
 			List<String> expiryList=columns.getExpiryList();
@@ -69,10 +70,10 @@ public class UsdInrService {
 		Columns optionChain = UsdInrData.getData().get(expiry);
 		if (optionChain == null) {
 			// go and fetch data from nse
-			System.out.println("Data is null request Data");
+			LoggerSysOut.print("Data is null request Data");
 			return getUSDINROptionChain(expiry);
 		}else {
-			System.out.println("Data is  Not null, get Cached request Data");
+			LoggerSysOut.print("Data is  Not null get Cached request Data");
 			String lastUpdateDate = optionChain.getLastDataUpdated();
 			// long diff =DateUtils.getTimeDifferenceInMinitues(lastUpdateDate);
 			boolean status = DateUtils.getInstance().featchData(lastUpdateDate, 18l);

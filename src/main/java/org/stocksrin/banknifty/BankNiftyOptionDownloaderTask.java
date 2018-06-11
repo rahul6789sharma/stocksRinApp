@@ -2,7 +2,6 @@ package org.stocksrin.banknifty;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -18,6 +17,7 @@ import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.DateUtils;
 import org.stocksrin.utils.FileUtils;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
+import org.stocksrin.utils.LoggerSysOut;
 
 public class BankNiftyOptionDownloaderTask extends TimerTask {
 
@@ -25,12 +25,9 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 	public void run() {
 		if (!DateUtils.isWeekEndDay()) {
 			try {
-				List<String> fileNames = getdataFaced();
-				SendEmail.sentMail( "SUCCESS! BankNifty Weekly Option Chain downloaded,  ",
-						"File downloaded" + fileNames);
+			//	List<String> fileNames = getdataFaced();
 			} catch (Exception e) {
-				SendEmail.sentMail( "BankNiftyOptionDownloaderTask Exception !",
-						"ERROR " + e.getMessage());
+				SendEmail.sentMail("BankNiftyOptionDownloaderTask Exception !", "ERROR " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -38,8 +35,8 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println(getdataFaced());
-			System.out.println("done");
+			LoggerSysOut.print(getdataFaced());
+			LoggerSysOut.print("done");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,7 +51,7 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 		return otherExpiry(expiryList);
 	}
 
-	private static List<String> otherExpiry(List<String> expiryList) {
+	private static List<String> otherExpiry(List<String> expiryList) throws Exception {
 		int size = expiryList.size();
 		List<String> files = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
@@ -62,8 +59,8 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 			String url = APPConstant.BANKNIFTY_WEEKLY_OPTION_URL_BY_Expiry + expiryList.get(i);
 			Columns columns = getBankNiftyOptionChain(url);
 			OptionModles optionModles = bankNiftyOptionDataWrapper(columns);
-			String date = getDate(optionModles.getUnderlyingSpotPrice());
-			String optionFileDir = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY + expiryList.get(i) + File.separator+ date + ".json";
+			String date = BankNiftyUtils.getDate(optionModles.getUnderlyingSpotPrice());
+			String optionFileDir = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY + expiryList.get(i) + File.separator + date + ".json";
 
 			FileUtils.writeDataAsJson(optionModles, optionFileDir);
 			files.add(optionFileDir);
@@ -72,20 +69,7 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 		return files;
 	}
 
-	private static String getDate(String dateInString) {
-		String dateString = null;
-		try {
-			String dateForamte = "MMM dd, yyyy hh:mm:ss Z";
-			String a[] = dateInString.split("As on");
-			String d = a[1].trim();
-			Date date = DateUtils.stringToDate(d, dateForamte);
-			dateString = DateUtils.dateToString(date, APPConstant.DATEFORMATE_dd_MM_yyyy);
-			return dateString;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new Date().toString();
-	}
+
 
 	private static OptionModles bankNiftyOptionDataWrapper(Columns columns) {
 		OptionModles optionModles = new OptionModles();
@@ -94,18 +78,18 @@ public class BankNiftyOptionDownloaderTask extends TimerTask {
 
 		for (Column column : colums) {
 			OptionModle optionModle = new OptionModle();
-			optionModle.setC_change_oi(column.getCE_Change_in_OI());
-			optionModle.setC_ltp(column.getCE_LTP());
-			optionModle.setC_net_change(column.getCE_Net_Change());
+			optionModle.setC_change_oi(Integer.parseInt(column.getCE_Change_in_OI()));
+			optionModle.setC_ltp(Double.parseDouble(column.getCE_LTP()));
+			optionModle.setC_net_change(Double.parseDouble(column.getCE_Net_Change()));
 
-			optionModle.setC_oi(column.getCE_OI());
-			optionModle.setC_volume(column.getCE_Volume());
-			optionModle.setP_change_oi(column.getPE_Change_in_OI());
-			optionModle.setP_net_change(column.getPE_Net_Change());
-			optionModle.setP_ltp(column.getPE_LTP());
-			optionModle.setP_oi(column.getPE_OI());
-			optionModle.setP_volume(column.getPE_Volume());
-			optionModle.setStrike_price(column.getStrike_Price());
+			optionModle.setC_oi(Integer.parseInt(column.getCE_OI()));
+			optionModle.setC_volume(Integer.parseInt(column.getCE_Volume()));
+			optionModle.setP_change_oi(Integer.parseInt(column.getPE_Change_in_OI()));
+			optionModle.setP_net_change(Double.parseDouble(column.getPE_Net_Change()));
+			optionModle.setP_ltp(Double.parseDouble(column.getPE_LTP()));
+			optionModle.setP_oi(Integer.parseInt(column.getPE_OI()));
+			optionModle.setP_volume(Integer.parseInt(column.getPE_Volume()));
+			optionModle.setStrike_price(Double.parseDouble(column.getStrike_Price()));
 			lst.add(optionModle);
 		}
 		optionModles.setOptionModle(lst);

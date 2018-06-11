@@ -191,9 +191,9 @@ public class CommonHTMLDocParsher {
 
 		String result = null;
 		for (Element element : elements) {
-			// System.out.println(element);
+			// LoggerSysOut.print(element);
 			Elements cols = element.select("td");
-			// System.out.println(cols);
+			// LoggerSysOut.print(cols);
 			for (int j = 1; j < cols.size(); j++) {
 				Element col = cols.get(j);
 

@@ -70,7 +70,7 @@ public class MaxPain {
 
 	@Override
 	public String toString() {
-		return "MaxPain [strickPrice=" + strickPrice + ", ce_oi=" + ce_oi + ", pe_oi=" + pe_oi + ", cumulativeCe=" + cumulativeCe + ", cumulativePe=" + cumulativePe + ", total=" + total + "]";
+		return "MaxPain [strickPrice=" + strickPrice + " ce_oi=" + ce_oi + " pe_oi=" + pe_oi + " cumulativeCe=" + cumulativeCe + " cumulativePe=" + cumulativePe + " total=" + total + "]";
 	}
 
 }

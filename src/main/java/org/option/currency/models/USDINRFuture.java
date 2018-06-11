@@ -86,8 +86,8 @@ public class USDINRFuture {
 
 	@Override
 	public String toString() {
-		return "USDINRFuture [change=" + change + ", prevClose=" + prevClose + ", percentageChange=" + percentageChange + ", lastPrice=" + lastPrice
-				+ ", lowPrice=" + lowPrice + ", highPrice=" + highPrice + ", expiryDate=" + expiryDate + ", RBIrr=" + RBIrr + ", RBIrr_last_updated="
+		return "USDINRFuture [change=" + change + " prevClose=" + prevClose + " percentageChange=" + percentageChange + " lastPrice=" + lastPrice
+				+ " lowPrice=" + lowPrice + " highPrice=" + highPrice + " expiryDate=" + expiryDate + " RBIrr=" + RBIrr + " RBIrr_last_updated="
 				+ RBIrr_last_updated + "]";
 	}
 

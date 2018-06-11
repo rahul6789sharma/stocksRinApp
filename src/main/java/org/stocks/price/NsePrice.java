@@ -1,11 +1,6 @@
 package org.stocks.price;
 
-// Generated May 26, 2017 8:48:47 PM by Hibernate Tools 3.4.0.CR1
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -32,7 +27,7 @@ public class NsePrice implements java.io.Serializable {
 	public NsePrice() {
 	}
 
-	public NsePrice(NsePriceId id, String nseClose) {
+	public NsePrice(NsePriceId id ,String nseClose) {
 		this.id = id;
 		this.nseClose = nseClose;
 	}
@@ -49,9 +44,7 @@ public class NsePrice implements java.io.Serializable {
 		this.comments = comments;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({ @AttributeOverride(name = "nseSymbol", column = @Column(name = "nse_symbol", nullable = false, length = 50)),
-			@AttributeOverride(name = "nseDate", column = @Column(name = "nse_date", nullable = false, length = 10)) })
+	
 	public NsePriceId getId() {
 		return this.id;
 	}
@@ -125,8 +118,8 @@ public class NsePrice implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "NsePrice [id=" + id + ", nseOpen=" + nseOpen + ", nseHigh=" + nseHigh + ", nseLow=" + nseLow + ", nseChange=" + nseChange
-				+ ", nseClose=" + nseClose + ", percantageChange=" + percantageChange + ", comments=" + comments + ", toString()=" + super.toString()
+		return "NsePrice [id=" + id + " nseOpen=" + nseOpen + " nseHigh=" + nseHigh + " nseLow=" + nseLow + " nseChange=" + nseChange
+				+ " nseClose=" + nseClose + " percantageChange=" + percantageChange + " comments=" + comments + " toString()=" + super.toString()
 				+ "]";
 	}
 

@@ -13,6 +13,7 @@ import javax.ejb.Startup;
 
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.CommonUtils;
+import org.stocksrin.utils.LoggerSysOut;
 
 @Singleton
 @Startup
@@ -59,6 +60,6 @@ public class NiftyOIDataModleMap {
 	public static void main(String[] args) {
 		NiftyOIDataModleMap NiftyOIDataModleMap = new NiftyOIDataModleMap();
 		NiftyOIDataModleMap.init();
-		System.out.println(oiDataMap);
+		LoggerSysOut.print(oiDataMap);
 	}
 }

@@ -114,9 +114,9 @@ public class NSEIndicesData {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [preOpen = " + preOpen + ", time = " + time + ", corrOpen = " + corrOpen + ", status = "
-				+ status + ", haltedStatus = " + haltedStatus + ", mktOpen = " + mktOpen + ", data = " + data
-				+ ", code = " + code + ", preClose = " + preClose + ", corrClose = " + corrClose + ", mktClose = "
+		return "ClassPojo [preOpen = " + preOpen + " time = " + time + " corrOpen = " + corrOpen + " status = "
+				+ status + " haltedStatus = " + haltedStatus + " mktOpen = " + mktOpen + " data = " + data
+				+ " code = " + code + " preClose = " + preClose + " corrClose = " + corrClose + " mktClose = "
 				+ mktClose + "]";
 	}
 }

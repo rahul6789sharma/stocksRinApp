@@ -19,6 +19,7 @@ import org.stocksrin.nifty.indices.NiftyIndicesDataColloctor;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.CommonUtils;
 import org.stocksrin.utils.DateUtils;
+import org.stocksrin.utils.LoggerSysOut;
 import org.stocksrin.utils.NumFormater;
 import org.stocksrin.utils.StocksRinException;
 
@@ -33,7 +34,7 @@ public class NiftyOITask extends TimerTask {
 				Document doc = HTMLPageUtils.getHTMLDocument(APPConstant.NIFTY_URL);
 				List<String> expiry = DocumentParser.getInstance().getNiftyExpiryList(doc);
 				NiftyOIDataModle niftyOIDataModle = getTwoMOnthOIData(fromDate, fromDate, expiry.get(0), expiry.get(1));
-				System.out.println(niftyOIDataModle.toCsv());
+				LoggerSysOut.print(niftyOIDataModle.toCsv());
 				CommonUtils.appendData(niftyOIDataModle.toCsv(), APPConstant.FILE_NAME_NIFTY_OI_FILE);
 				NiftyOIDataModleMap.addData(niftyOIDataModle.getDate(), niftyOIDataModle);
 				SendEmail.sentMail(
@@ -128,7 +129,7 @@ public class NiftyOITask extends TimerTask {
 
 		// NiftyOIDataModle niftyOIDataModle =
 		// pullLastDayOIdata(APPConstant.FILE_NAME_NIFTY_OI_FILE);
-		// System.out.println(niftyOIDataModle);
+		// LoggerSysOut.print(niftyOIDataModle);
 
 	}
 
@@ -155,13 +156,13 @@ public class NiftyOITask extends TimerTask {
 	}
 
 	private static TempOI getNiftyOIData(String url) throws StocksRinException, InterruptedException {
-		System.out.println("URL " + url);
+		LoggerSysOut.print("URL " + url);
 		TempOI tempOI = new TempOI();
 		Document doc = HTMLPageUtils.getHTMLDocument(url);
 
 		for (int i = 0; i < 5; i++) {
 			if (doc.toString().contains("No Data")) {
-				System.out.println("will retry after 30 min" + "");
+				LoggerSysOut.print("will retry after 30 min" + "");
 				Thread.sleep(1800000);
 				doc = HTMLPageUtils.getHTMLDocument(url);
 			} else {

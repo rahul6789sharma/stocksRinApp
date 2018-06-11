@@ -8,19 +8,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.annotation.PreDestroy;
+import javax.ejb.Singleton;
 
 import org.stocksrin.utils.CommonUtils;
 import org.stocksrin.utils.DateUtils;
+import org.stocksrin.utils.LoggerSysOut;
 
+@Singleton
 public class BNiftyAlgoThreadSponingTask extends TimerTask {
 
 	private List<Timer> allTimers = new ArrayList<>(2);
 
 	@Override
 	public void run() {
+		LoggerSysOut.print("BNiftyAlgoThreadSponingTask  starting");
 		if (!DateUtils.isWeekEndDay()) {
 			if (CommonUtils.getEveningTime()) {
 				try {
+					allTimers.clear();
 					Map<Integer, List<StrategyModel>> strategyMap = CommonUtils.getBankNiftyStrategy();
 					Set<Integer> keys = strategyMap.keySet();
 					long initDelay = 10;
@@ -41,7 +46,7 @@ public class BNiftyAlgoThreadSponingTask extends TimerTask {
 				}
 			} else {
 				BNiftyAlgo.flag = true;
-				System.out.println("Market Closed");
+				LoggerSysOut.print("Market Closed");
 			}
 		}
 	}

@@ -78,8 +78,7 @@
 
 			<div class="text-center">
 				<h4>
-					<span style="color: #333333;">IntraDay Live MaxPain for Next
-						4 Expiry </span>
+					<span style="color: #333333;">Weekly MaxPain Vs Spot </span>
 				</h4>
 			</div>
 
@@ -87,10 +86,30 @@
 				style="min-width: 50%; height: 50%; margin: 0 auto"></div>
 
 			<p>
+			<div class="text-center">
+				<h4>
+					<span style="color: #333333;">PUT CALL Ratio </span>
+				</h4>
+			</div>
+
+			<div id="pcrcontainer2"
+				style="min-width: 50%; height: 50%; margin: 0 auto"></div>
+			<br /> <br /> <br />
+
+
+			<div class="text-center">
+				<h4>
+					<span style="color: #333333;">Total Call OI vs Put OI </span>
+				</h4>
+			</div>
+
 			<div id="pcrcontainer"
 				style="min-width: 50%; height: 50%; margin: 0 auto"></div>
 			<br /> <br /> <br />
+
+			<p>
 			<div ng-include="'templets/add.html'"></div>
+
 		</div>
 
 
@@ -134,95 +153,31 @@
 	});
 
 	function fortest(data) {
-		//console.log(data);
 
-		var expiryData = [];
-		var toalCEData = [];
-		var toalPEData = [];
+		var maxPainData = [];
+		var spotData = [];
 
-		var expiry0;
-		var maxpainData0 = [];
-		var toaltceOIData0 = [];
-		var toaltpeOIData0 = [];
+		var totalCEData = [];
+		var totalPEData = [];
+		var pcrData = [];
 
-		var expiry1;
-		var maxpainData1 = [];
-		var toaltceOIData1 = [];
-		var toaltpeOIData1 = [];
+		var dates = [];
 
-		var expiry2;
-		var maxpainData2 = [];
-		var toaltceOIData2 = [];
-		var toaltpeOIData2 = [];
-
-		var expiry3;
-		var maxpainData3 = [];
-		var toaltceOIData3 = [];
-		var toaltpeOIData3 = [];
-
-		var index = 0;
 		for (i in data) {
-			//console.log(data);
 			console.log(data[i]);
-			console.log(index == 0);
-
-			if (index == 0) {
-
-				var d = data[i];
-				for (j in d) {
-					console.log(d[j]);
-					expiry0 = d[j].expiry;
-					maxpainData0.push(d[j].maxPain);
-					toaltceOIData0.push(d[j].totalCEOI);
-					toaltpeOIData0.push(d[j].totalPEOI);
-				}
-			}
-			if (index == 1) {
-
-				var d = data[i];
-				for (j in d) {
-					console.log(d[j]);
-					expiry1 = d[j].expiry;
-					maxpainData1.push(d[j].maxPain)
-					toaltceOIData1.push(d[j].totalCEOI);
-					toaltpeOIData1.push(d[j].totalPEOI);
-				}
-			}
-
-			if (index == 2) {
-
-				var d = data[i];
-				for (j in d) {
-					console.log(d[j]);
-					expiry2 = d[j].expiry;
-					maxpainData2.push(d[j].maxPain)
-					toaltceOIData2.push(d[j].totalCEOI);
-					toaltpeOIData2.push(d[j].totalPEOI);
-				}
-			}
-
-			if (index == 3) {
-
-				var d = data[i];
-				for (j in d) {
-					console.log(d[j]);
-					expiry3 = d[j].expiry;
-					maxpainData3.push(d[j].maxPain)
-					toaltceOIData3.push(d[j].totalCEOI);
-					toaltpeOIData3.push(d[j].totalPEOI);
-				}
-			}
-			index++;
+			dates.push(data[i].date)
+			maxPainData.push(data[i].maxPain)
+			spotData.push(data[i].spot)
+			pcrData.push(data[i].pcr)
+			totalCEData.push(data[i].totalCEOI);
+			totalPEData.push(data[i].totalPEOI);
 		}
 
-		console.log(expiry0);
-		console.log(maxpainData0);
-		console.log(toaltceOIData0);
-		console.log(toaltpeOIData0);
-
-		draw(expiry0, expiry1, expiry2, expiry3, maxpainData0, maxpainData1,
-				maxpainData2, maxpainData2);
-		//draw(expiryData[0], expiryData[1], expiryData[2], expiryData[3],maxpainData[0], maxpainData[1], maxpainData[2], maxpainData[3]);
+		console.log(totalPEData);
+		console.log(totalCEData);
+		draw(dates, "MaxPain", "Spot", maxPainData, spotData);
+		drawpcr(dates, "Total PE OI", "Total CE OI", totalPEData, totalCEData);
+		drawpcr2(dates, "PCR Ratio", pcrData);
 
 	}
 
@@ -238,14 +193,15 @@
 			}
 		};
 
-		xhttp.open("GET", "/rest/bankNiftyService/bankNiftyDailyMaxPain", true);
+		xhttp
+				.open("GET", "/rest/bankNiftyService/bankNiftyWeeklyMaxPain",
+						true);
 		xhttp.send();
 	}
 
-	function draw(label1, label2, label3, label4, maxpainData1, maxpainData2,
-			maxpainData3, maxpainData4) {
+	function drawpcr2(dates, label1, pcr) {
 
-		Highcharts.chart('maxPaincontainer', {
+		Highcharts.chart('pcrcontainer2', {
 			chart : {
 				type : 'line'
 			},
@@ -256,10 +212,7 @@
 				text : ''
 			},
 			xAxis : {
-				categories : [ '9:15', '9:30', '9:45', '10', '10:15', '10:30',
-						'10:45', '11', '11:15', '11:30', '11:45', '12',
-						'12:15', '12:30', '12:45', '1', '1:15', '1:30', '1:45',
-						'2', '2:15', '2:30', '2:40', '3', '3:15', '3:30' ]
+				categories : dates
 			},
 			yAxis : {
 				title : {
@@ -276,20 +229,85 @@
 			},
 			series : [ {
 				name : label1,
-				data : maxpainData1
+				data : pcr
+			} ]
+		});
+	}
+	function drawpcr(dates, label1, label2, totalCE, totalPE) {
+
+		Highcharts.chart('pcrcontainer', {
+			chart : {
+				type : 'line'
+			},
+			title : {
+				text : ''
+			},
+			subtitle : {
+				text : ''
+			},
+			xAxis : {
+				categories : dates
+			},
+			yAxis : {
+				title : {
+					text : 'Strike Price'
+				}
+			},
+			plotOptions : {
+				line : {
+					dataLabels : {
+						enabled : true
+					},
+					enableMouseTracking : false
+				}
+			},
+			series : [ {
+				name : label1,
+				data : totalCE
 			}, {
 				name : label2,
-				data : maxpainData2
+				data : totalPE
+			} ]
+		});
+	}
+
+	function draw(dates, label1, label2, maxPainData, spotData) {
+
+		Highcharts.chart('maxPaincontainer', {
+			chart : {
+				type : 'line'
+			},
+			title : {
+				text : ''
+			},
+			subtitle : {
+				text : ''
+			},
+			xAxis : {
+				categories : dates
+			},
+			yAxis : {
+				title : {
+					text : 'Strike Price'
+				}
+			},
+			plotOptions : {
+				line : {
+					dataLabels : {
+						enabled : true
+					},
+					enableMouseTracking : false
+				}
+			},
+			series : [ {
+				name : label1,
+				data : maxPainData
 			}, {
-				name : label3,
-				data : maxpainData3
-			}, {
-				name : label4,
-				data : maxpainData4
+				name : label2,
+				data : spotData
 			} ]
 		});
 	}
 </script>
 
 </html>
-

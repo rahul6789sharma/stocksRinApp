@@ -4,8 +4,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.smarttrade.options.utils.HTMLPageUtils;
-import org.stocksrin.live.LiveMarketAdvancedDecline;
-import org.stocksrin.live.Rows;
 import org.stocksrin.nifty.indices.NSEIndice;
 import org.stocksrin.nifty.indices.NiftyIndicesDataColloctor;
 import org.stocksrin.utils.APPConstant;
@@ -23,7 +21,7 @@ public class FIIDIIDailyReportUtils {
 		try {
 			NSEIndice nifty = NiftyIndicesDataColloctor.getData("NIFTY 50");
 			fIIDIIDataModle.setNiftyChange(nifty.getChange());
-			fIIDIIDataModle.setNiftyprice(nifty.getLastPrice());
+			fIIDIIDataModle.setNiftyprice(nifty.getLastPrice().replaceAll(",", ""));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -33,14 +31,16 @@ public class FIIDIIDailyReportUtils {
 	}
 
 	private static void getAdvancedDeclineData(FIIDIIDataModle fIIDIIDataModle) throws StocksRinException {
-
-		try {
+		fIIDIIDataModle.setStocks_Advance(null);
+		fIIDIIDataModle.setStocks_Decline(null);
+		
+		/*try {
 			Rows row = LiveMarketAdvancedDecline.getData();
 			fIIDIIDataModle.setStocks_Advance(row.getAdvances());
 			fIIDIIDataModle.setStocks_Decline(row.getDeclines());
 		} catch (Exception e) {
 			throw new StocksRinException("ERROR! advanced Decline Exception " + e.getMessage());
-		}
+		}*/
 
 	}
 
@@ -79,7 +79,7 @@ public class FIIDIIDailyReportUtils {
 
 	}
 
-	private static void getFII_Data(String url, FIIDIIDataModle fIIDIIDataModle) throws StocksRinException {
+	private static void getFII_Data(String url ,FIIDIIDataModle fIIDIIDataModle) throws StocksRinException {
 		Document doc = HTMLPageUtils.getHTMLDocument(url);
 
 		// Document doc =
