@@ -3,9 +3,9 @@ package org.stocksrin.banknifty.dataStore;
 import java.io.File;
 import java.util.TimerTask;
 
-import org.stocksrin.banknifty.BankNiftyUtils;
 import org.stocksrin.email.SendEmail;
-import org.stocksrin.option.model.OptionModles;
+import org.stocksrin.option.banknifty.BankNiftyUtils;
+import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.DateUtils;
 import org.stocksrin.utils.FileUtils;
@@ -21,7 +21,7 @@ public class WeeklyOptionSaverTask extends TimerTask {
 				OptionModles optionModles = BankNiftyUtils.getBankNiftyOptionData(null);
 				String expiry = optionModles.getExpiry();
 
-				String date = BankNiftyUtils.getDate(optionModles.getUnderlyingSpotPrice());
+				String date =optionModles.getDate();
 				String expiryDir = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY + "Weekly" + File.separator + expiry;
 				File file = new File(expiryDir);
 				if (!file.exists()) {

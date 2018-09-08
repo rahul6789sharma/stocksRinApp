@@ -7,12 +7,12 @@ import java.util.TreeSet;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.option.currency.models.Columns;
-import org.option.currency.models.USDINRFuture;
+import org.option.currency.models.Future;
 import org.smarttrade.options.utils.APPConstant;
 import org.smarttrade.options.utils.DateComparator;
 import org.smarttrade.options.utils.DateUtils;
 import org.smarttrade.options.utils.DocumentParser;
+import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
 import org.stocksrin.utils.LoggerSysOut;
@@ -45,7 +45,7 @@ public class UsdInrService {
 		if(lst.size() < 3 ){
 			LoggerSysOut.print("All Expiry Data is not available ");
 			
-			Columns columns = getUSDINROC("-");
+			OptionModles columns = getUSDINROC("-");
 			List<String> expiryList=columns.getExpiryList();
 			for (int i = 0; i < expiryList.size(); i++) {
 				if(!expireis.contains(expiryList.get(i))){
@@ -65,9 +65,9 @@ public class UsdInrService {
 		
 	}
 	
-	public Columns getUSDINROC(String expiry) {
+	public OptionModles getUSDINROC(String expiry) {
 		
-		Columns optionChain = UsdInrData.getData().get(expiry);
+		OptionModles optionChain = UsdInrData.getData().get(expiry);
 		if (optionChain == null) {
 			// go and fetch data from nse
 			LoggerSysOut.print("Data is null request Data");
@@ -86,7 +86,7 @@ public class UsdInrService {
 		
 	}
 	
-	private Columns getUSDINROptionChain(String expiry){
+	private OptionModles getUSDINROptionChain(String expiry){
 		String nseUrl="https://www.nseindia.com/live_market/dynaContent/live_watch/fxTracker/optChainDataByExpDates.jsp?symbol=USDINR&instrument=OPTCUR&expiryDt="+expiry;
 		Document doc = HTMLPageDocumentDownloader.getDocument(nseUrl);
 		
@@ -95,7 +95,7 @@ public class UsdInrService {
 		
 		try {			
 			Elements c=CommonHTMLDocParsher.getOptionChainTable(doc, "octable", 0);
-			Columns columns = CommonHTMLDocParsher.parseUSDINRColumn(doc, c);
+			OptionModles columns = CommonHTMLDocParsher.parseUSDINRColumn(doc, c);
 			List<String> expiryList=CommonHTMLDocParsher.getSelectBoxById(doc, "expirydate", 0);
 			
 			List<String> firstThreeExpiry=new ArrayList<String>();
@@ -114,8 +114,8 @@ public class UsdInrService {
 			}
 			
 			Document futureDc = HTMLPageDocumentDownloader.getDocument(futureUrl);
-			USDINRFuture futurePrice = DocumentParser.getInstance().getFuturePrice(futureDc);
-			columns.setuSDINRFuture(futurePrice);
+			Future futurePrice = DocumentParser.getInstance().getFuturePrice(futureDc);
+			//columns.setFuturePrice(futurePrice);
 			
 			UsdInrData.getData().put(expiry, columns);
 			return columns;

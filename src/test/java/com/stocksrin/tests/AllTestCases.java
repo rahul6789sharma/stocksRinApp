@@ -6,8 +6,7 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.stocksrin.banknifty.option.alog2.OptionDataCollectorTask2;
-import org.stocksrin.option.model.OptionModle;
+import org.stocksrin.option.common.model.OptionModle;
 
 public class AllTestCases {
 
@@ -26,12 +25,12 @@ public class AllTestCases {
 
 	@Test
 	public void Test1() {
-		OptionDataCollectorTask2 optionDataCollectorTask2 = new OptionDataCollectorTask2();
-		optionDataCollectorTask2.run();
+		//OptionDataCollectorTask2 optionDataCollectorTask2 = new OptionDataCollectorTask2();
+		//optionDataCollectorTask2.run();
 	}
 
 
-	public static List<OptionModle> getData() {
+	/*public static List<OptionModle> getData() {
 		List<OptionModle> lst = new ArrayList<>();
 		OptionModle optionModle = new OptionModle();
 		optionModle.setStrike_price(7700d);
@@ -160,5 +159,5 @@ public class AllTestCases {
 
 		return lst;
 
-	}
+	}*/
 }

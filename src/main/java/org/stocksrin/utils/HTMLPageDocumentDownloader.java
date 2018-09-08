@@ -36,7 +36,7 @@ public class HTMLPageDocumentDownloader {
 			}
 		}
 
-		throw new RuntimeException("Command failed on all of " + RETRY + " retries");
+		throw new RuntimeException("Command failed on all of " + RETRY + " retries, url " + url);
 	}
 
 	public static Document getDocumentFromFile(String filePath) {

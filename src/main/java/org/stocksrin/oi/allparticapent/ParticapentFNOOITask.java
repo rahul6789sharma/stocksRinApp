@@ -72,7 +72,7 @@ public class ParticapentFNOOITask extends TimerTask {
 		} else {
 			LoggerSysOut.print("Already downloaded " + file);
 		}
-		return null;
+		return file;
 	}
 
 	private static boolean matchFileDate(String file) throws Exception {

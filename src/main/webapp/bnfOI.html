@@ -20,7 +20,8 @@
 	Knowledge | Options Trading</title>
 
 <meta name="keywords"
-	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+	content="stocksrin,BankNifty, Open Interest, OI, PCR,Bank Nifty Option,
+	 Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
 		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
 <meta name="description" content="Options Chain for NIFTY" />
 <link rel="canonical" href="https://www.stocksrin.com" />
@@ -67,11 +68,11 @@
 
 		<!--left-->
 		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
-
-			<div id="totalOIData"></div>
-
+			<div id="sdDiv2" class="sdDiv"></div>
+			<br />
+			<div id="sdDiv3" class="sdDiv"></div>
 			<div id="totalCallsPutsDiv"></div>
-
+			<div style="color: #666666;">Open Interest are in Lacks*</div>
 
 		</div>
 		<!--/left-->
@@ -79,29 +80,12 @@
 		<!--center-->
 		<div class="col-xs-12 col-sm-8  col-md-8">
 
-
-			<div class="text-center">
-				<h4>
-					<span style="color: #333333;">FNO Data Analysis</span>
-				</h4>
+			<div class="col-xs-12 col-sm-8 col-md-6">
+				<div id="callPutTotalOI" style="height: 700px;"></div>
 			</div>
-
-			<div id="sdDiv" class="sdDiv"></div>
-
-			<br />
-			<div id="callPutTotalOI" style="height: 600px;"></div>
-
-
-			<div class="col-xs-12 col-sm-8 col-md-6" id="callchangeINOIcontainer"
-				style="height: 500px;"></div>
-
-			<div class="col-xs-12 col-sm-8 col-md-6" id="putchangeINOIcontainer"
-				style="height: 500px;"></div>
-
-
-
-
-
+			<div class="col-xs-12 col-sm-8 col-md-6">
+				<div id="callPutTotalChangeOI" style="height: 700px;"></div>
+			</div>
 
 			<div ng-include="'templets/add.html'"></div>
 		</div>
@@ -111,6 +95,22 @@
 		<!--right-->
 		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
 
+			<ul class="list-group">
+				<li class="list-group-item small" style="display: grid;">
+					BankNifty Spot <span class="badge fa fa-inr"
+					style="background-color: #5bc0de; font-size: 15px;" id="bnSpot">
+						&nbsp 0</span>
+				</li>
+				<li class="list-group-item small" style="display: grid;">Max
+					Pain <span class="badge fa fa-inr"
+					style="background-color: #5bc0de; font-size: 15px;" id="maxPain">
+						&nbsp 0</span>
+				</li>
+				<li class="list-group-item small" style="display: grid;">PCR <span
+					class="badge fa fa-inr"
+					style="background-color: #5bc0de; font-size: 15px;" id="pcr">
+						&nbsp 0</span></li>
+			</ul>
 
 			<div ng-include="'templets/add.html'"></div>
 
@@ -123,9 +123,7 @@
 
 	<footer class="navbar-default navbar-fixed-bottom"
 		style="background-color: #101010; margin-top: 10px;">
-
 		<div ng-include="'templets/footer.html'"></div>
-
 	</footer>
 
 
@@ -164,7 +162,7 @@
 	}
 
 	function drawCallOI(jsonResponse) {
-		console.log(jsonResponse);
+		//console.log(jsonResponse);
 		var strikePrice = [];
 		var callOI = [];
 		var putOI = [];
@@ -174,136 +172,75 @@
 		var calltotalOI;
 		var puttotalOI;
 		var expiry;
+		var maxPainStrick;
+		var spot;
 		for ( var key in jsonResponse) {
-			//console.log( key, jsonResponse[key] );
+			//console.log(key, jsonResponse[key]);
 			//console.log( key, jsonResponse[key].optionModle );
 			expiry = jsonResponse[key].expiry;
 			var optionModle = jsonResponse[key].optionModle;
-
+			maxPainStrick = jsonResponse[key].maxPainStrick;
 			calltotalOI = jsonResponse[key].total_ce_oi;
 			puttotalOI = jsonResponse[key].total_pe_oi;
-			for ( var key2 in optionModle) {
-				if (optionModle[key2].c_change_oi != 0
-						|| optionModle[key2].p_change_oi) {
+			spot = jsonResponse[key].spot;
 
-					strikePrice.push(optionModle[key2].strike_price);
-					callOI.push(optionModle[key2].c_oi);
-					putOI.push(optionModle[key2].p_oi);
-					callChangeINoI.push(optionModle[key2].c_change_oi);
-					putChangeINoI.push(optionModle[key2].p_change_oi);
+			for ( var key2 in optionModle) {
+
+				if (optionModle[key2].strike_price < spot) {
+				
+					if (optionModle[key2].p_change_oi != null) {
+
+						strikePrice.push(optionModle[key2].strike_price);
+						callOI.push(getLacks(optionModle[key2].c_oi));
+						putOI.push(getLacks(optionModle[key2].p_oi));
+						callChangeINoI
+								.push(getLacks(optionModle[key2].c_change_oi));
+						putChangeINoI
+								.push(getLacks(optionModle[key2].p_change_oi));
+					}
+				} else {
+
+					if (optionModle[key2].c_change_oi != null) {
+
+						strikePrice.push(optionModle[key2].strike_price);
+						callOI.push(getLacks(optionModle[key2].c_oi));
+						putOI.push(getLacks(optionModle[key2].p_oi));
+						callChangeINoI
+								.push(getLacks(optionModle[key2].c_change_oi));
+						putChangeINoI
+								.push(getLacks(optionModle[key2].p_change_oi));
+					}
 				}
+
 			}
 		}
-	
-		console.log(callChangeINoI);
-		drawCallChangeINOI(strikePrice, callChangeINoI)
-		drawPutChangeINOI(strikePrice, putChangeINoI)
+		//console.log(strikePrice)
+
+		/* 	
+		 console.log(strikePrice)
+		 console.log(callOI)
+		 console.log(callOI)
+		
+		 console.log(callChangeINoI)
+		 console.log(putChangeINoI) */
+
 		drawcallPUTTotalOI(strikePrice, callOI, putOI, expiry)
-		var pcr = parseFloat(puttotalOI / calltotalOI).toFixed(2)
+		drawcallPUTTotalChangeOI(strikePrice, callChangeINoI, putChangeINoI,
+				expiry)
 
 		drawCallsPuts(getLacks(calltotalOI), getLacks(puttotalOI));
 
+		document.getElementById('bnSpot').innerHTML = " &nbsp " + spot;
+		document.getElementById('maxPain').innerHTML = " &nbsp "
+				+ maxPainStrick;
+		var pcr = parseFloat(puttotalOI / calltotalOI).toFixed(2)
+		document.getElementById('pcr').innerHTML = " &nbsp " + pcr;
 	}
 
 	function getLacks(num) {
 		return parseFloat((num / 100000).toFixed(2));
 	}
-	function drawCallChangeINOI(strikePrice, callChangeINoI) {
 
-		var chart = new Highcharts.Chart({
-			chart : {
-				renderTo : 'callchangeINOIcontainer',
-				type : 'bar',
-				inverted : true
-			},
-			title : {
-				text : 'Call : Change In OI'
-			},
-			plotOptions : {
-				bar : {
-					dataLabels : {
-						enabled : true
-					}
-				}
-			},
-			plotOptions : {
-				bar : {
-					dataLabels : {
-						enabled : true
-					}
-				},
-				series : {
-					dataLabels : {
-						crop : false,
-						enabled : true,
-						overflow : 'none'
-
-					}
-				}
-			},
-
-			xAxis : {
-				categories : strikePrice
-			},
-
-			series : [ {
-				data : callChangeINoI
-			} ]
-		});
-
-	}
-
-	function drawPutChangeINOI(strikePrice, callOI) {
-
-		var chart = new Highcharts.Chart({
-			chart : {
-				renderTo : 'putchangeINOIcontainer',
-				type : 'bar',
-				inverted : false
-			},
-			title : {
-				text : 'Put : Change In OI'
-			},
-
-			plotOptions : {
-				series : {
-					dataLabels : {
-						enabled : true,
-						align : 'right',
-						color : '#FFFFFF',
-						x : -10
-					},
-					pointPadding : 0.1,
-					groupPadding : 0
-				}
-			},
-
-			xAxis : {
-				categories : strikePrice
-			},
-
-			plotOptions : {
-				bar : {
-					dataLabels : {
-						enabled : true
-					}
-				},
-				series : {
-					dataLabels : {
-						crop : false,
-						enabled : true,
-						overflow : 'none'
-
-					}
-				}
-			},
-
-			series : [ {
-				data : callOI
-			} ]
-		});
-
-	}
 	function drawcallPUTTotalOI(strikePrice, callOI, putOI, expiry) {
 
 		Highcharts.chart('callPutTotalOI', {
@@ -403,29 +340,28 @@
 			}
 
 		}
-		highestCEValue = highest_CE_OI_STRIKE + "->" + highest_CE_OI;
-		highestPEValue = highest_PE_OI_STRIKE + "->" + highest_PE_OI;
+		highestCEValue = highest_CE_OI_STRIKE + "->" + getLacks(highest_CE_OI);
+		highestPEValue = highest_PE_OI_STRIKE + "->" + getLacks(highest_PE_OI);
 
 		highestCEValue_Change_IN = highest_CE_OI_Change_IN_STRIKE + "->"
-				+ highest_CE_Change_IN_OI;
+				+ getLacks(highest_CE_Change_IN_OI);
 		highestPEValue_Change_IN = highest_PE_OI_Change_IN_STRIKE + "->"
-				+ highest_PE_Change_IN_OI;
+				+ getLacks(highest_PE_Change_IN_OI);
 		var tr = $('<tr/>');
-		tr.append("<td class=oddRow>" + "BankNifty" + "</td>");
-		tr.append("<td class=oddRow>" + expiry + "</td>");
-		tr.append("<td class=oddRow>" + total_ce_oi + "</td>");
-		tr.append("<td class=oddRow>" + total_pe_oi + "</td>");
 
-		tr.append("<td class=oddRow>"
-				+ parseFloat(total_pe_oi / total_ce_oi).toFixed(2) + "</td>");
-
-		tr.append("<td class=oddRow>" + highestCEValue + "</td>");
 		tr.append("<td class=oddRow>" + highestPEValue + "</td>");
-		tr.append("<td class=oddRow>" + maxPain + "</td>");
-
-		tr.append("<td class=oddRow>" + highestCEValue_Change_IN + "</td>");
-		tr.append("<td class=oddRow>" + highestPEValue_Change_IN + "</td>");
+		tr.append("<td class=oddRow>" + highestCEValue + "</td>");
+		//
+		//tr.append("<td class=oddRow>" + highestCEValue_Change_IN + "</td>");
+		//	tr.append("<td class=oddRow>" + highestPEValue_Change_IN + "</td>");
 		$('#sdTable').append(tr);
+
+		var tr = $('<tr/>');
+
+		tr.append("<td class=oddRow>" + highestPEValue_Change_IN + "</td>");
+		tr.append("<td class=oddRow>" + highestCEValue_Change_IN + "</td>");
+
+		$('#sdTable3').append(tr);
 
 	}
 
@@ -446,7 +382,7 @@
 				text : ''
 			},
 			subtitle : {
-				text : 'Numbers are in lacks'
+				text : 'Total Open Interest'
 			},
 			xAxis : {
 				type : 'category',
@@ -482,16 +418,16 @@
 				column : {
 					zones : [ {
 						value : largest, // Values up to 10 (not including) ...
-						color : '#7cb5ec' // ... have the color blue.
+						color : '#434348' // ... have the color blue.
 					}, {
-						color : '#434348' // Values from 10 (including) and up have the color red
+						color : '#7cb5ec' // Values from 10 (including) and up have the color red
 
 					} ]
 				}
 			},
 			series : [ {
 				name : 'OI',
-				data : [ [ 'Calls', calls, ], [ 'Puts', puts ]
+				data : [ [ 'Puts', puts ], [ 'Calls', calls, ]
 
 				],
 				dataLabels : {
@@ -511,7 +447,94 @@
 
 	}
 
-	createSDTable();
+	function drawcallPUTTotalChangeOI(strikePrice, callOI, putOI, expiry) {
+
+		Highcharts.chart('callPutTotalChangeOI', {
+			chart : {
+				type : 'bar',
+				inverted : false
+			},
+			title : {
+				text : 'Change In OI'
+			},
+
+			xAxis : {
+				categories : strikePrice
+			},
+			yAxis : {
+				title : {
+					text : 'Open Interest'
+				}
+			},
+			plotOptions : {
+				bar : {
+					dataLabels : {
+						enabled : true
+					},
+					enableMouseTracking : true
+				}
+
+			},
+			series : [ {
+				name : 'CALL',
+				data : callOI
+			}, {
+				name : 'PUT',
+				data : putOI
+			} ]
+		});
+	}
+
+	//createSDTable();
+	createSDTable2();
+	createSDTable3();
+
+	function createSDTable2() {
+		var x = document.createElement("TABLE");
+		x.setAttribute("id", "sdTable");
+		x.setAttribute("class", "opttbldata");
+		x.setAttribute("align", "center");
+		x.setAttribute("cellpadding", "40");
+		x.setAttribute("cellspacing", "2");
+		x.setAttribute("width", "80%");
+
+		$("#sdDiv2").append(x);
+		// table header
+		$("#sdTable")
+				.append(
+						'<thead>'
+
+								+ '<tr class="optionHead"> <th colspan="2" > Highest OI </th> </tr>'
+								+ '<tr class="optionHead">'
+								+ '<th title="buyValue">PE</th><th title="buyValue" >CE</th>'
+								+ '</tr>' + '</thead>');
+
+		// table Fotter 
+	}
+
+	function createSDTable3() {
+		var x = document.createElement("TABLE");
+		x.setAttribute("id", "sdTable3");
+		x.setAttribute("class", "opttbldata");
+		x.setAttribute("align", "center");
+		x.setAttribute("cellpadding", "40");
+		x.setAttribute("cellspacing", "2");
+		x.setAttribute("width", "80%");
+
+		$("#sdDiv3").append(x);
+		// table header
+		$("#sdTable3")
+				.append(
+						'<thead>'
+
+								+ '<tr class="optionHead"> <th colspan="2" > Highest Increase in OI </th> </tr>'
+								+ '<tr class="optionHead">'
+								+ '<th title="buyValue">PE</th><th title="buyValue" >CE</th>'
+
+								+ '</tr>' + '</thead>');
+
+		// table Fotter 
+	}
 
 	function createSDTable() {
 		var x = document.createElement("TABLE");
@@ -528,14 +551,11 @@
 				.append(
 						'<thead>'
 
-								+ '<tr class="optionHead"> <th colspan="1" class=whiteRightBorder > Index</th><th colspan="1" class=whiteRightBorder > Expiry</th> <th colspan="3"  class=whiteRightBorder > Total OI </th> <th colspan="3" class=whiteRightBorder > Highest OI </th> <th colspan="2" > Highest Increase in OI </th>  </tr>'
+								+ '<tr class="optionHead"> <th colspan="1" class=whiteRightBorder > Index</th><th colspan="1" class=whiteRightBorder > Expiry</th> <th colspan="2" class=whiteRightBorder > Highest OI </th> <th colspan="2" > Highest Increase in OI </th>  </tr>'
 								+ '<tr class="optionHead">'
-
 								+ '<th title="Index" class=whiteRightBorder></th> '
 								+ '<th title="Index" class=whiteRightBorder></th> '
-
-								+ '<th title="buyValue">CE</th> <th title="buyValue">PE</th> <th title="buyValue" class=whiteRightBorder >PCR</th>'
-								+ '<th title="buyValue">CE</th><th title="buyValue">PE</th><th title="buyValue" class=whiteRightBorder >Max Pain</th>'
+								+ '<th title="buyValue">CE</th><th title="buyValue">PE</th>'
 								+ '<th title="buyValue">CE</th><th title="buyValue" >PE</th>'
 
 								+ '</tr>' + '</thead>');

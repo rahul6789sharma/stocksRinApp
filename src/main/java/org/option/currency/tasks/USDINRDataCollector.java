@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.jsoup.nodes.Document;
-import org.option.currency.models.Columns;
-import org.option.currency.models.USDINRFuture;
+import org.option.currency.models.Future;
 import org.smarttrade.options.utils.APPConstant;
 import org.smarttrade.options.utils.DateUtils;
 import org.smarttrade.options.utils.DocumentParser;
+import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
 import org.stocksrin.utils.LoggerSysOut;
 
@@ -68,7 +68,7 @@ public class USDINRDataCollector implements Runnable {
 			String url1 = APPConstant.getUSDIINROptionChainURL(firstExpiry);
 			Document firstDoc = HTMLPageDocumentDownloader.getDocument(url1);
 			// DocumentParser.getInstance().getOptionChainTable(firstDoc);
-			Columns columns1 = DocumentParser.getInstance().getOptionData(firstDoc);
+			OptionModles columns1 = DocumentParser.getInstance().getOptionData(firstDoc);
 
 			columns1.setExpiryList(expiryList);
 			columns1.setExpiry(expiryList.get(0));
@@ -78,8 +78,8 @@ public class USDINRDataCollector implements Runnable {
 			String futureUrl = APPConstant.getUSDINRFutureURL(expiryList.get(0));
 			//LoggerSysOut.print(futureUrl);
 			Document futureDc = HTMLPageDocumentDownloader.getDocument(futureUrl);
-			USDINRFuture futurePrice = DocumentParser.getInstance().getFuturePrice(futureDc);
-			columns1.setuSDINRFuture(futurePrice);
+			Future futurePrice = DocumentParser.getInstance().getFuturePrice(futureDc);
+		
 			columns1.setLastDataUpdated(DateUtils.getTodayDateTime());
 
 			// leave first expiry
@@ -88,7 +88,7 @@ public class USDINRDataCollector implements Runnable {
 				String url = APPConstant.getUSDIINROptionChainURL(expiryList.get(i));
 				Document doc = HTMLPageDocumentDownloader.getDocument(url);
 				// LoggerSysOut.print("File URL " + url);
-				Columns columns = DocumentParser.getInstance().getOptionData(doc);
+				OptionModles columns = DocumentParser.getInstance().getOptionData(doc);
 
 				columns.setExpiryList(expiryList);
 				columns.setExpiry(expiryList.get(i));
@@ -98,8 +98,8 @@ public class USDINRDataCollector implements Runnable {
 
 				String futureUrl2 = APPConstant.getUSDINRFutureURL(expiryList.get(i));
 				Document futureDc2 = HTMLPageDocumentDownloader.getDocument(futureUrl2);
-				USDINRFuture futurePrice2 = DocumentParser.getInstance().getFuturePrice(futureDc2);
-				columns.setuSDINRFuture(futurePrice2);
+				Future futurePrice2 = DocumentParser.getInstance().getFuturePrice(futureDc2);
+				
 				columns.setLastDataUpdated(DateUtils.getTodayDateTime());
 
 			}

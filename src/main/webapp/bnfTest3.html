@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+<link rel="alternate" hreflang="x-default"
+	href="https://www.stocksrin.com" />
+<link rel="alternate" hreflang="en" href="https://www.stocksrin.com" />
+<meta property="og:locale" content="en_IN" />
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market
+	Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+
+<script src="js/bl/bl.js" type="text/javascript"></script>
+<script src="js/bl/gaussian.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+<meta name="google-site-verification"
+	content="RiMM3DplmIgwoDQbESmxiQeM8vPKaqAmUu2UkG6Hq0U" />
+</head>
+
+<script async
+	src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client : "ca-pub-7270583781006956",
+		enable_page_level_ads : true
+	});
+</script>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-12  col-md-12">
+
+
+			<div id="shortcontainer" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
+			<div id="niftycontainer" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
+
+			Long = Future Long + call Long + Short Put <br> Short = Future
+			Short + Short Call + Long Put <br> Net = Long-Short
+
+		</div>
+
+	</div>
+
+
+	<footer class="container-fluid text-center"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+<script>
+	$(document).ready(function() {
+		queryRest();
+		queryNiftyRest();
+
+	});
+
+	function queryNiftyRest() {
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				var jsonResponse = JSON.parse(this.responseText);
+				addNiftyData(jsonResponse);
+			}
+		};
+		xhttp.open("GET", "/rest/fiiDiiService/niftyIndices", true);
+		xhttp.send();
+	}
+
+	function queryRest() {
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				var jsonResponse = JSON.parse(this.responseText);
+				addDataToTable(jsonResponse);
+			}
+		};
+		xhttp.open("GET", "/rest/fiiDiiService/participantFNOData", true);
+		xhttp.send();
+	}
+	function addNiftyData(jsonResponse) {
+		var niftyClose=[];
+		var dates=[];
+		for ( var key in jsonResponse) {
+			niftyClose.push(parseFloat(jsonResponse[key].lastPrice))
+			dates.push(jsonResponse[key].date);	
+		}
+		console.log(niftyClose);
+		console.log(dates);
+		drawNiftyChart('Nifty Close', 'niftycontainer', dates, niftyClose)
+	}
+
+	function addDataToTable(jsonResponse) {
+		console.log(jsonResponse)
+		var dates = [];
+
+		var fiicallLong = [];
+		var fiicallshort = [];
+		var fiiputLong = [];
+		var fiiputshort = [];
+
+		var procallLong = [];
+		var procallshort = [];
+		var proputLong = [];
+		var proputshort = [];
+
+		var clientcallLong = [];
+		var clientcallshort = [];
+		var clientputLong = [];
+		var clientputshort = [];
+
+		var fiifutureIndexLong = [];
+		var fiifutureIndexShort = [];
+
+		var profutureIndexLong = [];
+		var profutureIndexShort = [];
+
+		var clientfutureIndexLong = [];
+		var clientfutureIndexShort = [];
+
+		for ( var key in jsonResponse) {
+
+			dates.push(key);
+
+			var innserDat = jsonResponse[key];
+			for ( var key2 in innserDat) {
+				//console.log(innserDat[key2]);
+				var participantType = innserDat[key2].participantType;
+				if (participantType == "FII") {
+					//console.log(innserDat[key2].optionIndexCallLong);
+					fiicallLong.push(innserDat[key2].optionIndexCallLong);
+					fiicallshort.push(innserDat[key2].optionIndexCallShort);
+					fiiputLong.push(innserDat[key2].optionIndexPutLong);
+					fiiputshort.push(innserDat[key2].optionIndexPutShort);
+					fiifutureIndexLong.push(innserDat[key2].futureIndexLong);
+					fiifutureIndexShort.push(innserDat[key2].futureIndexShort);
+				} else if (participantType == "PRO") {
+					//console.log(innserDat[key2].optionIndexCallLong);
+					procallLong.push(innserDat[key2].optionIndexCallLong);
+					procallshort.push(innserDat[key2].optionIndexCallShort);
+					proputLong.push(innserDat[key2].optionIndexPutLong);
+					proputshort.push(innserDat[key2].optionIndexPutShort);
+
+					profutureIndexLong.push(innserDat[key2].futureIndexLong);
+					profutureIndexShort.push(innserDat[key2].futureIndexShort);
+
+				} else if (participantType == "CLIENT") {
+					//console.log(innserDat[key2].optionIndexCallLong);
+					clientcallLong.push(innserDat[key2].optionIndexCallLong);
+					clientcallshort.push(innserDat[key2].optionIndexCallShort);
+					clientputLong.push(innserDat[key2].optionIndexPutLong);
+					clientputshort.push(innserDat[key2].optionIndexPutShort);
+
+					clientfutureIndexLong.push(innserDat[key2].futureIndexLong);
+					clientfutureIndexShort
+							.push(innserDat[key2].futureIndexShort);
+				}
+			}
+		}
+		//console.log(fiifutureIndexLong.length)
+		var fiiNet = [];
+		var proNet = [];
+		var clientNet = [];
+		var dataLength = fiifutureIndexLong.length;
+
+		for (i = 0; i < dataLength; i++) {
+
+			var fiilNetLong = fiifutureIndexLong[i] + fiicallLong[i]
+					+ fiiputshort[i];
+			var fiilNetShort = fiifutureIndexShort[i] + fiicallshort[i]
+					+ fiiputLong[i];
+			fiiNet.push(fiilNetLong - fiilNetShort);
+
+			var proNetLong = profutureIndexLong[i] + procallLong[i]
+					+ proputshort[i];
+			var proNetShort = profutureIndexShort[i] + procallshort[i]
+					+ proputLong[i];
+			proNet.push(proNetLong - proNetShort);
+
+			var clientNetLong = clientfutureIndexLong[i] + clientcallLong[i]
+					+ clientputshort[i];
+			var clientNetShort = clientfutureIndexShort[i] + clientcallshort[i]
+					+ clientputLong[i];
+			clientNet.push(clientNetLong - clientNetShort);
+		}
+		console.log(fiiNet)
+		fiidraw('Index Option Short Position', 'shortcontainer', dates, fiiNet, proNet, clientNet)
+
+		//fiidraw('PRO', 'procontainer', dates, procallLong, procallshort,proputLong, proputshort)
+		//fiidraw('CLIENT', 'clientcontainer', dates, clientcallLong,clientcallshort, clientputLong, clientputshort)
+
+	}
+
+	function drawNiftyChart(title, containerID, dates, nfityClose) {
+
+		Highcharts
+				.chart(
+						containerID,
+						{
+							chart : {
+								type : 'line'
+
+							},
+							title : {
+								text : title
+							},
+							subtitle : {
+								text : 'Source: NSE'
+							},
+							xAxis : {
+								categories : dates,
+								crosshair : true
+							},
+							yAxis : {
+
+								title : {
+									text : 'OI'
+								}
+							},
+							tooltip : {
+								headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+								pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+										+ '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+								footerFormat : '</table>',
+								shared : true,
+								useHTML : true
+							},
+							plotOptions : {
+								column : {
+									pointPadding : 0.2,
+									borderWidth : 0
+								}
+							},
+							series : [ {
+								name : 'FII Net',
+								data : nfityClose
+
+							} ]
+						});
+	}
+	
+	function fiidraw(title, containerID, dates, fiiNet, proNet, clientNet) {
+
+		Highcharts
+				.chart(
+						containerID,
+						{
+							chart : {
+								type : 'line'
+
+							},
+							title : {
+								text : title
+							},
+							subtitle : {
+								text : 'Source: NSE'
+							},
+							xAxis : {
+								categories : dates,
+								crosshair : true
+							},
+							yAxis : {
+
+								title : {
+									text : 'OI'
+								}
+							},
+							tooltip : {
+								headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+								pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+										+ '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+								footerFormat : '</table>',
+								shared : true,
+								useHTML : true
+							},
+							plotOptions : {
+								column : {
+									pointPadding : 0.2,
+									borderWidth : 0
+								}
+							},
+							series : [ {
+								name : 'FII Net',
+								data : fiiNet
+
+							}, {
+								name : 'Pro Net',
+								data : proNet
+
+							}, {
+								name : 'Client Net',
+								data : clientNet
+
+							} ]
+						});
+	}
+</script>
+
+</html>
+
+

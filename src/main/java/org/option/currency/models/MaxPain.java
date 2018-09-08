@@ -3,8 +3,8 @@ package org.option.currency.models;
 public class MaxPain {
 
 	private Double strickPrice;
-	private Double ce_oi;
-	private Double pe_oi;
+	private Integer ce_oi;
+	private Integer pe_oi;
 	private Double cumulativeCe;
 	private Double cumulativePe;
 	private Double total;
@@ -13,7 +13,7 @@ public class MaxPain {
 
 	}
 
-	public MaxPain(Double strickPrice, Double ce_oi, Double pe_oi) {
+	public MaxPain(Double strickPrice, Integer ce_oi, Integer pe_oi) {
 		super();
 		this.strickPrice = strickPrice;
 		this.ce_oi = ce_oi;
@@ -28,19 +28,19 @@ public class MaxPain {
 		this.strickPrice = strickPrice;
 	}
 
-	public Double getCe_oi() {
+	public Integer getCe_oi() {
 		return ce_oi;
 	}
 
-	public void setCe_oi(Double ce_oi) {
+	public void setCe_oi(Integer ce_oi) {
 		this.ce_oi = ce_oi;
 	}
 
-	public Double getPe_oi() {
+	public Integer getPe_oi() {
 		return pe_oi;
 	}
 
-	public void setPe_oi(Double pe_oi) {
+	public void setPe_oi(Integer pe_oi) {
 		this.pe_oi = pe_oi;
 	}
 

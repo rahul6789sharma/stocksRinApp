@@ -7,28 +7,39 @@ public class APPConstant {
 	private APPConstant() {
 
 	}
+
 	public static double BNF_STRIKE_DIFF = 100d;
+	public static double NF_STRIKE_DIFF = 50d;
+	
+	public static final String NSE_DERIVATIVES_OI_URL = "https://www.nseindia.com/content/historical/DERIVATIVES/";
 	public static final String NSE_bhavdata_URL = "https://www.nseindia.com/products/content/sec_bhavdata_full.csv";
 
 	private static final String STOCKSRIN_NSE_CONF_DIR = System.getProperty("user.home") + File.separator + "stocksRin_CONF" + File.separator;
 	public static final String STOCKSRIN_NSE_CONF_DIR_BHAVDIR = STOCKSRIN_NSE_CONF_DIR + File.separator + "nseOriginalData" + File.separator;
 	public static final String STOCKSRIN_NSE_CONF_DIR_StocksRInData = STOCKSRIN_NSE_CONF_DIR + File.separator + "stocksRinData" + File.separator;
+	public static final String STOCKSRIN_NSE_CONF_DIR_DERIVATIVES_OI = STOCKSRIN_NSE_CONF_DIR + File.separator+"DERIVATIVES_OI"+File.separator;
 
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator;
+	public static final String STOCKSRIN_INDICES_NIFTY = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "indices" + File.separator+"Nifty.csv";
+	public static final String STOCKSRIN_INDICES_BANK_NIFTY = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "indices" + File.separator+"BankNifty.csv";
 
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_TRADE_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "trade.csv";
 
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_BNIFTY_STRATEGY_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BNiftyStrategy.csv";
-
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyOptionPrice.csv";
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyMaxPainDaily.csv";
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE2 = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain.csv";
-	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_MONTHLYMAXXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyMonthlyExpiryMaxPain.csv";
-
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_BNIFTY_STRATEGY_DIR = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "Strategy" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_AutoMated" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_DIR_RESULT = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_Result" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_RESULT = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_AutoMated_Result" + File.separator;
+	//public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyOptionPrice.csv";
+	
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain.csv";
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE_Previous1 = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain_PreviousWeek1.csv";
+	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE_Previous2 = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain_PreviousWeek2.csv";
+	
 	public static final String FILE_NAME_updatedBhavCopy = "updatedBhavCopy.xlsx";
 
 	public static final String DATEFORMATE_Logger = "dd-MMM hh:mm:ss";
-	
+
 	public static final String DATEFORMATE_BN_EXPIRY = "ddMMMyyyy";
 	public static final String DATEFORMATE_dd_MM_yyyy = "dd_MM_yyyy";
 	public static final String DATEFORMATE_dd_MMM_yyyy = "dd_MMM_yyyy";
@@ -39,10 +50,11 @@ public class APPConstant {
 	public static final String FILE_NAME_FII_DIR_YEARLY = FILE_NAME_FII_DIR + "yearly" + File.separator;
 
 	public static final String FILE_NAME_NIFTY_OI_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "niftyOI" + File.separator + "NiftyOI.csv";
-	public static final String FO_OI_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator +"Participant_OI_Data"+ File.separator +"NSE_FO_OI" + File.separator;
-	public static final String FUTURE_OI_Participant_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator +"Participant_OI_Data"+ File.separator +"FUTURE_INDEX" + File.separator +"FUTURE_OI.csv";
-	public static final String OPTION_OI_Participant_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator +"Participant_OI_Data"+ File.separator +"OPTION_INDEX" + File.separator +"OPTION_OI.csv";
-	
+	public static final String FO_OI_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator + "Participant_OI_Data" + File.separator + "NSE_FO_OI" + File.separator;
+	public static final String FUTURE_OI_Participant_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator + "Participant_OI_Data" + File.separator + "FUTURE_INDEX" + File.separator
+			+ "FUTURE_OI.csv";
+	public static final String OPTION_OI_Participant_FILE = STOCKSRIN_NSE_CONF_DIR_StocksRInData + File.separator + "Participant_OI_Data" + File.separator + "OPTION_INDEX" + File.separator
+			+ "OPTION_OI.csv";
 
 	public static final String FILE_NAME_DERIVATIVES = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "DERIVATIVES.csv";
 
@@ -63,6 +75,7 @@ public class APPConstant {
 	public static final String BANKNIFTY_WEEKLY_OPTION_URL_BY_Expiry = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=BANKNIFTY&date=";
 
 	public static final String NIFTY_URL = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=NIFTY";
+	public static final String NIFTY_URL_URL_BY_Expiry = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=NIFTY&date=";
 
 	public static final String NIFTY_FUTURE_URL = "https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuoteFO.jsp?underlying=NIFTY&instrument=FUTIDX&type=-&strike=-&expiry=28MAR2018";
 

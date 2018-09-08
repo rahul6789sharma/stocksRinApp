@@ -8,12 +8,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
-import org.option.currency.models.Column;
-import org.option.currency.models.Columns;
 import org.option.currency.models.Data;
-import org.option.currency.models.USDINRFuture;
+import org.option.currency.models.Future;
 import org.option.currency.models.UsdInrFutureJson;
 import org.stocksrin.oi.future.NiftyFutureModel;
+import org.stocksrin.option.common.model.OptionModle;
+import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.utils.LoggerSysOut;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -69,9 +69,9 @@ public class DocumentParser {
 		return lst;
 	}
 
-	public Columns getOptionData(Document doc) throws Exception {
-		List<Column> lst = getOptionChainTable(doc);
-		Columns columns = updateColumns(lst);
+	public OptionModles getOptionData(Document doc) throws Exception {
+		List<OptionModle> lst = getOptionChainTable(doc);
+		OptionModles columns = updateColumns(lst);
 		return columns;
 
 	}
@@ -93,10 +93,10 @@ public class DocumentParser {
 		return lst;
 	}
 
-	public List<Column> getOptionChainTable(Document doc) throws Exception {
+	public List<OptionModle> getOptionChainTable(Document doc) throws Exception {
 		Element table = doc.select("table[id=octable]").get(0); // select
 		Elements rows = table.select("tr");
-		List<Column> lst = new ArrayList<>();
+		List<OptionModle> lst = new ArrayList<>();
 
 		for (int i = 2; i < rows.size() - 1; i++) { // first second and last
 													// row is the col names so
@@ -105,12 +105,12 @@ public class DocumentParser {
 			Element row = rows.get(i);
 			Elements cols = row.select("td");
 
-			Column column = new Column();
+			OptionModle column = new OptionModle();
 			for (int j = 0; j < cols.size(); j++) {
 				Element col = cols.get(j);
 
 				if (cols.size() == 21) {
-					column.setVal(j, col.text());
+					column.setValue(j, col.text());
 				}
 
 			}
@@ -122,21 +122,22 @@ public class DocumentParser {
 		return lst;
 	}
 
-	public Columns updateColumns(List<Column> column) {
-		Columns columns = new Columns();
-		columns.setDataset(column);
+	public OptionModles updateColumns(List<OptionModle> column) {
+		OptionModles columns = new OptionModles();
+		columns.setOptionModle(column);
 
-		columns.setInterestRate("6.7");
+		
 
 		// int max_ce_oi = 0;
 		// int max_pe_oi = 0;
 		int total_ce_oi = 0;
 		int total_pe_oi = 0;
-		for (Column c : column) {
+		for (OptionModle c : column) {
 			int ce_oi = 0;
 			int pu_oi = 0;
 			try {
-				ce_oi = Integer.parseInt(c.getCE_OI().replaceAll("[]", ""));
+			//	ce_oi = Integer.parseInt(c.getCE_OI().replaceAll("[]", ""));
+				ce_oi = c.getC_oi();
 				/*
 				 * if (max_ce_oi < ce_oi) { max_ce_oi = ce_oi; }
 				 */
@@ -145,7 +146,8 @@ public class DocumentParser {
 
 			}
 			try {
-				pu_oi = Integer.parseInt(c.getPE_OI().replaceAll("[]", ""));
+				//pu_oi = Integer.parseInt(c.getPE_OI().replaceAll("[]", ""));
+				pu_oi = c.getP_oi();
 				/*
 				 * if (max_pe_oi < pu_oi) { max_pe_oi = pu_oi; }
 				 */
@@ -162,11 +164,11 @@ public class DocumentParser {
 		return columns;
 	}
 
-	public USDINRFuture getFuturePrice(Document doc) {
+	public Future getFuturePrice(Document doc) {
 		try {
 			Elements strong = doc.select("div[id=responseDiv]");
 			String dataJson = strong.get(0).text();
-			USDINRFuture USDINRFuture = getUSDINRFuturefromJsonString(dataJson);
+			Future USDINRFuture = getUSDINRFuturefromJsonString(dataJson);
 			return USDINRFuture;
 		} catch (Exception e) {
 
@@ -175,8 +177,8 @@ public class DocumentParser {
 		return null;
 	}
 
-	public USDINRFuture getUSDINRFuturefromJsonString(String jsonData) {
-		USDINRFuture USDINRFuture = new USDINRFuture();
+	public Future getUSDINRFuturefromJsonString(String jsonData) {
+		Future USDINRFuture = new Future();
 
 		ObjectMapper mapper = new ObjectMapper();
 		UsdInrFutureJson UsdInrFuture = null;

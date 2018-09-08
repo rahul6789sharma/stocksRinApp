@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.stocksrin.com" />
+<meta property="og:site_name" content="www.stocksrin.com" />
+<meta property="og:type" content="website" />
+<meta name="author" content="stocksrin.com">
+<link rel="alternate" hreflang="x-default"
+	href="https://www.stocksrin.com" />
+<link rel="alternate" hreflang="en" href="https://www.stocksrin.com" />
+<meta property="og:locale" content="en_IN" />
+
+
+<title>Smart Options Trading | NSE : Indian Stock Market
+	Knowledge | Options Trading</title>
+
+<meta name="keywords"
+	content="stocksrin, Indian Stock Maket, NSE ,NIFTY Options,Nifty Option Chain, Currency Options, Option Chain, USDINR , Options Trading, Option Geeks, NIFTY Option Geeks,
+		NIFTY Delta,Futures & options, F&O, F&O Quote, BSE, NSE, Nifty " />
+<meta name="description" content="Options Chain for NIFTY" />
+<link rel="canonical" href="https://www.stocksrin.com" />
+
+
+<meta name="robots" content="index, follow">
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel="shortcut icon" href="images/stocksRin.ico">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+<meta name="google-site-verification"
+	content="RiMM3DplmIgwoDQbESmxiQeM8vPKaqAmUu2UkG6Hq0U" />
+</head>
+
+<script async
+	src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+	(adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client : "ca-pub-7270583781006956",
+		enable_page_level_ads : true
+	});
+</script>
+
+
+<body ng-app="">
+
+	<div class="container-fluid main-content"
+		style="padding-right: 0; padding-left: 0;">
+
+		<div class="banner include-nav" style="background-color: #34495e;">
+
+			<div ng-include="'templets/header.htm'"></div>
+
+		</div>
+
+
+
+
+		<!--left-->
+		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
+
+			</br>
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/left-->
+
+
+		<!--center-->
+		<div class="col-xs-12 col-sm-8  col-md-8">
+
+			<div id="container" style="height: 700px; min-width: 310px"></div>
+		</div>
+
+
+
+		<!--right-->
+		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
+
+			<br />
+			<div ng-include="'templets/add.html'"></div>
+
+		</div>
+		<!--/right-->
+
+
+	</div>
+
+
+	<footer class="container-fluid text-center"
+		style="background-color: #101010; margin-top: 10px;">
+
+		<div ng-include="'templets/footer.html'"></div>
+
+	</footer>
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/my.js"></script>
+
+
+</body>
+<script>
+	$(document).ready(function() {
+		getBhavDat();
+		//queryData();
+
+	});
+
+	function getBhavDat() {
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				var jsonResponse = JSON.parse(this.responseText);
+				formateDate(jsonResponse);
+			}
+		};
+
+		xhttp.open("GET", "/rest/nseservice/bankNiftyOI", true);
+		xhttp.send();
+	}
+
+	function formateDate(rawData) {
+		var closePrice = [];
+		var volumeData = [];
+		var oiData = [];
+		var dataLength = rawData.length;
+
+		i = 0;
+
+		for (i; i < dataLength; i += 1) {
+
+			closePrice.push([ rawData[i].timeStamp, rawData[i].close ]);
+			volumeData.push([ rawData[i].timeStamp, rawData[i].totalVol ]);
+			oiData.push([ rawData[i].timeStamp, rawData[i].totalOI ]);
+
+		}
+		//console.log(closePrice);
+		queryData(closePrice, volumeData, oiData);
+	}
+
+	function queryData(closeData, volData, oiData) {
+
+		{
+
+			// split the data set into ohlc and volume
+			//var ohlc = [], volume = [], oi = [], dataLength = data.length,
+
+			// set the allowed units for data grouping
+			var groupingUnits = [ [ 'week', // unit name
+			[ 1 ] // allowed multiples
+			], [ 'month', [ 1, 2, 3, 4, 6 ] ] ],
+
+			i = 0;
+
+			Highcharts.stockChart('container', {
+
+				rangeSelector : {
+					selected : 1
+				},
+
+				title : {
+					text : 'BankNifty Historical'
+				},
+
+				yAxis : [ {
+					labels : {
+						align : 'right',
+						x : -3
+					},
+					title : {
+						text : 'ClosePrice'
+					},
+					height : '60%',
+					lineWidth : 2,
+					resize : {
+						enabled : true
+					}
+				}, {
+					labels : {
+						align : 'right',
+						x : -3
+					},
+					title : {
+						text : 'Volume'
+					},
+					top : '65%',
+					height : '35%',
+					offset : 0,
+					lineWidth : 2
+				}, {
+					labels : {
+						align : 'right',
+						x : -3
+					},
+					title : {
+						text : 'OI'
+					},
+					top : '65%',
+					height : '35%',
+					offset : 0,
+					lineWidth : 2
+				} ],
+
+				tooltip : {
+					split : true
+				},
+
+				series : [ {
+					type : 'line',
+					name : 'AAPL',
+					data : closeData,
+					dataGrouping : {
+						units : groupingUnits
+					}
+				}, {
+					type : 'column',
+					name : 'Volume',
+					data : volData,
+					yAxis : 1,
+					dataGrouping : {
+						units : groupingUnits
+					}
+				}, {
+					type : 'area',
+					name : 'OI',
+					data : oiData,
+					yAxis : 2,
+					dataGrouping : {
+						units : groupingUnits
+					}
+				} ]
+			});
+		}
+	}
+
+	// epoc time close Price, vol,oi
+	var data = [ [ 1517326200000, 189.53, 18002600, 12 ],
+			[ 1517412600000, 500.08, 8172915, 15 ] ];
+</script>
+
+</html>

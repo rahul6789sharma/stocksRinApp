@@ -3,8 +3,12 @@ package org.stocksrin.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -250,6 +254,35 @@ public class FileUtils {
 		return lst;
 	}
 
+	public static boolean downloadFile(String url, String toFile) throws Exception {
+
+		boolean status = false;
+		ReadableByteChannel rbc = null;
+
+		try (FileOutputStream fos = new FileOutputStream(toFile);) {
+
+			URL website = new URL(url);
+			rbc = Channels.newChannel(website.openStream());
+
+			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			fos.close();
+			rbc.close();
+			status = true;
+
+		} catch (IOException e) {
+			throw new Exception("ERROR ! downloadBhavCopy " + e.getMessage());
+		} finally {
+			try {
+				if (rbc != null) {
+					rbc.close();
+				}
+
+			} catch (IOException e) {
+				throw new Exception("ERROR ! downloadBhavCopy " + e.getMessage());
+			}
+		}
+		return status;
+	}
 	public static void main(String[] args) {
 		String file = "C:\\nse\\fandO\\fno.txt";
 		LoggerSysOut.print(readFnOList(file));

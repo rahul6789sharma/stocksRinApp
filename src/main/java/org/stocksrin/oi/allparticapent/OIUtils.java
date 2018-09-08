@@ -8,6 +8,16 @@ import org.stocksrin.utils.DateUtils;
 
 public class OIUtils {
 
+	public static void main(String[] args) {
+		try {
+			OIUtils.collectAllDateForDay("C:\\Users\\rahulksh\\stocksRin_CONF\\stocksRinData\\Participant_OI_Data\\NSE_FO_OI\\Aug2018\\fao_participant_oi_17082018.csv");
+			System.out.println("Done");
+			System.out.println(ParticapentOIData.data.get("17Aug2018"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void collectAllDateForDay(String file) throws Exception {
 		String date3 = getDatefromFileName(file);
 		List<ParticipantOIModle> participantOIModles = new ArrayList<>(4);
@@ -42,6 +52,7 @@ public class OIUtils {
 	}
 
 	private static String getDatefromFileName(String fileName) throws Exception {
+
 		String[] a = fileName.split("fao_participant_oi_");
 
 		String date = a[1].substring(0, 8);

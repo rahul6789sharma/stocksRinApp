@@ -12,19 +12,22 @@ import java.io.LineNumberReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.stocksrin.banknifty.option.alog2.StrategyModel;
-import org.stocksrin.banknifty.option.alog2.StrategyModel.OptionType;
+import org.stocksrin.bhavcopy.BhavForRestModle;
 import org.stocksrin.fiidii.FIIDIIDataModle;
 import org.stocksrin.fiidii.FIIDIIDataYrModle;
 import org.stocksrin.oi.future.NiftyOIDataModle;
-import org.stocksrin.option.model.BankNiftyDailyMaxPain;
+import org.stocksrin.option.common.model.DailyMaxPain;
+import org.stocksrin.option.common.model.StrategyModel;
+import org.stocksrin.option.common.model.StrategyModel.OptionType;
 
 public class CommonUtils {
 
@@ -67,45 +70,68 @@ public class CommonUtils {
 		if (now.after(today)) {
 			LoggerSysOut.print("Time is more then 3:30 pm");
 			return false;
+
 		} else {
 			return true;
 		}
-
 	}
 
-	public static Map<Integer, List<StrategyModel>> getBankNiftyStrategy() {
-		List<StrategyModel> lst = getBankNiftyStrategyModel();
+	// return true in market hr// after market hr it will retunr false
+	public static boolean getEveningTimeForStrategy() {
+		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		today.set(Calendar.HOUR_OF_DAY, MARKET_HR);
+		today.set(Calendar.MINUTE, 15);
+		today.set(Calendar.SECOND, 0);
 
-		Map<Integer, List<StrategyModel>> strategy = new HashMap<>();
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 
-		for (StrategyModel strategyModel : lst) {
-			Integer[] count = getStartegyCount(strategyModel.getStrategySerial());
-			Integer integer = count[0];
+		if (now.after(today)) {
+			LoggerSysOut.print("Time is more then 3:30 pm");
+			return false;
 
-			List<StrategyModel> lst1 = strategy.get(integer);
-			if (lst1 == null) {
-				List<StrategyModel> r = new ArrayList<>();
-				r.add(strategyModel);
-				strategy.put(integer, r);
-			} else {
-				lst1.add(strategyModel);
-			}
+		} else {
+			return true;
+		}
+	}
+
+	/*
+	 * // strategy serial and its lsit of strategy models public static
+	 * Map<Integer, List<StrategyModel>> getStrategyFromCSV() {
+	 * List<StrategyModel> lst = new ArrayList<>();
+	 * 
+	 * Map<Integer, List<StrategyModel>> strategy = new HashMap<>();
+	 * 
+	 * for (StrategyModel strategyModel : lst) { Integer[] count =
+	 * getStartegyCount(strategyModel.getStrategySerial()); Integer integer =
+	 * count[0];
+	 * 
+	 * List<StrategyModel> lst1 = strategy.get(integer); if (lst1 == null) {
+	 * List<StrategyModel> r = new ArrayList<>(); r.add(strategyModel);
+	 * strategy.put(integer, r); } else { lst1.add(strategyModel); } }
+	 * 
+	 * return strategy; }
+	 */
+
+	public static Map<String, List<StrategyModel>> getStrategy(String dir) {
+		Map<String, List<StrategyModel>> strategy = new HashMap<>();
+
+		List<String> lst = FileUtils.listFilesForFolder(new File(dir));
+
+		for (String string : lst) {
+			String file = dir + string;
+			List<StrategyModel> str = getStrategyModel(file);
+			strategy.put(string, str);
+
 		}
 
 		return strategy;
 	}
 
-	private static Integer[] getStartegyCount(String strategyCount) {
-		Integer[] count = new Integer[2];
-		String[] a = strategyCount.split("\\.");
-		count[0] = Integer.parseInt(a[0]);
-		count[1] = Integer.parseInt(a[1]);
-		return count;
-	}
-
-	public static List<StrategyModel> getBankNiftyStrategyModel() {
+	private static List<StrategyModel> getStrategyModel(String file) {
 		List<StrategyModel> result = new ArrayList<>(5);
-		List<String[]> lst = CommonUtils.getCSVData(APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_BNIFTY_STRATEGY_FILE);
+
+		List<String[]> lst = CommonUtils.getCSVData(file);
+
 		for (String[] strings : lst) {
 			StrategyModel strategyModel = new StrategyModel();
 			strategyModel.setStrategySerial(strings[0]);
@@ -117,18 +143,28 @@ public class CommonUtils {
 				strategyModel.setType(OptionType.PUT);
 			}
 
-			strategyModel.setStrike(Double.parseDouble(strings[3]));
+			strategyModel.setStrike(Integer.parseInt(strings[3]));
 			strategyModel.setClose_price(Double.parseDouble(strings[4]));
 			strategyModel.setQuantity(Integer.parseInt(strings[5]));
 			strategyModel.setTarget(Double.parseDouble(strings[6]));
 			strategyModel.setStopLoss(Double.parseDouble(strings[7]));
 			strategyModel.setSpot_close(Double.parseDouble(strings[8]));
 			strategyModel.setDes(strings[9]);
+			strategyModel.setStatus(Boolean.parseBoolean(strings[10]));
+			strategyModel.setTraded_IV(Double.parseDouble(strings[11]));
+			strategyModel.setTradeDate(strings[12]);
 			result.add(strategyModel);
 
 		}
 		return result;
 	}
+
+	/*
+	 * private static Integer[] getStartegyCount(String strategyCount) {
+	 * Integer[] count = new Integer[2]; String[] a =
+	 * strategyCount.split("\\."); count[0] = Integer.parseInt(a[0]); count[1] =
+	 * Integer.parseInt(a[1]); return count; }
+	 */
 
 	public static NiftyOIDataModle getOIModelFromCSV(String csvData) throws Exception {
 
@@ -164,25 +200,32 @@ public class CommonUtils {
 		} catch (Exception e) {
 			throw new Exception("ERROR! getOIModelFromCSV " + e.getMessage());
 		}
-
 	}
 
-	public static BankNiftyDailyMaxPain getMAXPAINFromCSV(String csvData) {
+	public static DailyMaxPain getMAXPAINFromCSV(String csvData) {
 
 		String cvsSplitBy = ",";
-		BankNiftyDailyMaxPain bankNiftyDailyMaxPain = new BankNiftyDailyMaxPain();
+		DailyMaxPain bankNiftyDailyMaxPain = new DailyMaxPain();
 		String[] data = csvData.split(cvsSplitBy);
 		bankNiftyDailyMaxPain.setDate(data[0]);
 		bankNiftyDailyMaxPain.setExpiry(data[1]);
-		bankNiftyDailyMaxPain.setExpiryType(data[2]);
-		bankNiftyDailyMaxPain.setMaxPain(Double.parseDouble(data[3]));
-		bankNiftyDailyMaxPain.setTotalCEOI(Integer.parseInt(data[4]));
-		bankNiftyDailyMaxPain.setTotalPEOI(Integer.parseInt(data[5]));
-		bankNiftyDailyMaxPain.setPcr(Double.parseDouble(data[6]));
-		bankNiftyDailyMaxPain.setSpot(Double.parseDouble(data[7]));
-		bankNiftyDailyMaxPain.setChange(data[8]);
-		bankNiftyDailyMaxPain.setDay(data[9]);
-		bankNiftyDailyMaxPain.setIsExpiryDay(data[10]);
+		bankNiftyDailyMaxPain.setMaxPain(Double.parseDouble(data[2]));
+		bankNiftyDailyMaxPain.setTotalCEOI(Integer.parseInt(data[3]));
+		bankNiftyDailyMaxPain.setTotalPEOI(Integer.parseInt(data[4]));
+		bankNiftyDailyMaxPain.setSpot(Double.parseDouble(data[5]));
+		bankNiftyDailyMaxPain.setChange(data[6]);
+
+		bankNiftyDailyMaxPain.setHighest_oi_ce(Double.parseDouble(data[7]));
+		bankNiftyDailyMaxPain.setHighest_oi_ce_value(Integer.parseInt(data[8]));
+
+		bankNiftyDailyMaxPain.setHighest_oi_pe(Double.parseDouble(data[9]));
+		bankNiftyDailyMaxPain.setHighest_oi_pe_value(Integer.parseInt(data[10]));
+
+		bankNiftyDailyMaxPain.setHighest_change_oi_ce(Double.parseDouble(data[11]));
+		bankNiftyDailyMaxPain.setHighest_change_oi_ce_value(Integer.parseInt(data[12]));
+
+		bankNiftyDailyMaxPain.setHighest_change_oi_pe(Double.parseDouble(data[13]));
+		bankNiftyDailyMaxPain.setHighest_change_oi_pe_value(Integer.parseInt(data[14]));
 
 		return bankNiftyDailyMaxPain;
 	}
@@ -298,44 +341,20 @@ public class CommonUtils {
 
 	public static void appendData(String data, String fileName) {
 
-		BufferedWriter bw = null;
-		FileWriter fw = null;
+		File file = new File(fileName);
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			throw new RuntimeException(fileName + " File not exist");
+		}
 
-		try {
-
-			File file = new File(fileName);
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				throw new RuntimeException(fileName + " File not exist");
-			}
-
-			// true = append file
-			fw = new FileWriter(file.getAbsoluteFile(), true);
-			bw = new BufferedWriter(fw);
+		try (FileWriter fw = new FileWriter(file.getAbsoluteFile(), true); BufferedWriter bw = new BufferedWriter(fw);) {
 
 			bw.write("\n" + data);
 
 		} catch (IOException e) {
-
 			e.printStackTrace();
 
-		} finally {
-
-			try {
-
-				if (bw != null)
-					bw.close();
-
-				if (fw != null)
-					fw.close();
-
-			} catch (IOException ex) {
-
-				ex.printStackTrace();
-
-			}
 		}
-
 	}
 
 	public static String[] getCSVData_FirstLine(String csvFile) {
@@ -351,8 +370,6 @@ public class CommonUtils {
 				// use comma as separator
 				String[] data = line.split(cvsSplitBy);
 				return data;
-				//break;
-
 			}
 
 		} catch (FileNotFoundException e) {
@@ -361,9 +378,10 @@ public class CommonUtils {
 			e.printStackTrace();
 		}
 		return null;
-	
+
 	}
 
+	// ll not read rirst row
 	public static List<String[]> getCSVData(String csvFile) {
 
 		String line = "";
@@ -388,4 +406,45 @@ public class CommonUtils {
 		}
 		return lst;
 	}
+
+	public static List<BhavForRestModle> getStocksrinOIModel(String csvData) {
+		List<BhavForRestModle> bhavForRestModles = new ArrayList<>();
+		List<String[]> lst = CommonUtils.getCSVData(csvData);
+		for (String[] strings : lst) {
+			BhavForRestModle bhavForRestModle = new BhavForRestModle();
+			// stocksrinOIModel.setDate(strings[0]);
+			bhavForRestModle.setTimeStamp(Long.parseLong(strings[1]));
+
+			bhavForRestModle.setClose(Double.parseDouble(strings[4]));
+
+			bhavForRestModle.setTotalOI(Integer.parseInt(strings[14]));
+			bhavForRestModle.setTotalVol(Integer.parseInt(strings[15]));
+
+			bhavForRestModles.add(bhavForRestModle);
+		}
+
+		return bhavForRestModles;
+
+	}
+
+	public static void main(String[] args) throws Exception {
+		/*
+		 * Calendar today3 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		 * today3.set(Calendar.HOUR_OF_DAY, 15); today3.set(Calendar.MINUTE,
+		 * 30); today3.set(Calendar.SECOND, 0);
+		 * System.out.println(today3.getTimeInMillis());
+		 */
+
+		String str = "13-Jul-2018 15:30 UTC";
+		// String str = "Jul 14 2018 15:30 UTC";
+		// SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy HH:mm zzz");
+		SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm zzz");
+		Date date = df.parse(str);
+		long epoch = date.getTime();
+		System.out.println(epoch); // 1055545912454
+
+		// getStocksrinOIModel("C:\\Users\\rahulksh\\stocksRin_CONF\\stocksRinData\\DERIVATIVES_OI\\2018\\BANKNIFTY_FUTURE_OI.csv");
+
+	}
+
 }

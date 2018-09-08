@@ -1,6 +1,7 @@
 package org.stocksrin.utils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,23 +9,59 @@ import java.util.TimeZone;
 
 public class DateUtils {
 
+	public static void main(String[] args) {
+		// LoggerSysOut.print(getCurrentYear());
+		try {
+			String date = dateToString(new Date(), "ddMMMyyyy");
+			System.out.println(date);
+			System.out.println(getDayFromDate(date, "ddMMMyyyy"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static String getDayFromDate(String input_date, String formate) throws Exception {
+
+		SimpleDateFormat format1 = new SimpleDateFormat(formate);
+		Date dt1 = format1.parse(input_date);
+		DateFormat format2 = new SimpleDateFormat("EEEE");
+		return format2.format(dt1);
+
+	}
+
 	private DateUtils() {
 	}
 
 	public static String getCurrentDay() {
+		SimpleDateFormat format = new SimpleDateFormat("EEE");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, 0);
+		return format.format(cal.getTime()).toUpperCase();
+	}
+
+	public static String getCurrentDatetwoDigit() {
+		SimpleDateFormat format = new SimpleDateFormat("dd");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, 0);
+		 return format.format(cal.getTime()).toUpperCase();
+		//return "12";
+	}
+
+	public static String getCurrentDate() {
 		SimpleDateFormat format = new SimpleDateFormat("d");
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, 0);
 		return format.format(cal.getTime()).toUpperCase();
 	}
-	
+
 	public static String getFullCurrentMonth() {
 		SimpleDateFormat format = new SimpleDateFormat("MMMM");
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, 0);
 		return format.format(cal.getTime());
 	}
-	
+
 	public static String getCurrentMonth() {
 		SimpleDateFormat format = new SimpleDateFormat("MMM");
 		Calendar cal = Calendar.getInstance();
@@ -83,7 +120,6 @@ public class DateUtils {
 
 	public static boolean isWeekEndDay() {
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		System.out.println(now.get(Calendar.DAY_OF_WEEK));
 		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 			return true;
 		} else {
@@ -179,7 +215,12 @@ public class DateUtils {
 
 	}
 
-	public static void main(String[] args) {
-		LoggerSysOut.print(getCurrentYear());
+	public static long getEpocTime(String dateString) throws ParseException {
+		// String str = "13-Jul-2018 15:30 UTC";
+		String str = dateString + " 15:30 UTC";
+		SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm zzz");
+		Date date = df.parse(str);
+		long epoch = date.getTime();
+		return epoch;
 	}
 }

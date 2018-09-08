@@ -2,11 +2,20 @@ package org.stocksrin.nifty.indices;
 
 public class NSEIndice {
 
+	private String date;
 	private String change;
 	private String imgFileName;
 	private String name;
 	private String pChange;
 	private String lastPrice;
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
 
 	public String getChange() {
 		return change;
@@ -48,11 +57,13 @@ public class NSEIndice {
 		this.lastPrice = lastPrice;
 	}
 
-	@Override
-	public String toString() {
-		return "NSEIndice [change=" + change + " imgFileName=" + imgFileName + " name=" + name + " pChange="
-				+ pChange + " lastPrice=" + lastPrice + "]";
+	public String toCsv() {
+		return date + "," + change + "," + pChange + "," + lastPrice;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "NSEIndice [date=" + date + ", change=" + change + ", imgFileName=" + imgFileName + ", name=" + name + ", pChange=" + pChange + ", lastPrice=" + lastPrice + "]";
+	}
+
 }

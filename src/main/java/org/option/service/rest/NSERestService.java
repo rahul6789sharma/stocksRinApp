@@ -17,21 +17,38 @@ import javax.ws.rs.core.MediaType;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.option.currency.models.Columns;
 import org.option.currency.models.NiftyData;
 import org.smarttrade.options.utils.DateUtils;
 import org.stocks.price.NseModel;
 import org.stocks.price.NsePrice;
-import org.stocksrin.banknifty.BankNiftyData;
-import org.stocksrin.banknifty.BankNiftyDataFileUtils;
-import org.stocksrin.banknifty.LiveMaxPainModle;
-import org.stocksrin.option.model.OptionModles;
+import org.stocksrin.bhavcopy.BhavForRestModle;
+import org.stocksrin.option.banknifty.BankNiftyData;
+import org.stocksrin.option.banknifty.BankNiftyDataFileUtils;
+import org.stocksrin.option.banknifty.LiveMaxPainModle;
+import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
 import org.stocksrin.utils.LoggerSysOut;
 
 @Path("/nseservice")
 public class NSERestService {
+
+	
+	// http://localhost:8080/rest/nseservice/bankNiftyOI
+	@GET
+	@Path("/bankNiftyOI")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public List<BhavForRestModle> getBabnkNiftyOI() throws Exception {
+		return org.stocksrin.bhavcopy.Data.getBankNIftystocksrinOIModels();
+	}
+	
+	// http://localhost:8080/rest/nseservice/bankNiftyOI
+	@GET
+	@Path("/niftyOI")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public List<BhavForRestModle> getNiftyOI() throws Exception {
+		return org.stocksrin.bhavcopy.Data.getNsIftystocksrinOIModels();
+	}
 
 	// http://localhost:8080/rest/nseservice/bankNiftyMaxPain
 	@GET
@@ -75,15 +92,12 @@ public class NSERestService {
 	@POST
 	@Path("/niftyOptionChain")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public Columns getNiftyOptionChainService(String expiry) {
-		return getNIftyOC(expiry);
-	}
+	public OptionModles getNiftyOptionChainService(String expiry) {
+		// LoggerSysOut.print(NiftyData.getData().keySet());
 
-	public Columns getNIftyOC(String expiry) {
+		// Columns optionChain = NiftyData.getData().get(expiry);
 
-		LoggerSysOut.print(NiftyData.getData().keySet());
-
-		Columns optionChain = NiftyData.getData().get(expiry);
+		OptionModles optionChain = NiftyData.getData().get(expiry);
 
 		if (optionChain == null) {
 			// go and fetch data from nse
@@ -99,20 +113,19 @@ public class NSERestService {
 				return optionChain;
 			}
 		}
-
 	}
 
-	public Columns getNiftyOptionChain(String expiry) {
+	public OptionModles getNiftyOptionChain(String expiry) {
 		String nseUrl = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?segmentLink=17&instrument=OPTIDX&symbol=NIFTY&date=" + expiry;
 		// String file="C:\\Users\\rahulksh\\Desktop\\nsedata\\NIFTY.html";
 		// Document doc=DomainFacade.getInstance().getDocumentFromFile(file);
 		Document doc = HTMLPageDocumentDownloader.getDocument(nseUrl);
 		try {
 			Elements c = CommonHTMLDocParsher.getOptionChainTable(doc, "octable", 0);
-			Columns columns = CommonHTMLDocParsher.parseNSEColumn(doc, c);
+			OptionModles columns = CommonHTMLDocParsher.parseNSEColumn(doc, c);
 
-			String spotPrice = columns.getUnderlyingSpotPrice().substring(24, 31);
-			columns.setSpotPrice(spotPrice);
+			String spotPrice = columns.getUnderlyingSpotPriceString().substring(24, 31);
+			// columns.setSpotPrice(spotPrice);
 
 			List<String> expiryList = CommonHTMLDocParsher.getSelectBoxById(doc, "date", 0);
 			List<String> firstThreeExpiry = new ArrayList<>();

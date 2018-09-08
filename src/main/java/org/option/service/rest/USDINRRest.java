@@ -9,12 +9,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.option.currency.models.Columns;
 import org.option.currency.models.MaxPains;
 import org.option.currency.usdinr.UsdInrData;
 import org.option.currency.usdinr.UsdInrService;
-import org.smarttrade.options.utils.Calculation;
 import org.smarttrade.options.utils.DateUtils;
+import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.utils.LoggerSysOut;
 
 @Path("/usdinrService")
@@ -23,7 +22,7 @@ public class USDINRRest {
 	@POST
 	@Path("/usdinrOptionChain")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public Columns getUSDINROptionChainService(String expiry) {
+	public OptionModles getUSDINROptionChainService(String expiry) {
 		UsdInrService usdInrService = UsdInrService.getInstance();
 		return usdInrService.getUSDINROC(expiry);
 	}
@@ -50,15 +49,16 @@ public class USDINRRest {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public MaxPains calMaxPain(String expiryDt) {
 		String currentMonthExpiry = UsdInrService.getInstance().getExpiries().first();
-		Columns columns = null;
+		OptionModles columns = null;
 		if (expiryDt == null || expiryDt.isEmpty()) {
 			columns = UsdInrData.getData().get(currentMonthExpiry);
 		} else {
 			columns = UsdInrData.getData().get(expiryDt);
 		}
 
-		MaxPains result = Calculation.maxPain(columns.getDataset());
-		return result;
+		// test
+		//MaxPains result = Calculation.maxPain(columns.g);
+		return null;
 	}
 
 	public static String dispMemory() {

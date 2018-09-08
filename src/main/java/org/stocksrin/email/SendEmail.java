@@ -18,7 +18,7 @@ import org.stocksrin.utils.LoggerSysOut;
 
 public class SendEmail {
 
-	private static boolean sendEmail = true;
+	private static boolean sendEmail = false;
 	private static String toMail = "stocksrin@gmail.com";
 
 	static String hostName;
@@ -69,3 +69,5 @@ public class SendEmail {
 	}
 
 }
+
+

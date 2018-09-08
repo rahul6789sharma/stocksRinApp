@@ -68,43 +68,24 @@
 		</div>
 
 
-
-
-		<!--left-->
-		<div class=" col-xs-12 col-sm-2 col-md-2" style="padding-top: 10px;">
-
-			</br>
-			<div ng-include="'templets/add.html'"></div>
-
-		</div>
-		<!--/left-->
-
-
 		<!--center-->
-		<div class="col-xs-12 col-sm-8  col-md-8">
-
-			<div class="text-center">
-				<h4>
-					<span style="color: #333333;">FNO Data Analysis</span>
-				</h4>
+		<div class="col-xs-12 col-sm-12  col-md-12">
+			
+			<div class="col-xs-6 col-sm-6  col-md-6">
+		
+			<div id="fiicontainer" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			
 			</div>
-
-			<div id="sdDiv" class="sdDiv"></div>
-
-			<br /> 
-			<div ng-include="'templets/add.html'"></div>
+			
+			<div class="col-xs-6 col-sm-6  col-md-6">
+			<div id="procontainer" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			</div>
+			
+			<div class="col-xs-6 col-sm-6  col-md-6">
+			<div id="clientcontainer" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			</div>
 		</div>
 
-
-
-		<!--right-->
-		<div class="col-xs-12 col-sm-2 col-md-2" style="padding: 0">
-
-			<br />
-			<div ng-include="'templets/add.html'"></div>
-
-		</div>
-		<!--/right-->
 
 
 	</div>
@@ -128,11 +109,11 @@
 </body>
 <script>
 	$(document).ready(function() {
-		queryFIIDIIData();
+		queryRest();
 
 	});
 
-	function queryFIIDIIData() {
+	function queryRest() {
 
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
@@ -143,130 +124,125 @@
 			}
 		};
 
-		xhttp.open("GET", "/rest/bankNiftyService/bankNiftyWeeklyOptionChain",
-				true);
+		xhttp.open("GET", "/rest/fiiDiiService/participantFNOData", true);
 		xhttp.send();
 	}
 
 	function addDataToTable(jsonResponse) {
-		var expiry;
-		var total_ce_oi;
-		var total_pe_oi;
+		console.log(jsonResponse)
+		var dates = [];
 		
-		var highest_CE_OI=0;
-		var highest_CE_OI_STRIKE=0;
-		var highestCEValue;
+		var fiicallLong = [];
+		var fiicallshort = [];
+		var fiiputLong = [];
+		var fiiputshort = [];
 		
-		var highest_CE_Change_IN_OI=0;
-		var highest_CE_OI_Change_IN_STRIKE=0;
-		var highestCEValue_Change_IN;
+		var procallLong = [];
+		var procallshort = [];
+		var proputLong = [];
+		var proputshort = [];
 		
-		var highest_PE_Change_IN_OI=0;
-		var highest_PE_OI_Change_IN_STRIKE=0;
-		var highestPEValue_Change_IN;
+		var clientcallLong = [];
+		var clientcallshort = [];
+		var clientputLong = [];
+		var clientputshort = [];
 		
-		
-		var highest_PE_OI=0;
-		var highest_PE_OI_STRIKE=0;
-		var highestPEValue;
-		var maxPain;
 		for ( var key in jsonResponse) {
-			maxPain= jsonResponse[key].maxPainStrick;
-			//console.log( key, jsonResponse[key] );
-			//console.log( key, jsonResponse[key].optionModle );
-			expiry = jsonResponse[key].expiry;
-			total_ce_oi = jsonResponse[key].total_ce_oi;
-			total_pe_oi = jsonResponse[key].total_pe_oi;
-
-			//console.log(key, jsonResponse[key].total_ce_oi);
-			//console.log(key, jsonResponse[key].total_pe_oi);
-			//console.log(key, jsonResponse[key].spot);
-			var optionModle = jsonResponse[key].optionModle;
 			
-			//console.log(optionModle);
-			for ( var key2 in optionModle) {
-				
-				
-				if(highest_CE_OI<optionModle[key2].c_oi){
-					highest_CE_OI=optionModle[key2].c_oi;
-					highest_CE_OI_STRIKE=optionModle[key2].strike_price;
-				}
-				
-				if(highest_CE_Change_IN_OI<optionModle[key2].c_change_oi){
-					highest_CE_Change_IN_OI=optionModle[key2].c_change_oi;
-					highest_CE_OI_Change_IN_STRIKE=optionModle[key2].strike_price;
-				}
-				
-				
-				if(highest_PE_Change_IN_OI<optionModle[key2].p_change_oi){
-					highest_PE_Change_IN_OI=optionModle[key2].p_change_oi;
-					highest_PE_OI_Change_IN_STRIKE=optionModle[key2].strike_price;
-				}
-				
-				if(highest_PE_OI<optionModle[key2].p_oi){
-					highest_PE_OI=optionModle[key2].p_oi;
-					highest_PE_OI_STRIKE=optionModle[key2].strike_price;
-				}
+			dates.push(key);
+
+			var innserDat = jsonResponse[key];
+			for ( var key2 in innserDat) {
+				//console.log(innserDat[key2]);
+				var participantType = innserDat[key2].participantType;
+				if (participantType == "FII") {
+					//console.log(innserDat[key2].optionIndexCallLong);
+					fiicallLong.push(innserDat[key2].optionIndexCallLong);
+					fiicallshort.push(innserDat[key2].optionIndexCallShort);
+					fiiputLong.push(innserDat[key2].optionIndexPutLong);
+					fiiputshort.push(innserDat[key2].optionIndexPutShort);
+				}else if (participantType == "PRO") {
+					//console.log(innserDat[key2].optionIndexCallLong);
+					procallLong.push(innserDat[key2].optionIndexCallLong);
+					procallshort.push(innserDat[key2].optionIndexCallShort);
+					proputLong.push(innserDat[key2].optionIndexPutLong);
+					proputshort.push(innserDat[key2].optionIndexPutShort);
+				} else if (participantType == "CLIENT") {
+					//console.log(innserDat[key2].optionIndexCallLong);
+					clientcallLong.push(innserDat[key2].optionIndexCallLong);
+					clientcallshort.push(innserDat[key2].optionIndexCallShort);
+					clientputLong.push(innserDat[key2].optionIndexPutLong);
+					clientputshort.push(innserDat[key2].optionIndexPutShort);
+				} 
 			}
-
 		}
-		highestCEValue= highest_CE_OI_STRIKE + "->" + highest_CE_OI;
-		highestPEValue= highest_PE_OI_STRIKE + "->" + highest_PE_OI;
-		
-		highestCEValue_Change_IN =highest_CE_OI_Change_IN_STRIKE + "->" + highest_CE_Change_IN_OI;
-		highestPEValue_Change_IN =highest_PE_OI_Change_IN_STRIKE + "->" + highest_PE_Change_IN_OI;
-		var tr = $('<tr/>');
-		tr.append("<td class=oddRow>" + "BankNifty" + "</td>");
-		tr.append("<td class=oddRow>" + expiry + "</td>");
-		tr.append("<td class=oddRow>" + total_ce_oi + "</td>");
-		tr.append("<td class=oddRow>" + total_pe_oi + "</td>");
 
-		tr.append("<td class=oddRow>"
-				+ parseFloat(total_pe_oi / total_ce_oi).toFixed(2) + "</td>");
-
-		tr.append("<td class=oddRow>" + highestCEValue + "</td>");
-		tr.append("<td class=oddRow>" + highestPEValue + "</td>");
-		tr.append("<td class=oddRow>" + maxPain + "</td>");
-		
-		
-		tr.append("<td class=oddRow>" + highestCEValue_Change_IN + "</td>");
-		tr.append("<td class=oddRow>" + highestPEValue_Change_IN + "</td>");
-		$('#sdTable').append(tr);
+		fiidraw('FII' , 'fiicontainer',dates, fiicallLong, fiicallshort, fiiputLong, fiiputshort)
+		fiidraw('PRO','procontainer',dates, procallLong, procallshort, proputLong, proputshort)
+		fiidraw('CLIENT','clientcontainer',dates, clientcallLong, clientcallshort, clientputLong, clientputshort)
 
 	}
 
-	createSDTable();
+	function fiidraw(title,containerID,dates, callLong, callshort, putLong, putshort) {
 
-	function createSDTable() {
-		var x = document.createElement("TABLE");
-		x.setAttribute("id", "sdTable");
-		x.setAttribute("class", "opttbldata");
-		x.setAttribute("align", "center");
-		x.setAttribute("cellpadding", "40");
-		x.setAttribute("cellspacing", "2");
-		x.setAttribute("width", "80%");
+		Highcharts
+				.chart(
+						containerID,
+						{
+							chart : {
+								type : 'column'
+							},
+							title : {
+								text : title
+							},
+							subtitle : {
+								text : 'Source: NSE'
+							},
+							xAxis : {
+								categories : dates,
+								crosshair : true
+							},
+							yAxis : {
+								min : 0,
+								title : {
+									text : 'OI'
+								}
+							},
+							tooltip : {
+								headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+								pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+										+ '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+								footerFormat : '</table>',
+								shared : true,
+								useHTML : true
+							},
+							plotOptions : {
+								column : {
+									pointPadding : 0.2,
+									borderWidth : 0
+								}
+							},
+							series : [ {
+								name : 'Call Long',
+								data : callLong
 
-		$("#sdDiv").append(x);
-		// table header
-		$("#sdTable")
-				.append(
-						'<thead>'
+							}, {
+								name : 'Call Short',
+								data : callshort
 
-								+ '<tr class="optionHead"> <th colspan="1" class=whiteRightBorder > Index</th><th colspan="1" class=whiteRightBorder > Expiry</th> <th colspan="3"  class=whiteRightBorder > Total OI </th> <th colspan="3" class=whiteRightBorder > Highest OI </th> <th colspan="2" > Highest Increase in OI </th>  </tr>'
-								+ '<tr class="optionHead">'
+							}, {
+								name : 'Put Long',
+								data : putLong
 
-								+ '<th title="Index" class=whiteRightBorder></th> '
-								+ '<th title="Index" class=whiteRightBorder></th> '
+							}, {
+								name : 'Put Short',
+								data : putshort
 
-								+ '<th title="buyValue">CE</th> <th title="buyValue">PE</th> <th title="buyValue" class=whiteRightBorder >PCR</th>'
-								+ '<th title="buyValue">CE</th><th title="buyValue">PE</th><th title="buyValue" class=whiteRightBorder >Max Pain</th>'
-								+ '<th title="buyValue">CE</th><th title="buyValue" >PE</th>'
-
-								+ '</tr>' + '</thead>');
-
-		// table Fotter 
+							} ]
+						});
 	}
 </script>
 
 </html>
+
 
