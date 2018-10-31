@@ -1,10 +1,9 @@
-package org.stocksrin.option.common.automation;
+package org.stocksrin.option.common;
 
-import java.io.File;
 import java.util.List;
-import java.util.TimerTask;
 
-import org.stocksrin.option.common.priceUtils;
+import org.stocksrin.email.SendEmail;
+import org.stocksrin.option.common.automation.Utils;
 import org.stocksrin.option.common.model.OptionModle;
 import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.option.common.model.Strategy;
@@ -12,62 +11,34 @@ import org.stocksrin.option.common.model.Strategy.UnderLying;
 import org.stocksrin.option.common.model.StrategyModel;
 import org.stocksrin.option.common.model.StrategyModel.OptionType;
 import org.stocksrin.option.nifty.NiftyData;
-import org.stocksrin.utils.APPConstant;
 import org.stocksrin.utils.FileUtils;
 
-public class StrategyBuilderTask extends TimerTask {
+public class NiftyStrategies {
 
-	@Override
-	public void run() {
+	private static String line = "----------------------------------------------------------------------------------------------";
+
+	public static void Strategy3StraddleNifty(String fileName, String dir) {
+
+		String file = dir + fileName + ".csv";
 		try {
-			priceUtils.fetchData();
+
+			boolean status = FileUtils.isTodayFileExist(file);
+			if (!status) {
+				Strategy strategy = buildNiftyStrangle();
+				createStrategyFile(strategy, dir, fileName);
+			} else {
+				SendEmail.sentMail("IntraDayFile already exist " + dir, "");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
+			SendEmail.sentMail("Critical Error in startegy file " + file, "");
 		}
 
-		try {
-			createStrategyFile();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public static void main(String[] args) throws Exception {
-		try {
-			priceUtils.fetchData();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		System.out.println(NiftyData.shortedExpiry);
-		createStrategyFile();
-	}
-
-	public static Strategy createStrategyFile() throws Exception {
-		String dir = APPConstant.STOCKSRIN__STRATEGY_AUTO_DIR;
-		String strategyName = "Strangle@Monthly-Strategy_NIFTY";
-		String header = "strategySerial,expiry,type,strike,close_price,quantity,target,stopLoss,spot_close,desc,status,traded_IV,tradedDate";
-		Strategy strategy = buildNiftyStrangle();
-		if (strategy == null) {
-			return null;
-		}
-		String file = dir + strategyName + ".csv";
-		File f = new File(file);
-		if (f.exists()) {
-			f.delete();
-		}
-		FileUtils.makeFile(file);
-		FileUtils.appendData(header, file);
-
-		List<StrategyModel> m = strategy.getStrategyModels();
-		for (StrategyModel strategyModel : m) {
-			FileUtils.appendData(strategyModel.toCSV(), file);
-		}
-		return strategy;
 	}
 
 	private static Strategy buildNiftyStrangle() throws Exception {
+
 		String currentExpiry = NiftyData.shortedExpiry.first();
 
 		currentExpiry = Utils.getNiftyExpiry(NiftyData.shortedExpiry, currentExpiry);
@@ -82,6 +53,7 @@ public class StrategyBuilderTask extends TimerTask {
 
 		List<OptionModle> lst = optionModles.getOptionModle();
 		Strategy strategy = new Strategy(UnderLying.NIFTY);
+		strategy.setStrategyName("NIFTY");
 
 		int qnt = -75;
 		Strategy leg1Put = Utils.buildStrategy("BNF", lst, lowerStrike, OptionType.PUT, currentExpiry, optionModles.getSpot(), qnt);
@@ -104,4 +76,25 @@ public class StrategyBuilderTask extends TimerTask {
 		return strategy;
 	}
 
+	private static void createStrategyFile(Strategy strategy, String dir, String fileName) {
+		try {
+			Utils.createStrategyFile(dir, strategy, fileName);
+			List<StrategyModel> lst = strategy.getStrategyModels();
+			StringBuilder string = new StringBuilder();
+			string.append(line + "\n");
+			double totalPremium = 0.0;
+			for (StrategyModel strategyModel : lst) {
+				string.append(strategyModel.toCSV());
+				string.append("\n");
+				totalPremium = totalPremium + strategyModel.getAvgPrice();
+			}
+			string.append(line + "\n");
+			Integer totalp = (int) Math.round(totalPremium); // 3
+			string.append("Total Premium : " + totalp);
+			SendEmail.sentMail("Premium : [" + totalp + "] ," + fileName, string.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }

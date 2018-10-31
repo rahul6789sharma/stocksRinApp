@@ -12,13 +12,12 @@ import java.io.LineNumberReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.stocksrin.bhavcopy.BhavForRestModle;
@@ -26,6 +25,8 @@ import org.stocksrin.fiidii.FIIDIIDataModle;
 import org.stocksrin.fiidii.FIIDIIDataYrModle;
 import org.stocksrin.oi.future.NiftyOIDataModle;
 import org.stocksrin.option.common.model.DailyMaxPain;
+import org.stocksrin.option.common.model.Strategy;
+import org.stocksrin.option.common.model.Strategy.UnderLying;
 import org.stocksrin.option.common.model.StrategyModel;
 import org.stocksrin.option.common.model.StrategyModel.OptionType;
 
@@ -77,6 +78,23 @@ public class CommonUtils {
 	}
 
 	// return true in market hr// after market hr it will retunr false
+	public static boolean isTimeLessThen(Integer hr, Integer min) {
+		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		today.set(Calendar.HOUR_OF_DAY, hr);
+		today.set(Calendar.MINUTE, min);
+		today.set(Calendar.SECOND, 0);
+
+		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+
+		if (now.after(today)) {
+			LoggerSysOut.print("Time is more then" + min);
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// return true in market hr// after market hr it will retunr false
 	public static boolean getEveningTimeForStrategy() {
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today.set(Calendar.HOUR_OF_DAY, MARKET_HR);
@@ -88,29 +106,57 @@ public class CommonUtils {
 		if (now.after(today)) {
 			LoggerSysOut.print("Time is more then 3:30 pm");
 			return false;
-
 		} else {
 			return true;
 		}
 	}
 
-	/*
-	 * // strategy serial and its lsit of strategy models public static
-	 * Map<Integer, List<StrategyModel>> getStrategyFromCSV() {
-	 * List<StrategyModel> lst = new ArrayList<>();
-	 * 
-	 * Map<Integer, List<StrategyModel>> strategy = new HashMap<>();
-	 * 
-	 * for (StrategyModel strategyModel : lst) { Integer[] count =
-	 * getStartegyCount(strategyModel.getStrategySerial()); Integer integer =
-	 * count[0];
-	 * 
-	 * List<StrategyModel> lst1 = strategy.get(integer); if (lst1 == null) {
-	 * List<StrategyModel> r = new ArrayList<>(); r.add(strategyModel);
-	 * strategy.put(integer, r); } else { lst1.add(strategyModel); } }
-	 * 
-	 * return strategy; }
-	 */
+	public static void main(String[] args) throws Exception {
+		Map<String, Strategy> data = getStrategy2(APPConstant.STOCKSRIN__STRATEGY_AUTO_DIR_TradeStrategy);
+		System.out.println(data.keySet());
+		Set<String> keys = data.keySet();
+		for (String string : keys) {
+			System.out.println(data.get(string));
+		}
+	}
+
+	public static Map<String, Strategy> getStrategy2(String dir) {
+
+		Map<String, List<StrategyModel>> map = getStrategy(dir);
+
+		Map<String, Strategy> strategys = new HashMap<>();
+
+		Set<String> keys = map.keySet();
+		for (String string : keys) {
+			List<StrategyModel> lst = map.get(string);
+			StrategyModel data = null;
+			if (!lst.isEmpty()) {
+				data = lst.get(0);
+			}
+
+			String underlaying = string.split("_")[1];
+			UnderLying underLyingName = UnderLying.OTHERS;
+			if (underlaying.equals("BANKNIFTY.csv")) {
+				underLyingName = UnderLying.BANKNIFTY;
+			} else if (underlaying.equals("NIFTY.csv")) {
+				underLyingName = UnderLying.NIFTY;
+			}
+			Strategy strategy = new Strategy(underLyingName);
+			if (data != null) {
+				strategy.setTradeDate(data.getTradeDate());
+				strategy.setTradeSpotPrice(data.getSpot_close());
+			}
+			String name = string.split("-Strategy")[0];
+			strategy.setStrategyModels(lst);
+			strategy.setStrategyName(name);
+			strategy.setDir(dir);
+			strategy.setFileName(string);
+
+			strategys.put(string, strategy);
+		}
+
+		return strategys;
+	}
 
 	public static Map<String, List<StrategyModel>> getStrategy(String dir) {
 		Map<String, List<StrategyModel>> strategy = new HashMap<>();
@@ -118,16 +164,44 @@ public class CommonUtils {
 		List<String> lst = FileUtils.listFilesForFolder(new File(dir));
 
 		for (String string : lst) {
+
 			String file = dir + string;
 			List<StrategyModel> str = getStrategyModel(file);
-			strategy.put(string, str);
 
+			strategy.put(string, str);
 		}
 
 		return strategy;
 	}
+	/*
+	 * public static synchronized List<StrategyModel> getStrategyModel(String
+	 * file, String underlying) { List<StrategyModel> result = new
+	 * ArrayList<>(5);
+	 * 
+	 * List<String[]> lst = CommonUtils.getCSVData(file);
+	 * 
+	 * try { for (String[] strings : lst) { StrategyModel strategyModel = new
+	 * StrategyModel(); strategyModel.setUnderlying(underlying);
+	 * strategyModel.setStrategySerial(strings[0]);
+	 * strategyModel.setExpiry(strings[1]);
+	 * 
+	 * if (strings[2].equals("CALL")) { strategyModel.setType(OptionType.CALL);
+	 * } else { strategyModel.setType(OptionType.PUT); }
+	 * 
+	 * strategyModel.setStrike(Double.parseDouble(strings[3]));
+	 * strategyModel.setAvgPrice(Double.parseDouble(strings[4]));
+	 * strategyModel.setQuantity(Integer.parseInt(strings[5]));
+	 * strategyModel.setTarget(Double.parseDouble(strings[6]));
+	 * strategyModel.setStopLoss(Double.parseDouble(strings[7]));
+	 * strategyModel.setSpot_close(Double.parseDouble(strings[8]));
+	 * strategyModel.setDes(strings[9]);
+	 * strategyModel.setStatus(Boolean.parseBoolean(strings[10]));
+	 * strategyModel.setTraded_IV(Double.parseDouble(strings[11]));
+	 * strategyModel.setTradeDate(strings[12]); result.add(strategyModel); } }
+	 * catch (Exception e) { e.printStackTrace(); } return result; }
+	 */
 
-	private static List<StrategyModel> getStrategyModel(String file) {
+	public static synchronized List<StrategyModel> getStrategyModel(String file) {
 		List<StrategyModel> result = new ArrayList<>(5);
 
 		List<String[]> lst = CommonUtils.getCSVData(file);
@@ -143,8 +217,8 @@ public class CommonUtils {
 				strategyModel.setType(OptionType.PUT);
 			}
 
-			strategyModel.setStrike(Integer.parseInt(strings[3]));
-			strategyModel.setClose_price(Double.parseDouble(strings[4]));
+			strategyModel.setStrike(Double.parseDouble(strings[3]));
+			strategyModel.setAvgPrice(Double.parseDouble(strings[4]));
 			strategyModel.setQuantity(Integer.parseInt(strings[5]));
 			strategyModel.setTarget(Double.parseDouble(strings[6]));
 			strategyModel.setStopLoss(Double.parseDouble(strings[7]));
@@ -424,26 +498,6 @@ public class CommonUtils {
 		}
 
 		return bhavForRestModles;
-
-	}
-
-	public static void main(String[] args) throws Exception {
-		/*
-		 * Calendar today3 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		 * today3.set(Calendar.HOUR_OF_DAY, 15); today3.set(Calendar.MINUTE,
-		 * 30); today3.set(Calendar.SECOND, 0);
-		 * System.out.println(today3.getTimeInMillis());
-		 */
-
-		String str = "13-Jul-2018 15:30 UTC";
-		// String str = "Jul 14 2018 15:30 UTC";
-		// SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy HH:mm zzz");
-		SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm zzz");
-		Date date = df.parse(str);
-		long epoch = date.getTime();
-		System.out.println(epoch); // 1055545912454
-
-		// getStocksrinOIModel("C:\\Users\\rahulksh\\stocksRin_CONF\\stocksRinData\\DERIVATIVES_OI\\2018\\BANKNIFTY_FUTURE_OI.csv");
 
 	}
 

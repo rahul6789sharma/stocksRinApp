@@ -60,7 +60,7 @@ public class BankNiftyNotificationTask extends TimerTask {
 
 					MaxPains maxPain = Calculation.calMaxPain(optionModles.getOptionModle(), APPConstant.BNF_STRIKE_DIFF, optionModles.getExpiry());
 					
-					LoggerSysOut.print("************ Expiry ***************" + expiry + " - " +Thread.currentThread().getName());
+					//LoggerSysOut.print("************ Expiry ***************" + expiry + " - " +Thread.currentThread().getName());
 					//LoggerSysOut.print("Bank Nifty MaxPain1  " + BankNiftyData2.maxPains);
 					
 					

@@ -40,8 +40,8 @@ public class NiftyNotificationTask extends TimerTask {
 
 		try {
 
-			LoggerSysOut.print("recordedPrice " + recordedPrice);
-			LoggerSysOut.print("spot " + spot);
+			//LoggerSysOut.print("recordedPrice " + recordedPrice);
+			//LoggerSysOut.print("spot " + spot);
 
 			Double d = spot - recordedPrice;
 

@@ -16,15 +16,17 @@ public class NiftyIndicesDataColloctor {
 
 	public static void main(String[] args) {
 		try {
-			NSEIndice nifty = NiftyIndicesDataColloctor.getData("NIFTY BANK");
-			System.out.println(nifty);
-			System.out.println(nifty.toCsv());
-		//	CommonUtils.appendData(nifty.toCsv(), STOCKSRIN_INDICES_NIFTY);
+			//NSEIndice nifty = NiftyIndicesDataColloctor.getData("NIFTY BANK");
+			//System.out.println(nifty);
+			//System.out.println(nifty.toCsv());
+			List<NSEIndice> data=getAllData();
+			System.out.println(data);
+			// CommonUtils.appendData(nifty.toCsv(), STOCKSRIN_INDICES_NIFTY);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static List<NSEIndice> getAllData() throws Exception {
 		List<NSEIndice> lst = new ArrayList<>();
 		String data = sendGet(APPConstant.NIFTY_INDICES);

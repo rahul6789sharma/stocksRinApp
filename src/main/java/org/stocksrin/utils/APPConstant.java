@@ -10,32 +10,48 @@ public class APPConstant {
 
 	public static double BNF_STRIKE_DIFF = 100d;
 	public static double NF_STRIKE_DIFF = 50d;
-	
+
 	public static final String NSE_DERIVATIVES_OI_URL = "https://www.nseindia.com/content/historical/DERIVATIVES/";
 	public static final String NSE_bhavdata_URL = "https://www.nseindia.com/products/content/sec_bhavdata_full.csv";
 
 	private static final String STOCKSRIN_NSE_CONF_DIR = System.getProperty("user.home") + File.separator + "stocksRin_CONF" + File.separator;
 	public static final String STOCKSRIN_NSE_CONF_DIR_BHAVDIR = STOCKSRIN_NSE_CONF_DIR + File.separator + "nseOriginalData" + File.separator;
 	public static final String STOCKSRIN_NSE_CONF_DIR_StocksRInData = STOCKSRIN_NSE_CONF_DIR + File.separator + "stocksRinData" + File.separator;
-	public static final String STOCKSRIN_NSE_CONF_DIR_DERIVATIVES_OI = STOCKSRIN_NSE_CONF_DIR + File.separator+"DERIVATIVES_OI"+File.separator;
+
+	public static final String STOCKSRIN_NSE_CONF_DIR_StocksRInData_TradeStrategy = STOCKSRIN_NSE_CONF_DIR + File.separator + "stocksRinData" + File.separator + "TradeStrategy" + File.separator;
+
+	public static final String STOCKSRIN_NSE_CONF_DIR_DERIVATIVES_OI = STOCKSRIN_NSE_CONF_DIR + File.separator + "DERIVATIVES_OI" + File.separator;
 
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator;
-	public static final String STOCKSRIN_INDICES_NIFTY = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "indices" + File.separator+"Nifty.csv";
-	public static final String STOCKSRIN_INDICES_BANK_NIFTY = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "indices" + File.separator+"BankNifty.csv";
+	public static final String STOCKSRIN_INDICES_NIFTY = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "indices" + File.separator + "Nifty.csv";
+	public static final String STOCKSRIN_INDICES_BANK_NIFTY = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "indices" + File.separator + "BankNifty.csv";
 
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_TRADE_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "trade.csv";
 
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_BNIFTY_STRATEGY_DIR = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "Strategy" + File.separator;
+
 	public static final String STOCKSRIN__STRATEGY_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy" + File.separator;
 	public static final String STOCKSRIN__STRATEGY_AUTO_DIR = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_AutoMated" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_INTRADAY = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_AutoMated_IntraDay" + File.separator;
 	public static final String STOCKSRIN__STRATEGY_DIR_RESULT = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_Result" + File.separator;
 	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_RESULT = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_AutoMated_Result" + File.separator;
-	//public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyOptionPrice.csv";
-	
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_INNTRADAY_RESULT = STOCKSRIN_NSE_CONF_DIR_StocksRInData + "Strategy_AutoMated_IntraDay_Result" + File.separator;
+
+	public static final String STOCKSRIN__STRATEGY_DIR_TradeStrategy = STOCKSRIN_NSE_CONF_DIR_StocksRInData_TradeStrategy + "Strategy" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_TradeStrategy = STOCKSRIN_NSE_CONF_DIR_StocksRInData_TradeStrategy + "Strategy_AutoMated" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_INTRADAY_TradeStrategy = STOCKSRIN_NSE_CONF_DIR_StocksRInData_TradeStrategy + "Strategy_AutoMated_IntraDay" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_DIR_RESULT_TradeStrategy = STOCKSRIN_NSE_CONF_DIR_StocksRInData_TradeStrategy + "Strategy_Result" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_RESULT_TradeStrategy = STOCKSRIN_NSE_CONF_DIR_StocksRInData_TradeStrategy + "Strategy_AutoMated_Result" + File.separator;
+	public static final String STOCKSRIN__STRATEGY_AUTO_DIR_INNTRADAY_RESULT_TradeStrategy = STOCKSRIN_NSE_CONF_DIR_StocksRInData_TradeStrategy + "Strategy_AutoMated_IntraDay_Result" + File.separator;
+
+	// public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_OUT_FILE =
+	// STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator +
+	// "BankNiftyOptionPrice.csv";
+
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain.csv";
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE_Previous1 = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain_PreviousWeek1.csv";
 	public static final String STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE_Previous2 = STOCKSRIN_NSE_CONF_DIR + "bankNifty" + File.separator + "BankNiftyWeeklyExpiryMaxPain_PreviousWeek2.csv";
-	
+
 	public static final String FILE_NAME_updatedBhavCopy = "updatedBhavCopy.xlsx";
 
 	public static final String DATEFORMATE_Logger = "dd-MMM hh:mm:ss";

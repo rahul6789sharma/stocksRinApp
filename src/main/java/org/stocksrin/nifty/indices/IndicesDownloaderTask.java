@@ -10,6 +10,7 @@ import org.stocksrin.utils.DateUtils;
 
 public class IndicesDownloaderTask extends TimerTask {
 
+	
 	@Override
 	public void run() {
 		if (!DateUtils.isWeekEndDay()) {

@@ -19,7 +19,7 @@ import org.stocksrin.utils.LoggerSysOut;
 public class StrategyAlgo extends Thread {
 
 	private static DecimalFormat df = new DecimalFormat("#00.00");
-	private String line = "-------------------------------------------------------------------------------------------------------------------------------------------------";
+	private String line = "---------------------------------------------------------------------------------------------------------------------------";
 	private double targetProfit = 800;
 	private double targetLoss = -800;
 
@@ -38,7 +38,6 @@ public class StrategyAlgo extends Thread {
 	private Map<String, OptionModles> dataModle;
 	private List<StrategyModel> lst;
 	private String algoName;
-	// Strangle@NextWeekly-Strategy_BANKNIFTY
 	private String fileName;
 
 	private long timeInteval;
@@ -59,7 +58,7 @@ public class StrategyAlgo extends Thread {
 		while (CommonUtils.getEveningTimeForStrategy()) {
 			try {
 				StringBuilder result = algo();
-				// use sysout only
+				// use sysout only/ print strategy
 				System.out.println(result);
 				Thread.sleep(timeInteval);
 				StrategyResult.map.put(fileName, result.toString());
@@ -88,11 +87,15 @@ public class StrategyAlgo extends Thread {
 
 		OptionModles data = dataModle.get(expiry);
 		if (data == null) {
+			string.append(" Warning : algoName " + algoName + "Data is not available for Expiry " + expiry);
 			return string;
 		}
 		String diff = df.format(data.getSpot() - spotAtTrade);
 		double totalPL = 0.00;
 		double todayRange = underlyingdayLow - underlyingdayHigh;
+		double totaltradePrice = 0.00;
+		double totalLTP = 0.00;
+
 		String tradedDay = "";
 		String todayDate = "";
 		String todayDay = "";
@@ -110,7 +113,7 @@ public class StrategyAlgo extends Thread {
 		string.append("Status  At: " + todayDate + " (" + todayDay + "), Current Price: " + data.getSpot() + " [" + diff + "] Diff from Trade \n");
 
 		string.append(line + "\n");
-		string.append("type   expiry    Qty    tradePrice    ltp     change   P&L   tradedIV   currentIV  IVDiff   strike   tradeSDiff   currentSDiff  moved" + "\n");
+		string.append("type     expiry    Qty  tradePrice    ltp    change   P&L    strike   tradeSDiff   currentSDiff  moved" + "\n");
 		string.append(line + "\n");
 
 		for (StrategyModel strategyModel : lst) {
@@ -153,14 +156,16 @@ public class StrategyAlgo extends Thread {
 			double ivdiff = iv - strategyModel.getTraded_IV();
 			double currentstrikeDiff = strategyModel.getStrike() - data.getSpot();
 			double tradeStrikeDiff = strategyModel.getStrike() - spotAtTrade;
-			double moved = currentstrikeDiff - tradeStrikeDiff;
-			double pl = (ltp - strategyModel.getClose_price()) * strategyModel.getQuantity();
+			double moved = tradeStrikeDiff - currentstrikeDiff;
+			double pl = (ltp - strategyModel.getAvgPrice()) * strategyModel.getQuantity();
 			totalPL = totalPL + pl;
-			double change = ltp - strategyModel.getClose_price();
+			double change = ltp - strategyModel.getAvgPrice();
+			totaltradePrice = totaltradePrice + strategyModel.getAvgPrice();
+			totalLTP = totalLTP + ltp;
+
 			string.append(type + "   " + addZero(strategyModel.getExpiry()) + "   " + signFormate.format(strategyModel.getQuantity()) + "   "
-					+ foramteTradedPrice(df.format(strategyModel.getClose_price())) + "     " + foramteTradedPrice(df.format(ltp)) + "    " + signFormate.format(change) + "    " + foramtePL(pl)
-					+ "   " + df.format(strategyModel.getTraded_IV()) + "    " + df.format(iv) + "    " + ivdiffFormate(ivdiff) + "    " + strategyModel.getStrike() + "    "
-					+ signFormate.format(tradeStrikeDiff) + "    " + signFormate.format(currentstrikeDiff) + "    " + signFormate.format(moved) + "\n");
+					+ foramteTradedPrice(df.format(strategyModel.getAvgPrice())) + "     " + foramteTradedPrice(df.format(ltp)) + "    " + signFormate.format(change) + "    " + foramtePL(pl) + "   "
+					+ strategyModel.getStrike() + "    " + signFormate.format(tradeStrikeDiff) + "    " + signFormate.format(currentstrikeDiff) + "    " + signFormate.format(moved) + "\n");
 		}
 
 		string.append(line + "\n");
@@ -201,16 +206,15 @@ public class StrategyAlgo extends Thread {
 			underlyingdayLow = data.getSpot();
 		}
 
-		// String profitRange = "[ " + df.format(minProfit) + " -- " +
-		// df.format(maxProfit) + "]";
-		String pl = "[ Total PL :" + df.format(totalPL) + " ]";
+		String pl = "[ Total PL :" + df.format(totalPL) + " ]   [" + foramteTradedPrice(df.format(totaltradePrice)) + "]   [" + foramteTradedPrice(df.format(totalLTP)) + "]   ["
+				+ foramteTradedPrice(df.format(totalLTP - totaltradePrice)) + "]";
 		string.append(pl + "\n");
 		string.append("Min PL " + "[" + df.format(minProfit) + "], At Spot: " + minPLSpot + " - " + minPLTime + "\n");
 		string.append("Max PL " + "[" + df.format(maxProfit) + "], At Spot: " + maxPLSpot + " - " + maxPLTime + "\n");
 
 		string.append(line + "\n");
 
-		WebTest.data.put(algoName, pl);
+		//WebTest.data.put(algoName, pl);
 		targetMail(totalPL, string.toString(), algoName);
 		return string;
 	}
@@ -218,15 +222,15 @@ public class StrategyAlgo extends Thread {
 	private void targetMail(Double totalPandL, String string, String algoName) {
 		if (totalPandL > targetProfit) {
 
-			SendEmail.sentMail(algoName + " Profit " + totalPandL, string);
+			SendEmail.sentMail("P[" + foramtePL(totalPandL) + "]" + algoName, string);
 
 			LoggerSysOut.print("Target Achived of : " + targetProfit);
-			targetProfit = totalPandL + 300;
+			targetProfit = totalPandL + 500;
 			LoggerSysOut.print("Next target is Target : " + targetProfit);
 		} else if (totalPandL < targetLoss) {
 
-			SendEmail.sentMail(algoName + " Loss " + totalPandL, string);
-			targetLoss = totalPandL - 300;
+			SendEmail.sentMail("L[" + foramtePL(totalPandL) + "]" + algoName, string);
+			targetLoss = totalPandL - 500;
 		}
 	}
 

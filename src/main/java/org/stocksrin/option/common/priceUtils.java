@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.stocksrin.option.banknifty.BankNiftyData2;
 import org.stocksrin.option.banknifty.BankNiftyUtils;
+import org.stocksrin.option.common.model.OptionModle;
 import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.option.nifty.NiftyData;
 import org.stocksrin.option.nifty.NiftyUtils;
@@ -13,7 +14,7 @@ public class priceUtils {
 	public static synchronized void fetchData() throws Exception {
 
 		fetchBNData();
-		Thread.sleep(10);
+		Thread.sleep(2);
 		fetchNiftyData();
 	}
 
@@ -49,5 +50,12 @@ public class priceUtils {
 	public static void main(String[] args) throws Exception {
 		priceUtils.fetchData();
 		System.out.println("Done");
+		System.out.println(BankNiftyData2.shortedExpiry.first());
+		OptionModles optionModles=BankNiftyData2.bnOptionData.get(BankNiftyData2.shortedExpiry.first());
+		List<OptionModle> lst=optionModles.getOptionModle();
+		for (OptionModle optionModle : lst) {
+			System.out.println(optionModle.getStrike_price() + " " + optionModle.getC_iv() + " " + optionModle.getP_iv());
+		}
+		
 	}
 }

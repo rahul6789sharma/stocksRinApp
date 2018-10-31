@@ -7,7 +7,6 @@
 			<module name="org.javassist" />
 		</dependencies>
 
-
 	</deployment>
 
 

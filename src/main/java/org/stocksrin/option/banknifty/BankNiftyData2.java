@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.stocksrin.option.common.model.DailyMaxPain;
 import org.stocksrin.option.common.model.OptionModle;
 import org.stocksrin.option.common.model.OptionModles;
+import org.stocksrin.option.common.model.StrategyModel.OptionType;
 import org.stocksrin.utils.ComparatorBasedOnDate;
 
 public class BankNiftyData2 {
@@ -45,5 +46,63 @@ public class BankNiftyData2 {
 		bnWeeklyOptionChain.clear();
 		bnWeeklyOptionChain2.clear();
 		bnOptionLiveNotificationChnageData.clear();
+	}
+
+	public static String getlastDataUpdated(String expiry) {
+		OptionModles data = bnOptionData.get(expiry);
+		return data.getLastDataUpdated();
+	}
+
+	public static double getBNFSpot() {
+		OptionModles data = bnOptionData.get(shortedExpiry.first());
+		return data.getSpot();
+	}
+
+	public static Double getIV(double strike, OptionType optionType, String expiry) {
+		OptionModles data = bnOptionData.get(expiry);
+		Double iv = null;
+		if (data == null) {
+			return iv;
+		}
+
+		if (optionType.equals(OptionType.PUT)) {
+			for (OptionModle optionModle : data.getOptionModle()) {
+				if (optionModle.getStrike_price().equals(strike)) {
+					iv = optionModle.getP_iv();
+				}
+			}
+		} else if (optionType.equals(OptionType.CALL)) {
+
+			for (OptionModle optionModle : data.getOptionModle()) {
+				if (optionModle.getStrike_price().equals(strike)) {
+					iv = optionModle.getC_iv();
+				}
+			}
+		}
+		return iv;
+	}
+
+	public static double getLtp(double strike, OptionType optionType, String expiry) {
+		OptionModles data = bnOptionData.get(expiry);
+		double ltp = 0.0;
+		if (data == null) {
+			return ltp;
+		}
+
+		if (optionType.equals(OptionType.PUT)) {
+			for (OptionModle optionModle : data.getOptionModle()) {
+				if (optionModle.getStrike_price().equals(strike)) {
+					ltp = optionModle.getP_ltp();
+				}
+			}
+		} else if (optionType.equals(OptionType.CALL)) {
+
+			for (OptionModle optionModle : data.getOptionModle()) {
+				if (optionModle.getStrike_price().equals(strike)) {
+					ltp = optionModle.getC_ltp();
+				}
+			}
+		}
+		return ltp;
 	}
 }

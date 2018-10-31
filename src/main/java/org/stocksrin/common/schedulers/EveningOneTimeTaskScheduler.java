@@ -12,10 +12,12 @@ import javax.ejb.Startup;
 
 import org.stocksrin.bhavcopy.DerivativesBhavCopyOIDownloaderTask;
 import org.stocksrin.fiidii.FIIDIICashMarketTask;
+import org.stocksrin.nifty.indices.IndicesDownloaderTask;
 import org.stocksrin.oi.allparticapent.ParticapentFNOOITask;
 import org.stocksrin.option.banknifty.BNExpiryMaxPainSaverTask;
 import org.stocksrin.option.banknifty.BankNiftyOptionDownloaderTask;
 import org.stocksrin.option.common.UpdateEveningOIInEvening;
+import org.stocksrin.option.common.automation.BNFStrategyBuilder;
 import org.stocksrin.utils.LoggerSysOut;
 
 @Singleton
@@ -28,9 +30,36 @@ public class EveningOneTimeTaskScheduler {
 	private Timer timer4 = new Timer();
 	private Timer timer5 = new Timer();
 	private Timer timer6 = new Timer();
+	private Timer timer7 = new Timer();
+	private Timer timer8 = new Timer();
 
 	@PostConstruct
 	public void init() {
+
+		Calendar today0 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		today0.set(Calendar.HOUR_OF_DAY, 15);
+		today0.set(Calendar.MINUTE, 25);
+		today0.set(Calendar.SECOND, 0);
+
+		// run every 5 PM
+
+		try {
+			timer7.schedule(new BNFStrategyBuilder(), today0.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Calendar today8 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		today8.set(Calendar.HOUR_OF_DAY, 17);
+		today8.set(Calendar.MINUTE, 30);
+		today8.set(Calendar.SECOND, 0);
+
+		try {
+			timer8.schedule(new IndicesDownloaderTask(), today8.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// run every 5 PM
 
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		today.set(Calendar.HOUR_OF_DAY, 17);
@@ -94,14 +123,14 @@ public class EveningOneTimeTaskScheduler {
 			e.printStackTrace();
 		}
 
-		Calendar today8 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		today8.set(Calendar.HOUR_OF_DAY, 19);
-		today8.set(Calendar.MINUTE, 5);
-		today8.set(Calendar.SECOND, 0);
+		Calendar today9 = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+		today9.set(Calendar.HOUR_OF_DAY, 19);
+		today9.set(Calendar.MINUTE, 5);
+		today9.set(Calendar.SECOND, 0);
 
 		try {
 			// saving banknifty weekly option max pain on daily basis
-			timer6.schedule(new DerivativesBhavCopyOIDownloaderTask(), today8.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+			timer6.schedule(new DerivativesBhavCopyOIDownloaderTask(), today9.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,6 +147,7 @@ public class EveningOneTimeTaskScheduler {
 		timer5.cancel();
 		timer5.cancel();
 		timer6.cancel();
+		timer7.cancel();
 
 	}
 }

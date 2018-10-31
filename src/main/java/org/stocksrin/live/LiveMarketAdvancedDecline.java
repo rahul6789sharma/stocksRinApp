@@ -11,6 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LiveMarketAdvancedDecline {
 
+	public static void main(String[] args) {
+		Rows rows = getData();
+		System.out.println(rows);
+	}
+
 	public static Rows getData() {
 
 		ObjectMapper mapper = new ObjectMapper();

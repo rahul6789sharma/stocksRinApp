@@ -86,13 +86,6 @@
 				style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 
-
-			<div class="text-center">
-				<h4>
-					<span style="color: #333333;">FII/FPI & DII trading activity
-						on NSE, BSE</span>
-				</h4>
-			</div>
 			<div id="sdDiv" class="sdDiv"></div>
 			<p>
 				<br /> <br /> <br />
@@ -133,6 +126,13 @@
 
 
 <script>
+	$(document).ready(function() {
+		queryData()
+		var advanced = [];
+		var decline = [];
+
+	});
+
 	function test(advanced, decline) {
 
 		Highcharts.chart('container', {
@@ -146,7 +146,7 @@
 				text : ''
 			},
 			xAxis : {
-				categories: []
+				categories : []
 			},
 			yAxis : {
 				title : {
@@ -177,20 +177,7 @@
 		});
 	}
 
-	$(document).ready(
-			function() {
-				queryFIIDIIData();
-				var advanced = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 2, 3, 4, 5,
-						6, 7, 8, 9, 9, 0, 4, 5, 6, 7, 8, 9, 9, 8, 1, 2, 3, 4,
-						5, 6, 7, 8, 9, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 0, 4,
-						5, 6, 7, 8, 9, 9, 8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2,
-						3, 4, 5, 6, 7, 8, 9 ];
-				var decline = [ 1, 5, 6 ];
-				
-				//test(advanced, decline);
-			});
-
-	function queryFIIDIIData() {
+	function queryData() {
 
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
@@ -198,11 +185,8 @@
 			if (this.readyState == 4 && this.status == 200) {
 				console.log("jsonResponse" + this.responseText);
 				var res = this.responseText.split("~");
-				console.log("res" + res[0]);
-				console.log("res" + res[1]);
 				var advanced = res[0];
 				var decline = res[1];
-				
 				var advanced1 = JSON.parse(advanced);
 				var decline1 = JSON.parse(decline);
 				test(advanced1, decline1);
@@ -212,85 +196,6 @@
 
 		xhttp.open("GET", "/rest/liveMarketData/advancedDecline", true);
 		xhttp.send();
-	}
-
-	createSDTable();
-	//addDataToSDTable(spotPrice);
-
-	function createSDTable() {
-		var x = document.createElement("TABLE");
-		x.setAttribute("id", "sdTable");
-		x.setAttribute("class", "opttbldata");
-		x.setAttribute("align", "center");
-		x.setAttribute("cellpadding", "4");
-		x.setAttribute("cellspacing", "1");
-		x.setAttribute("width", "50%");
-
-		$("#sdDiv").append(x);
-		// table header
-		$("#sdTable")
-				.append(
-						'<thead>'
-								+ '<tr class="optionHead"><th colspan="5" > FII/FPI trading activity on NSE,BSE and MSEI in Capital Market Segment(In Rs. Crores) </th></tr>'
-								+ '<tr class="optionHead">'
-								+ '<th title="Date">Date</th> <th title="Category"> Category</th>'
-								+ '<th title="buyValue">Buy Value</th> <th title="SellValue"> Sell Value</th><th title="net"> Net</th>'
-								+ '</tr>' + '</thead>');
-
-		// table Fotter 
-	}
-
-	function addDataToSDTable() {
-
-		var spot_price = document.getElementById('spot_price').value
-		var volidity = document.getElementById('volidity').value
-		var numberoFdays = document.getElementById('numberoFdays').value
-
-		var sdValue1 = 0.0;
-		var sdValue2 = 0.0;
-
-		if (spot_price != 0 && volidity != 0 && numberoFdays != 0) {
-			$('#sdTable').remove();
-			createSDTable();
-			var tr;
-			for (var i = 1; i < 4; i++) {
-				tr = $('<tr/>');
-
-				if (i == 1) {
-					tr.append("<td >" + i + "</td>");
-					var result = calculateSD(spot_price, volidity,
-							numberoFdays, i);
-					sdValue1 = result;
-					tr.append("<td >" + result + "</td>");
-					var high = parseFloat(spot_price) + parseFloat(result);
-					var low = spot_price - result;
-					tr.append("<td >" + high + "</td>");
-					tr.append("<td >" + low + "</td>");
-				} else if (i == 2) {
-
-					tr.append("<td >" + 1.5 + "</td>");
-					var result = calculateSD(spot_price, volidity,
-							numberoFdays, 1.5);
-					tr.append("<td >" + result + "</td>");
-					var high = parseFloat(spot_price) + parseFloat(result);
-					var low = spot_price - result;
-					tr.append("<td >" + high + "</td>");
-					tr.append("<td >" + low + "</td>");
-				} else if (i == 3) {
-					tr.append("<td >" + 2 + "</td>");
-					var result = calculateSD(spot_price, volidity,
-							numberoFdays, 2);
-					sdValue2 = result;
-					tr.append("<td>" + result + "</td>");
-					var high = parseFloat(spot_price) + parseFloat(result);
-					var low = spot_price - result;
-					tr.append("<td>" + high + "</td>");
-					tr.append("<td >" + low + "</td>");
-				}
-				$('table').append(tr);
-			}
-		}
-		graph();
 	}
 </script>
 

@@ -12,9 +12,9 @@ public class DateUtils {
 	public static void main(String[] args) {
 		// LoggerSysOut.print(getCurrentYear());
 		try {
-			String date = dateToString(new Date(), "ddMMMyyyy");
+			String date = dateToString(new Date(), "HH:mm");
 			System.out.println(date);
-			System.out.println(getDayFromDate(date, "ddMMMyyyy"));
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

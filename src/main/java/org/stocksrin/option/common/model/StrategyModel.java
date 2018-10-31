@@ -1,5 +1,8 @@
 package org.stocksrin.option.common.model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class StrategyModel {
 
 	private String strategySerial;
@@ -7,7 +10,7 @@ public class StrategyModel {
 
 	private OptionType type;
 	private double strike;
-	private double close_price; // my last traded price
+	private double avgPrice; // traded buy or sold price
 	private int quantity;
 
 	private double target;
@@ -19,9 +22,26 @@ public class StrategyModel {
 	private double traded_IV;
 	private String tradeDate;
 
+	private double current_IV;
+	// trade result Data
+	private String underlying;
+	private double underlying_ltp;
+	private double ltp;
+	private double ltp_min;
+	private double ltp_max;
+
+	private Map<Double,Double> intenrsic= new LinkedHashMap<>();
 	public String toCSV() {
-		return strategySerial + "," + expiry + "," + type + "," + strike + "," + close_price + "," + quantity + "," + target + "," + stopLoss + "," + spot_close + "," + des + "," + status + ","
+		return strategySerial + "," + expiry + "," + type + "," + strike + "," + avgPrice + "," + quantity + "," + target + "," + stopLoss + "," + spot_close + "," + des + "," + status + ","
 				+ traded_IV + "," + tradeDate;
+	}
+
+	public Map<Double, Double> getIntenrsic() {
+		return intenrsic;
+	}
+
+	public void setIntenrsic(Map<Double, Double> intenrsic) {
+		this.intenrsic = intenrsic;
 	}
 
 	/*
@@ -61,14 +81,6 @@ public class StrategyModel {
 
 	public void setStrike(double strike) {
 		this.strike = strike;
-	}
-
-	public double getClose_price() {
-		return close_price;
-	}
-
-	public void setClose_price(double close_price) {
-		this.close_price = close_price;
 	}
 
 	public double getTarget() {
@@ -135,11 +147,67 @@ public class StrategyModel {
 		this.tradeDate = tradeDate;
 	}
 
+	public double getAvgPrice() {
+		return avgPrice;
+	}
+
+	public void setAvgPrice(double avgPrice) {
+		this.avgPrice = avgPrice;
+	}
+
+	public String getUnderlying() {
+		return underlying;
+	}
+
+	public void setUnderlying(String underlying) {
+		this.underlying = underlying;
+	}
+
+	public double getUnderlying_ltp() {
+		return underlying_ltp;
+	}
+
+	public void setUnderlying_ltp(double underlying_ltp) {
+		this.underlying_ltp = underlying_ltp;
+	}
+
+	public double getLtp() {
+		return ltp;
+	}
+
+	public void setLtp(double ltp) {
+		this.ltp = ltp;
+	}
+
+	public double getCurrent_IV() {
+		return current_IV;
+	}
+
+	public void setCurrent_IV(double current_IV) {
+		this.current_IV = current_IV;
+	}
+
+	public double getLtp_min() {
+		return ltp_min;
+	}
+
+	public void setLtp_min(double ltp_min) {
+		this.ltp_min = ltp_min;
+	}
+
+	public double getLtp_max() {
+		return ltp_max;
+	}
+
+	public void setLtp_max(double ltp_max) {
+		this.ltp_max = ltp_max;
+	}
+
 	@Override
 	public String toString() {
-		return "StrategyModel [strategySerial=" + strategySerial + ", expiry=" + expiry + ", type=" + type + ", strike=" + strike + ", close_price=" + close_price + ", quantity=" + quantity
-				+ ", target=" + target + ", stopLoss=" + stopLoss + ", spot_close=" + spot_close + ", des=" + des + ", status=" + status + ", traded_IV=" + traded_IV + ", tradeDate=" + tradeDate
-				+ "]";
+		return "StrategyModel [strategySerial=" + strategySerial + ", expiry=" + expiry + ", type=" + type + ", strike=" + strike + ", avgPrice=" + avgPrice + ", quantity=" + quantity + ", target="
+				+ target + ", stopLoss=" + stopLoss + ", spot_close=" + spot_close + ", des=" + des + ", status=" + status + ", traded_IV=" + traded_IV + ", tradeDate=" + tradeDate + ", underlying="
+				+ underlying + ", underlying_ltp=" + underlying_ltp + ", ltp=" + ltp + "]";
 	}
 
 }

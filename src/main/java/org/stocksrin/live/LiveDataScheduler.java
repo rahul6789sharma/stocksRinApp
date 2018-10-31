@@ -17,7 +17,7 @@ public class LiveDataScheduler {
 	// run after evey 5 min
 	Timer timer = new Timer();
 
-	//@PostConstruct
+	// @PostConstruct
 	public void init() {
 
 		LoggerSysOut.print(" ***** LiveDataScheduler starting *********");

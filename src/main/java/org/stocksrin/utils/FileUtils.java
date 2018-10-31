@@ -1,10 +1,12 @@
 package org.stocksrin.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
@@ -12,6 +14,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -26,6 +29,25 @@ public class FileUtils {
 
 	}
 
+	public static boolean isTodayFileExist(String filePath) throws Exception {
+		String fileModifedDate = modifiedDate(filePath);
+		String today = DateUtils.dateToString(new Date(), "MM/dd/yyyy");
+
+		if (fileModifedDate.equals(today)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	private static String modifiedDate(String filePath) throws Exception {
+
+		File file = new File(filePath);
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		return sdf.format(file.lastModified());
+	}
+	
 	public static void delete(String filePath) {
 		try {
 
@@ -282,6 +304,25 @@ public class FileUtils {
 			}
 		}
 		return status;
+	}
+	
+
+	public static void appendData(String data, String fileName) {
+
+		File file = new File(fileName);
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			throw new RuntimeException(fileName + " File not exist");
+		}
+
+		try (FileWriter fw = new FileWriter(file.getAbsoluteFile(), true); BufferedWriter bw = new BufferedWriter(fw);) {
+
+			bw.write(data + "\n");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
 	}
 	public static void main(String[] args) {
 		String file = "C:\\nse\\fandO\\fno.txt";

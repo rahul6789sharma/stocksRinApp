@@ -1,107 +1,60 @@
 package org.stocksrin.live;
 
-import java.util.Calendar;
-import java.util.TimeZone;
 import java.util.TimerTask;
 
+import org.stocksrin.email.SendEmail;
+import org.stocksrin.option.banknifty.BankNiftyData2;
+import org.stocksrin.option.common.priceUtils;
+import org.stocksrin.option.nifty.NiftyData;
+import org.stocksrin.utils.CommonUtils;
+import org.stocksrin.utils.DateUtils;
 import org.stocksrin.utils.LoggerSysOut;
 
 public class LiveDataCollectortask extends TimerTask {
-	
-	public static boolean isWeekEndDay() {
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+	private long timeInteval = 120000;
 
-		if (now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			return true;
-		} else {
-			return false;
-		}
+	public static void main(String[] args) {
+		LiveDataCollectortask LiveDataCollectortask = new LiveDataCollectortask();
+		LiveDataCollectortask.run();
 	}
 
 	@Override
 	public void run() {
-		if (!isWeekEndDay()) {
+		System.out.println("******* LiveDataCollectortask Started**********88");
+		SendEmail.sentMail("LiveDataCollectortask Started", "");
+		if (!DateUtils.isWeekEndDay()) {
+			AdvancedDeclined.creaAall();
+			BankNiftyData2.clear();
 
-			if (istradingHrStatus()) {
-
+			if (BankNiftyData2.shortedExpiry.isEmpty() || NiftyData.shortedExpiry.isEmpty()) {
+				// handle null data over weekend and after market time
+				// deployment
+				LoggerSysOut.print("Data loader if data is not present");
 				try {
-
-					Rows row = LiveMarketAdvancedDecline.getData();
-
-					AdvancedDeclined.addAdvanced(row.getAdvances());
-					AdvancedDeclined.addDeclined(row.getDeclines());
-
-					LoggerSysOut.print("Advanced " + AdvancedDeclined.getAdvanced());
-					LoggerSysOut.print("Declined " + AdvancedDeclined.getDeclined());
-					LoggerSysOut.print("********");
+					priceUtils.fetchData();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 
-			else if (isClearTime()) {
-				LoggerSysOut.print("clearing all Advanced and declined data");
-				AdvancedDeclined.creaAall();
+			getData();
+			while (CommonUtils.getEveningTimeForStrategy()) {
+
+				try {
+					getData();
+					priceUtils.fetchData();
+					Thread.sleep(timeInteval);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
-	public static boolean isClearTime() {
-
-		Calendar morningTime = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		morningTime.set(Calendar.HOUR_OF_DAY, 8);
-		morningTime.set(Calendar.MINUTE, 0);
-		morningTime.set(Calendar.SECOND, 0);
-
-		Calendar eveningTime = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		eveningTime.set(Calendar.HOUR_OF_DAY, 8);
-		eveningTime.set(Calendar.MINUTE, 30);
-		eveningTime.set(Calendar.SECOND, 0);
-
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-
-		/*
-		 * now.set(Calendar.HOUR_OF_DAY 8); now.set(Calendar.MINUTE 30);
-		 * now.set(Calendar.SECOND 0);
-		 */
-
-		if (now.getTime().after(morningTime.getTime()) && now.getTime().before(eveningTime.getTime())) {
-			LoggerSysOut.print("isClearTime IN Between");
-			return true;
-		} else {
-
-			return false;
-		}
-
-	}
-
-	public static boolean istradingHrStatus() {
-
-		Calendar morningTime = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		morningTime.set(Calendar.HOUR_OF_DAY, 9);
-		morningTime.set(Calendar.MINUTE, 15);
-		morningTime.set(Calendar.SECOND, 0);
-
-		Calendar eveningTime = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-		eveningTime.set(Calendar.HOUR_OF_DAY, 15);
-		eveningTime.set(Calendar.MINUTE, 30);
-		eveningTime.set(Calendar.SECOND, 0);
-
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
-
-		/*
-		 * now.set(Calendar.HOUR_OF_DAY 8); now.set(Calendar.MINUTE 30);
-		 * now.set(Calendar.SECOND 0);
-		 */
-
-		if (now.getTime().after(morningTime.getTime()) && now.getTime().before(eveningTime.getTime())) {
-			return true;
-
-		} else {
-			return false;
-
-		}
-
+	private void getData() {
+		Rows row = LiveMarketAdvancedDecline.getData();
+		AdvancedDeclined.addAdvanced(row.getAdvances());
+		AdvancedDeclined.addDeclined(row.getDeclines());
 	}
 
 }

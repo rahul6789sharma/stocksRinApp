@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bootstrap Example</title>
+<meta charset="utf-8">
+<link
+	href="https://fonts.googleapis.com/css?family=Hind:300,400,500,600,700"
+	rel="stylesheet">
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link type="text/css" rel="stylesheet" href="/static/main.css">
+</head>
+<body>
+
+	<div class="container">
+		<h2>Three Unequal Columns</h2>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Panel Heading</div>
+			<div class="panel-body">
+
+				<div class="row">
+
+					<div class="col-sm-2">
+						<label for="sel1">Expiry</label> <select class="form-control"
+							id="expiry">
+							<option>19SEP2018</option>
+							<option>27SEP2018</option>
+							<option>4OCT2018</option>
+							<option>11OCT2018</option>
+						</select>
+
+					</div>
+
+					<div class="col-sm-2">
+						<label for="sel1">Strike</label> <select class="form-control"
+							id="strike">
+							<option>26000</option>
+							<option>26100</option>
+							<option>26200</option>
+							<option>26300</option>
+							<option>26400</option>
+							<option>26500</option>
+						</select>
+
+					</div>
+
+					<div class="col-sm-2">
+						<label for="sel1">Option</label> <select class="form-control"
+							id="option">
+							<option>PUT</option>
+							<option>CALL</option>
+						</select>
+					</div>
+
+					<div class="col-sm-2">
+						<label for="sel1">Type</label> <select class="form-control"
+							id="type">
+							<option>Sell</option>
+							<option>Buy</option>
+						</select>
+					</div>
+
+
+
+					<div class="col-sm-2">
+						<label for="sel1">Lot</label> <select class="form-control"
+							id="lot">
+							<option>1</option>
+							<option>2</option>
+						</select>
+
+					</div>
+				</div>
+
+
+
+				<br />
+				<div class="row">
+					<div class="col-sm-2">
+						<button type="button" class="btn btn-success"
+							onclick="creatediv()">Add</button>
+
+					</div>
+
+					<div class="col-sm-3">
+						<label for="sel1">Order Type</label> <select class="form-control"
+							id="orderType">
+							<option>NRML</option>
+							<option>MIS</option>
+						</select>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+
+		<br />
+
+		<hr>
+		<div id="sdDiv" class="sdDiv"></div>
+
+		<p>
+			<input type="button" id="bt" value="PlaceOrder"
+				onclick="showTableData()" />
+		</p>
+		<p id="info"></p>
+
+	</div>
+
+
+
+	<form class="row" id="example-form" method="get">
+
+		<div class="four columns last">
+			<p>&nbsp;</p>
+			<input type="submit" id="myCheck" value="Go!"
+				class="button button-primary" />
+		</div>
+
+		<div id="branded-trade-button"></div>
+
+		<div class="clear"></div>
+	</form>
+
+</body>
+<script>
+	createSDTable();
+
+	function addDataToSDTable() {
+		var tr = $('<tr/>');
+		var expiry = document.getElementById('expiry').value;
+		var strike = document.getElementById('strike').value;
+		var option = document.getElementById('option').value;
+		var type = document.getElementById('type').value;
+		var lot = document.getElementById('lot').value;
+		tr.append("<td >" + expiry + "</td>");
+		tr.append("<td >" + strike + "</td>");
+		tr.append("<td >" + option + "</td>");
+		tr.append("<td >" + type + "</td>");
+		tr.append("<td >" + lot + "</td>");
+		tr.append("<td >" + "X" + "</td>");
+		$('table').append(tr);
+	}
+	function creatediv() {
+
+		console.log('ds')
+
+		addDataToSDTable();
+
+	}
+
+	function createSDTable() {
+		var x = document.createElement("table");
+		x.setAttribute("id", "tradeTable");
+		x.setAttribute("class", "table");
+		x.setAttribute("align", "center");
+		x.setAttribute("cellpadding", "4");
+		x.setAttribute("cellspacing", "1");
+		x.setAttribute("width", "50%");
+
+		$("#sdDiv").append(x);
+		// table header
+		$("#tradeTable")
+				.append(
+						'<thead>'
+								+ '<tr class="optionHead"><th colspan="4" > Option Strategy </th></tr>'
+								+ '<tr class="optionHead">'
+								+ '<th title="SD">Expiry</th> <th title="Change OI"> Strike </th> th title="Change OI"> Option </th>'
+								+ '<th title="SD">Type</th> <th title="Change OI"> Lot </th> <th title="Change OI"> LTP </th> <th title="Change OI"> Remove </th>'
+								+ '</tr>' + '</thead>');
+
+		// table Fotter 
+	}
+
+	function showTableData() {
+		document.getElementById('info').innerHTML = "";
+		var myTab = document.getElementById('tradeTable');
+
+		// LOOP THROUGH EACH ROW OF THE TABLE AFTER HEADER.
+		// two row extra as for header
+		console.log("table row" + myTab.rows.length)
+		var allLegs = [];
+		for (i = 2; i < myTab.rows.length; i++) {
+
+			// GET THE CELLS COLLECTION OF THE CURRENT ROW.
+			var objCells = myTab.rows.item(i).cells;
+
+			// LOOP THROUGH EACH CELL OF THE CURENT ROW TO READ CELL VALUES.
+			//console.log(objCells.item(0).innerHTML)
+			var leg = {
+				expiry : objCells.item(0).innerHTML,
+				strike : objCells.item(1).innerHTML,
+				type : objCells.item(2).innerHTML,
+				lot : objCells.item(3).innerHTML
+			};
+			//console.log(leg)
+			allLegs.push(leg);
+
+			for (var j = 0; j < objCells.length; j++) {
+				info.innerHTML = info.innerHTML + ' '
+						+ objCells.item(j).innerHTML;
+			}
+			info.innerHTML = info.innerHTML + '<br />'; // ADD A BREAK (TAG).
+		}
+
+		placeOrder(allLegs);
+		placeorderBUttonClick();
+
+	}
+
+	function placeOrder(data) {
+
+		var kite = new KiteConnect("kitedemo");
+
+		$("#example-form").submit(
+				function() {
+					var kite = new KiteConnect("kitedemo"), qty = parseInt($(
+							"#num-shares").val()), typ = $("#transaction-type")
+							.val();
+
+					for (i = 0; i < data.length; i++) {
+
+						kite.add({
+							"exchange" : "NFO",
+							"tradingsymbol" : "BANKNIFTY19SEP1826500PE",
+							"quantity" : !isNaN(qty) ? qty : 1,
+							"order_type" : "LIMIT",
+							"transaction_type" : "SELL",
+							"price" : 105,
+							"product" : "MIS"
+						});
+					}
+					kite.connect();
+
+					return false;
+				});
+
+	}
+
+	function placeorderBUttonClick() {
+		document.getElementById("myCheck").click(); // Click on the checkbox
+	}
+</script>
+
+<script src="https://kite.trade/publisher.js?v=1"></script>
+
+<script>
+	
+</script>
+</html>

@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.stocksrin.option.banknifty.BankNiftyData2;
+import org.stocksrin.option.common.automation.StrategyResult;
 import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.option.common.model.StrategyModel;
 import org.stocksrin.option.nifty.NiftyData;
@@ -16,7 +17,7 @@ import org.stocksrin.utils.DateUtils;
 public class StrategyAlgoTask extends TimerTask {
 	static long timeInteval = 120000;
 
-	// long timeInteval = 30000;
+	// static long timeInteval = 10000;
 
 	@Override
 	public void run() {
@@ -43,13 +44,20 @@ public class StrategyAlgoTask extends TimerTask {
 					Map<String, OptionModles> dataModle = BankNiftyData2.bnOptionData;
 
 					if (!startgy.isEmpty()) {
-						StrategyAlgo strategyAlgo2 = new StrategyAlgo(dataModle, startgy, "BNifty-" + name, timeInteval, string.split("\\.")[0], starttegyDir);
+						// Result
+						
+						StrategyResult.strategies.put(string, startgy);
+						StrategyAlgo strategyAlgo2 = new StrategyAlgo(dataModle, startgy, "BNF-" + name, timeInteval, string.split("\\.")[0], starttegyDir);
 						strategyAlgo2.start();
 					}
 				} else if (underlaying.equals("NIFTY.csv")) {
 					Map<String, OptionModles> dataModle = NiftyData.optionData;
 					if (!startgy.isEmpty()) {
-						StrategyAlgo strategyAlgo2 = new StrategyAlgo(dataModle, startgy, "Nifty-" + name, timeInteval, string.split("\\.")[0],starttegyDir);
+
+						// Result
+						StrategyResult.strategies.put(string, startgy);
+
+						StrategyAlgo strategyAlgo2 = new StrategyAlgo(dataModle, startgy, "NF-" + name, timeInteval, string.split("\\.")[0], starttegyDir);
 						strategyAlgo2.start();
 					}
 				}
@@ -61,6 +69,7 @@ public class StrategyAlgoTask extends TimerTask {
 	}
 
 	public static void main(String[] args) throws Exception {
+		System.out.println("starting");
 		priceUtils.fetchData();
 		StrategyAlgoTask algoTask = new StrategyAlgoTask();
 		algoTask.run();

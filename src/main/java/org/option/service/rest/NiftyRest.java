@@ -21,4 +21,5 @@ public class NiftyRest {
 		return NiftyData.optionData;
 	}
 
+
 }

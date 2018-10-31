@@ -25,7 +25,9 @@ import org.stocksrin.bhavcopy.BhavForRestModle;
 import org.stocksrin.option.banknifty.BankNiftyData;
 import org.stocksrin.option.banknifty.BankNiftyDataFileUtils;
 import org.stocksrin.option.banknifty.LiveMaxPainModle;
+import org.stocksrin.option.common.InMemoryStrategyies;
 import org.stocksrin.option.common.model.OptionModles;
+import org.stocksrin.option.common.model.Strategy;
 import org.stocksrin.utils.CommonHTMLDocParsher;
 import org.stocksrin.utils.HTMLPageDocumentDownloader;
 import org.stocksrin.utils.LoggerSysOut;
@@ -33,7 +35,38 @@ import org.stocksrin.utils.LoggerSysOut;
 @Path("/nseservice")
 public class NSERestService {
 
-	
+	// http://localhost:8080/rest/nseservice/strategiesNames
+
+	@GET
+	@Path("/strategiesNamesIntraDay")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Set<String> getStrategyResultNamesstrategiesIntraDay() throws Exception {
+		return InMemoryStrategyies.getStrategiesIntraDay().keySet();
+	}
+
+	// http://localhost:8080/rest/nseservice/strategiesIntraDay
+	@GET
+	@Path("/strategiesIntraDay")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Map<String, Strategy> getStrategyResultstrategiesIntraDay() throws Exception {
+		return InMemoryStrategyies.getStrategiesIntraDay();
+	}
+
+	@GET
+	@Path("/strategiesNames")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Set<String> getStrategyResultNames() throws Exception {
+		return InMemoryStrategyies.getStrategies().keySet();
+	}
+
+	// http://localhost:8080/rest/nseservice/strategies
+	@GET
+	@Path("/strategies")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Map<String, Strategy> getStrategyResult() throws Exception {
+		return InMemoryStrategyies.getStrategies();
+	}
+
 	// http://localhost:8080/rest/nseservice/bankNiftyOI
 	@GET
 	@Path("/bankNiftyOI")
@@ -41,7 +74,7 @@ public class NSERestService {
 	public List<BhavForRestModle> getBabnkNiftyOI() throws Exception {
 		return org.stocksrin.bhavcopy.Data.getBankNIftystocksrinOIModels();
 	}
-	
+
 	// http://localhost:8080/rest/nseservice/bankNiftyOI
 	@GET
 	@Path("/niftyOI")

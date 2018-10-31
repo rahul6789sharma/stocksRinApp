@@ -1,12 +1,10 @@
 package org.stocksrin.live;
 
 public class Rows {
+	
 	private String total;
-
 	private String declines;
-
 	private String unchanged;
-
 	private String advances;
 
 	public String getTotal() {
@@ -43,6 +41,6 @@ public class Rows {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [total = " + total + " declines = " + declines + " unchanged = " + unchanged + " advances = " + advances + "]";
+		return "Rows [total = " + total + " declines = " + declines + " unchanged = " + unchanged + " advances = " + advances + "]";
 	}
 }

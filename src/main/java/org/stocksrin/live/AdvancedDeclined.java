@@ -8,7 +8,7 @@ public class AdvancedDeclined {
 	private static List<String> advanced = new ArrayList<>();
 	private static List<String> declined = new ArrayList<>();
 
-	static {
+	/*static {
 		advanced.add("1");
 		advanced.add("2");
 		advanced.add("3");
@@ -65,7 +65,7 @@ public class AdvancedDeclined {
 		declined.add("2");
 		declined.add("1");
 	}
-
+*/
 	public static void addAdvanced(String value) {
 		advanced.add(value);
 	}

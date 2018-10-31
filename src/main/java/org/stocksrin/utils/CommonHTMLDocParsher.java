@@ -24,6 +24,7 @@ public class CommonHTMLDocParsher {
 			result.setUnderlyingSpotPriceString(spotString);
 			result.setSpot(parseSpot(spotString));
 			result.setDate(getDate(spotString));
+			result.setLastDataUpdated(getLastUpdate(spotString));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -166,7 +167,6 @@ public class CommonHTMLDocParsher {
 		}
 		columns.setTotal_ce_oi(total_ce_oi);
 		columns.setTotal_pe_oi(total_pe_oi);
-		columns.setLastDataUpdated(org.smarttrade.options.utils.DateUtils.getTodayDateTime());
 
 		return columns;
 	}
@@ -198,6 +198,22 @@ public class CommonHTMLDocParsher {
 		return Double.parseDouble(e);
 	}
 
+	private static String getLastUpdate(String dateInString) throws Exception {
+		String dateString = null;
+		try {
+			// String dateForamte = "MMM dd, yyyy hh:mm:ss Z";
+			String a[] = dateInString.split("As on");
+			String d = a[1].trim();
+
+			dateString =d;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("ERROR getDate " + dateInString);
+		}
+		return dateString;
+
+	}
+
 	private static String getDate(String dateInString) throws Exception {
 		// Underlying Index: BANKNIFTY 26496.25  As on May 14, 2018 15:10:29 IST
 		// Underlying Index: NIFTY 10652.85  As on Jul 02, 2018 15:30:00 IST
@@ -214,7 +230,8 @@ public class CommonHTMLDocParsher {
 			String today = DateUtils.dateToString(todayDate, APPConstant.DATEFORMATE_dd_MMM_yyyy);
 
 			if (!dateString.equals(today)) {
-				throw new Exception("BankNifty Date and Today Date is different " + dateInString);
+				// throw new Exception("BankNifty Date and Today Date is
+				// different " + dateInString);
 			}
 			return dateString;
 		} catch (Exception e) {

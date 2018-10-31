@@ -1,4 +1,4 @@
-package org.stocksrin.banknifty;
+package org.stocksrin.option.banknifty;
 
 import java.util.ArrayList;
 import java.util.List;

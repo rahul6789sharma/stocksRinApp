@@ -41,7 +41,7 @@ public class AppGlobalInit {
 
 	@PostConstruct
 	public void init() {
-		LoggerSysOut.print("########## StocksRin Starting ###############");
+		LoggerSysOut.print("########## AppGlobalInit Starting ###############");
 		String csvFile = APPConstant.STOCKSRIN_NSE_CONF_DIR_BANKNIFTY_DAILYMAXPAIN_FILE;
 		pullMAXPAIN_WEEKLY_data(csvFile);
 
@@ -62,8 +62,7 @@ public class AppGlobalInit {
 		pullParticipantWiseOIData();
 		pullNiftyIndicesData();
 		pullBankNiftyIndicesData();
-		LoggerSysOut.print("########## StocksRin Started ###############");
-		// ReadData.readOptionData(APPConstant.OPTION_OI_Participant_FILE);
+		LoggerSysOut.print("########## AppGlobalInit Started ###############");
 	}
 
 	private static void pullYearlyFII_DII_data(String file) {

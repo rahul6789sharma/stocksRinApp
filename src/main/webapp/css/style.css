@@ -29,7 +29,8 @@ table {
 	border: solid 1px #ACA99F;
 	font-size: 82%;
 	color: #000;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
 }
 
 .opttbldata table {
@@ -41,7 +42,6 @@ table {
 	border: solid 1px #ACA99F;
 	font-size: 100% !important;
 	color: #000;
-	
 }
 
 td, th {
@@ -76,30 +76,29 @@ td, th {
 	text-align: right
 }
 
-.redNumberitm{
+.redNumberitm {
 	background: #ededf9;
 	text-align: right;
-	color:red
+	color: red
 }
 
-.greenNumberitm{
+.greenNumberitm {
 	background: #ededf9;
 	text-align: right;
-	color:green
+	color: green
 }
 
-.redNumberotm{
+.redNumberotm {
 	background: white;
 	text-align: right;
-	color:red
+	color: red
 }
 
-.greenNumberotm{
+.greenNumberotm {
 	background: white;
 	text-align: right;
-	color:green
+	color: green
 }
-
 
 .evenRow {
 	background: #ededf9;
@@ -107,11 +106,10 @@ td, th {
 	color: #333333;
 }
 
-
-
 .oddRow {
 	padding: 4px;
 	color: #333333;
+	font-weight: 700;
 }
 
 .highLightRow {
@@ -122,6 +120,15 @@ td, th {
 	font-weight: 700;
 }
 
+.highLightRow2 {
+	border-top: 2px solid #c5a8a8;
+	padding: 4px;
+	background: #ededf9;
+	font: 12px 'Open Sans', sans-serif;
+	font-weight: 600;
+	text-align: left;
+}
+
 .whiteRightBorder {
 	border-right: 1px solid #fff;
 }
@@ -130,20 +137,37 @@ td, th {
 	border-right: 1px solid #000000;
 }
 
-
 .blackRightBorder2 {
 	border-right: 2px solid #000000;
 }
 
 .negitiveValue {
 	background: #ffcccc !important;
+	font-weight: 700;
 }
 
 .positiveValue {
 	background: #ccffdd !important;
+	font-weight: 700;
 }
 
+.negitiveValue2 {
+	border-top: 2px solid #c5a8a8;
+	padding: 4px;
+	background: #ededf9;
+	font: 12px 'Open Sans', sans-serif;
+	font-weight: 700;
+	background: #ffcccc !important;
+}
 
+.positiveValue2 {
+	border-top: 2px solid #c5a8a8;
+	padding: 4px;
+	background: #ededf9;
+	font: 12px 'Open Sans', sans-serif;
+	font-weight: 700;
+	background: #ccffdd !important;
+}
 
 .otmMaxOI {
 	background: #4dff4d;
@@ -217,11 +241,21 @@ keyframes spin { 0% {
 100%
 {
 transform
+
+
 :
+
  
+
 rotate
-(360deg);
+
+
+(360
+deg
+);
+
  
+
 }
 }
 .highcharts-credits {
