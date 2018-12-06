@@ -48,6 +48,8 @@
 			to the installed version of EAP from the customer service portal [1]. Unzip 
 			the file and examine the single directory under jboss-eap-*-maven-repository/org/jboss/spec/jboss-javaee-6.0 
 			[1] https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=appplatform&productChanged=yes" -->
+		
+
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-6.0</artifactId>

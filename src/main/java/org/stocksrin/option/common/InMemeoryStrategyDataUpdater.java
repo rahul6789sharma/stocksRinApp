@@ -16,6 +16,7 @@ import org.stocksrin.utils.LoggerSysOut;
 public class InMemeoryStrategyDataUpdater extends Thread {
 
 	static long timeInteval = 120000;
+
 	@Override
 	public void run() {
 		if (BankNiftyData2.shortedExpiry.isEmpty() || NiftyData.shortedExpiry.isEmpty()) {
@@ -56,7 +57,8 @@ public class InMemeoryStrategyDataUpdater extends Thread {
 			}
 		}
 		// only write result between 3:15 to 3:35
-		if (CommonUtils.isTimeLessThen(15, 35)) {
+		if (CommonUtils.isTimeLessThen(15, 55)) {
+			System.out.println("Writing result to file ");
 			writeResult();
 		}
 
@@ -69,7 +71,7 @@ public class InMemeoryStrategyDataUpdater extends Thread {
 			try {
 				StrategyResult.writeStrategyFile2(lst);
 			} catch (Exception e) {
-				System.out.println("Critical error in writing Strategy result");
+				System.out.println("##### Critical error in writing Strategy result ######## " + keys);
 				e.printStackTrace();
 			}
 
@@ -90,9 +92,6 @@ public class InMemeoryStrategyDataUpdater extends Thread {
 			List<StrategyModel> strategyModels = strategy.getStrategyModels();
 
 			strategy.setUnderlying_ltp(BankNiftyData2.getBNFSpot());
-			// System.out.println("----------------- " +
-			// strategy.getStrategyName());
-
 			double totalPL = 0;
 			double ltp = 0;
 			Double iv = null;
@@ -135,6 +134,8 @@ public class InMemeoryStrategyDataUpdater extends Thread {
 			}
 			updateData(strategy, lastDataUpdateTime, totalPL);
 			// strategy.setTotalPL(totalPL);
+		} else {
+			throw new Exception("Underlying is not set");
 		}
 	}
 

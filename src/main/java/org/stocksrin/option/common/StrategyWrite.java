@@ -78,10 +78,11 @@ public class StrategyWrite {
 		result.append("Max PL " + " :  [" + df.format(strategy.getTotalPLMax()) + "],    At Spot: [" + strategy.getTotalPLMaxSpot() + "] moved : ["
 				+ df.format(strategy.getTotalPLMaxSpot() - strategy.getTradeSpotPrice()) + "] - " + strategy.getTotalPLMaxTime() + "\n");
 		result.append(line + "\n");
-		
-		result.append(
-				"BreakEven : " + "[" + strategy.getLowerBreakEven() + " : " + strategy.getUpperBreakEven() + "], Range : " + "[" + (strategy.getUpperBreakEven() - strategy.getLowerBreakEven()) + "]");
-		
+
+		result.append("BreakEven : " + "[" + strategy.getLowerBreakEven() + " : " + strategy.getUpperBreakEven() + "], Range : " + "[" + (strategy.getUpperBreakEven() - strategy.getLowerBreakEven())
+				+ "], " + "BreakEvenRangeFromTrade [" + strategy.getTradeSpotPrice() + "] [" + (int) (strategy.getLowerBreakEven() - strategy.getTradeSpotPrice()) + " : "
+				+ (int) ( strategy.getUpperBreakEven()-strategy.getTradeSpotPrice() ) + "]");
+
 		result.append("\n");
 		result.append("MaxLosses : " + "[" + strategy.getMaxLossLowerSide() + " : " + strategy.getMaxLossUpperSide() + "]");
 		result.append("\n");

@@ -22,16 +22,18 @@ public class InMemeoryStrategyBuilder extends TimerTask {
 		SendEmail.sentMail("InMemeoryStrategyBuilder Intra daya Auto Build Strategy started", "");
 		System.out.println("&&&&&&&&&&&&&&& InMemeoryStrategyBuilder &&&&&&&&&&&&");
 		InMemoryStrategyies.clear();
-		
+
 		if (!DateUtils.isWeekEndDay()) {
 			// update ltp
 			try {
-			 priceUtils.fetchData();
+				priceUtils.fetchData();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			InMemeoryStrategyDataUpdater inMemeoryStrategyDataUpdater = new InMemeoryStrategyDataUpdater();
-			inMemeoryStrategyDataUpdater.start();
+
+			// InMemeoryStrategyDataUpdater inMemeoryStrategyDataUpdater = new
+			// InMemeoryStrategyDataUpdater();
+			// inMemeoryStrategyDataUpdater.start();
 
 			while (CommonUtils.getEveningTimeForStrategy()) {
 				try {
@@ -49,7 +51,7 @@ public class InMemeoryStrategyBuilder extends TimerTask {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("starting");
-		//priceUtils.fetchData();
+		// priceUtils.fetchData();
 
 		InMemeoryStrategyBuilder inMemeoryStrategyBuilder = new InMemeoryStrategyBuilder();
 		inMemeoryStrategyBuilder.run();

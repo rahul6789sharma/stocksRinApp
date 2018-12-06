@@ -9,8 +9,9 @@ import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
-import org.stocksrin.option.common.automation.IntraDayStrategyFileBuilder;
 import org.stocksrin.option.common.automation.InMemeoryStrategyBuilder;
+import org.stocksrin.option.common.automation.IntraDayStrategyFileBuilder;
+import org.stocksrin.option.common.automation.dynamic.DyanmicStrategy;
 import org.stocksrin.utils.LoggerSysOut;
 
 @Singleton
@@ -37,6 +38,12 @@ public class MorningTaskSchedular2 {
 
 		try {
 			Scheduler.scheduleTask(9, 20, new IntraDayStrategyFileBuilder());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			Scheduler.scheduleTask(9, 21, new DyanmicStrategy());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

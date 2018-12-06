@@ -11,7 +11,7 @@ public class BankNiftyUtils {
 	// can be passed null , null means current expiry
 	public static OptionModles getBankNiftyOptionData(String expiry) throws Exception {
 
-		OptionModles optionModles = BankNiftyUtils.getOptionChain(expiry);	
+		OptionModles optionModles = getOptionChain(expiry);	
 		MaxPains maxPain = Calculation.calMaxPain(optionModles.getOptionModle(), APPConstant.BNF_STRIKE_DIFF, optionModles.getExpiry());
 		optionModles.setMaxPainStrick(maxPain.getMaxPainStrick());
 		return optionModles;

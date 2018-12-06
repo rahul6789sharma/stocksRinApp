@@ -82,8 +82,6 @@ public class FIIDIIDailyReportUtils {
 	private static void getFII_Data(String url ,FIIDIIDataModle fIIDIIDataModle) throws StocksRinException {
 		Document doc = HTMLPageUtils.getHTMLDocument(url);
 
-		// Document doc =
-		// HTMLPageUtils.getDocumentFromFile("C:\\Users\\rahulksh\\Desktop\\graph\\fiiEQ.htm");
 		try {
 			Elements table = HTMLPageUtils.getTable(doc, 0);
 

@@ -22,6 +22,7 @@ import org.stocksrin.utils.FileUtils;
 public class Utils {
 
 	private static String line = "----------------------------------------------------------------------------------------------";
+
 	public static void createStrategyFile(Strategy strategy, String dir, String fileName) {
 		try {
 			Utils.createStrategyFile(dir, strategy, fileName);
@@ -42,11 +43,11 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static double getATMStrike(OptionModles optionModles, int strikediff) {
 
 		double spot = optionModles.getSpot();
-		System.out.println("spot" + spot);
+		// System.out.println(" getATMStrike spot : " + spot);
 		List<OptionModle> lst = optionModles.getOptionModle();
 
 		double atmStrike = 0.0;
@@ -195,4 +196,34 @@ public class Utils {
 		strategyModel.setTradeDate(DateUtils.dateToString(new Date(), "ddMMMyyyy").toUpperCase());
 		return strategyModel;
 	}
+
+	public static double getCurrentLevels(double spot, double currentLevel) {
+		if (spot > currentLevel) {
+			currentLevel = currentLevel + 100.0;
+		} else if (spot <= currentLevel) {
+			currentLevel = currentLevel - 100.0;
+		}
+
+		return currentLevel;
+
+		/*
+		 * if (spot % 100 == 0) { return spot; } else { return null; }
+		 */
+	}
+
+	static double currentLevel = 0;
+
+	public static void main(String[] args) throws InterruptedException {
+		System.out.println("running " + currentLevel);
+		double start = 24685;
+		currentLevel = 24600;
+		while (true) {
+			start++;
+			Thread.sleep(1000);
+			System.out.println("start" + start);
+			System.out.println("currentLevel " + getCurrentLevels(start,currentLevel));
+			
+		}
+	}
+
 }

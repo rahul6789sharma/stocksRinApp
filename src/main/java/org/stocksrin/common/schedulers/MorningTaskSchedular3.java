@@ -14,12 +14,6 @@ public class MorningTaskSchedular3 {
 	@PostConstruct
 	public void init() {
 
-		try {
-			Scheduler.scheduleTask(6, 0, new WishTask("Hello Morning 6:00"));
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		try {
 			Scheduler.scheduleTask(8, 0, new WishTask("Hello Morning 8:00"));
@@ -31,12 +25,6 @@ public class MorningTaskSchedular3 {
 		try {
 			Scheduler.scheduleTask(9, 0, new WishTask("Hello Morning 9:00"));
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			Scheduler.scheduleTask(23, 30, new WishTask("Hello Night 23:30"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

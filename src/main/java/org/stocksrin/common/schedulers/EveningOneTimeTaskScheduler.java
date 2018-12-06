@@ -55,6 +55,7 @@ public class EveningOneTimeTaskScheduler {
 		today8.set(Calendar.SECOND, 0);
 
 		try {
+			// implemented in MS
 			timer8.schedule(new IndicesDownloaderTask(), today8.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,6 +82,7 @@ public class EveningOneTimeTaskScheduler {
 
 		try {
 			// Participant wise Open Interest (csv) data download from NSE
+			// implemented in MS 
 			timer2.schedule(new ParticapentFNOOITask(), today4.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 		} catch (Exception e) {
 			e.printStackTrace();

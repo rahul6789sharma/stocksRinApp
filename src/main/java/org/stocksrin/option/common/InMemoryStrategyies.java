@@ -13,6 +13,7 @@ public class InMemoryStrategyies {
 
 	private static Map<String, Strategy> strategies = new HashMap<>();
 	private static Map<String, Strategy> strategiesIntraDay = new HashMap<>();
+	//public static Map<String, Strategy> strategiesIntraDayDyanmic = new HashMap<>();
 
 	public static synchronized void put(String key, Strategy strategy, String dir) {
 
@@ -25,7 +26,7 @@ public class InMemoryStrategyies {
 	}
 
 	// strategy here ltp would be 0
-	private static synchronized void putIntraDay(String key, Strategy strategy) {
+	public static synchronized void putIntraDay(String key, Strategy strategy) {
 
 		// already existing strategy
 		Strategy data = strategiesIntraDay.get(key);

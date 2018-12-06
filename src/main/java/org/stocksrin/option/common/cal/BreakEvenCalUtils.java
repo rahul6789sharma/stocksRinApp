@@ -26,8 +26,8 @@ public class BreakEvenCalUtils {
 		Double maxLossLowerSide = Double.MIN_VALUE;
 		Double maxLossUpperSide = Double.MIN_VALUE;
 		Double maxProfit = Double.MIN_VALUE;
-		System.out.println(breakEvenStrikes);
-		if(breakEvenStrikes.isEmpty()){
+		// System.out.println(breakEvenStrikes);
+		if (breakEvenStrikes.isEmpty()) {
 			return;
 		}
 		for (Double double1 : keys1) {
@@ -42,15 +42,18 @@ public class BreakEvenCalUtils {
 
 			}
 		}
-	/*	System.out.println("maxLossLowerSide " + maxLossLowerSide);
-		System.out.println("maxLossUpperSide " + maxLossUpperSide);
-		System.out.println("breakEvenStrikes : " + breakEvenStrikes);
-		System.out.println("maxProfit : " + maxProfit);
-
-		System.out.println("lower : " + breakEvenStrikes.first());
-		System.out.println("higher : " + breakEvenStrikes.last());
-
-		System.out.println("Range : " + (breakEvenStrikes.last() - breakEvenStrikes.first()));*/
+		/*
+		 * System.out.println("maxLossLowerSide " + maxLossLowerSide);
+		 * System.out.println("maxLossUpperSide " + maxLossUpperSide);
+		 * System.out.println("breakEvenStrikes : " + breakEvenStrikes);
+		 * System.out.println("maxProfit : " + maxProfit);
+		 * 
+		 * System.out.println("lower : " + breakEvenStrikes.first());
+		 * System.out.println("higher : " + breakEvenStrikes.last());
+		 * 
+		 * System.out.println("Range : " + (breakEvenStrikes.last() -
+		 * breakEvenStrikes.first()));
+		 */
 		startgy.setMaxLossLowerSide(maxLossLowerSide);
 		startgy.setMaxLossUpperSide(maxLossUpperSide);
 		startgy.setMaxProfit(maxProfit);
@@ -66,8 +69,8 @@ public class BreakEvenCalUtils {
 		List<Double> allStrikes = new ArrayList<>();
 
 		double start = 20000;
-		for (int i = 0; i < 100; i++) {
-			allStrikes.add(start + (100 * i));
+		for (int i = 0; i < 1000; i++) {
+			allStrikes.add(start + (10 * i));
 
 		}
 
@@ -94,7 +97,6 @@ public class BreakEvenCalUtils {
 						double p = totalPNL.get(double1) + totalPl;
 						totalPNL.put(double1, p);
 					}
-
 				}
 			}
 
@@ -121,14 +123,10 @@ public class BreakEvenCalUtils {
 						double p = totalPNL.get(double1) + totalPl;
 						totalPNL.put(double1, p);
 					}
-
 				}
-				// System.out.println("*******");
 			}
 		}
-		// System.out.println("######################");
 		startgy.setAllStrikePNL(totalPNL);
-
 	}
 
 	private static void callIntenricsValue(List<Double> allStrikes, double tradedStrike, Map<Double, Double> intenrsic) {

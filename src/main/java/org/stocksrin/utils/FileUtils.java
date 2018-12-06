@@ -26,19 +26,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class FileUtils {
 
 	private FileUtils() {
-
 	}
 
 	public static boolean isTodayFileExist(String filePath) throws Exception {
 		String fileModifedDate = modifiedDate(filePath);
 		String today = DateUtils.dateToString(new Date(), "MM/dd/yyyy");
-
 		if (fileModifedDate.equals(today)) {
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 	private static String modifiedDate(String filePath) throws Exception {
@@ -324,6 +321,7 @@ public class FileUtils {
 
 		}
 	}
+	
 	public static void main(String[] args) {
 		String file = "C:\\nse\\fandO\\fno.txt";
 		LoggerSysOut.print(readFnOList(file));

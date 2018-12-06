@@ -38,7 +38,7 @@ public class BankNiftyNotificationTask extends TimerTask {
 						checkSpotAlert(BankNiftyData2.bnOptionData.get(currentExpiry).getSpot());
 
 						checkForMaxPainChange();
-						//BankNiftyOINotification.checkOIChange();
+						// BankNiftyOINotification.checkOIChange();
 					}
 
 					Thread.sleep(timeInteval);
@@ -59,16 +59,17 @@ public class BankNiftyNotificationTask extends TimerTask {
 				if (optionModles.getTotal_ce_oi() > oiLimit || optionModles.getTotal_pe_oi() > oiLimit) {
 
 					MaxPains maxPain = Calculation.calMaxPain(optionModles.getOptionModle(), APPConstant.BNF_STRIKE_DIFF, optionModles.getExpiry());
-					
-					//LoggerSysOut.print("************ Expiry ***************" + expiry + " - " +Thread.currentThread().getName());
-					//LoggerSysOut.print("Bank Nifty MaxPain1  " + BankNiftyData2.maxPains);
-					
-					
+
+					// LoggerSysOut.print("************ Expiry ***************"
+					// + expiry + " - " +Thread.currentThread().getName());
+					// LoggerSysOut.print("Bank Nifty MaxPain1 " +
+					// BankNiftyData2.maxPains);
+
 					Double currentMaxPain = maxPain.getMaxPainStrick();
-					//LoggerSysOut.print("currentMaxPain " + currentMaxPain);
+					// LoggerSysOut.print("currentMaxPain " + currentMaxPain);
 					Double previousMaxPain = BankNiftyData2.maxPains.get(expiry);
-					//LoggerSysOut.print("previousMaxPain " + previousMaxPain);
-					//LoggerSysOut.print(previousMaxPain != null);
+					// LoggerSysOut.print("previousMaxPain " + previousMaxPain);
+					// LoggerSysOut.print(previousMaxPain != null);
 					if (previousMaxPain != null) {
 
 						if (!previousMaxPain.equals(currentMaxPain)) {
@@ -82,7 +83,7 @@ public class BankNiftyNotificationTask extends TimerTask {
 					}
 				}
 			}
-			//LoggerSysOut.print("maxPains " + BankNiftyData2.maxPains);
+			// LoggerSysOut.print("maxPains " + BankNiftyData2.maxPains);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

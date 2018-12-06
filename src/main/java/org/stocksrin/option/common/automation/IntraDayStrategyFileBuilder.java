@@ -18,8 +18,7 @@ public class IntraDayStrategyFileBuilder extends TimerTask {
 	@Override
 	public void run() {
 		SendEmail.sentMail("Morning Intra daya Auto Build Strategy started", "");
-		System.out.println("&&&&&&&&&&&&&&& Intra daya Auto Build Strategy &&&&&&&&&&&&");
-
+	
 		try {
 			priceUtils.fetchData();
 			boolean isdata = BankNiftyData2.shortedExpiry.isEmpty();

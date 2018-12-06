@@ -1,5 +1,6 @@
 package org.stocksrin.option.common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.stocksrin.email.SendEmail;
@@ -9,6 +10,7 @@ import org.stocksrin.option.common.model.OptionModle;
 import org.stocksrin.option.common.model.OptionModles;
 import org.stocksrin.option.common.model.Strategy;
 import org.stocksrin.option.common.model.Strategy.UnderLying;
+import org.stocksrin.option.common.model.StrategyModel;
 import org.stocksrin.option.common.model.StrategyModel.OptionType;
 import org.stocksrin.utils.FileUtils;
 
@@ -123,6 +125,38 @@ public class BNFStrategies {
 		return strategy;
 	}
 
+	public static List<StrategyModel> getStradelByStrikeStrategy(double strike) throws Exception {
+		List<StrategyModel> strategyModels = new ArrayList<>();
+		OptionModles data = BankNiftyData2.bnOptionData.get(BankNiftyData2.shortedExpiry.first());
+		List<OptionModle> lst = data.getOptionModle();
+		Strategy altPall = Utils.buildStrategy("BNF", lst, strike, OptionType.PUT, BankNiftyData2.shortedExpiry.first(), data.getSpot(), -20);
+		Strategy altCall = Utils.buildStrategy("BNF", lst, strike, OptionType.CALL, BankNiftyData2.shortedExpiry.first(), data.getSpot(), -20);
+		strategyModels.addAll(altCall.getStrategyModels());
+		strategyModels.addAll(altPall.getStrategyModels());
+
+		return strategyModels;
+	}
+
+	public static Strategy StrategyATMStraddle(String strategyName) throws Exception {
+		String currentExpiry = Utils.getExpiry(BankNiftyData2.shortedExpiry);
+
+		OptionModles optionModles = BankNiftyData2.bnOptionData.get(currentExpiry);
+		double atmStrike = Utils.getATMStrike(optionModles, 50);
+
+		List<OptionModle> lst = optionModles.getOptionModle();
+		Strategy strategy = new Strategy(UnderLying.BANKNIFTY);
+		strategy.setStrategyName(strategyName);
+
+		Strategy legPut2 = Utils.buildStrategy("BNF", lst, atmStrike, OptionType.PUT, currentExpiry, optionModles.getSpot(), -lot);
+		Strategy legCall2 = Utils.buildStrategy("BNF", lst, atmStrike, OptionType.CALL, currentExpiry, optionModles.getSpot(), -lot);
+
+		strategy.getStrategyModels().addAll(legPut2.getStrategyModels());
+		strategy.getStrategyModels().addAll(legCall2.getStrategyModels());
+
+		return strategy;
+
+	}
+
 	private static Strategy Strategy3Straddle() throws Exception {
 		String currentExpiry = Utils.getExpiry(BankNiftyData2.shortedExpiry);
 
@@ -220,22 +254,26 @@ public class BNFStrategies {
 		// getNextExpiry
 
 		OptionModles optionModles = BankNiftyData2.bnOptionData.get(currentExpiry);
+		List<OptionModle> lst = optionModles.getOptionModle();
+
+		OptionModles optionModles2 = BankNiftyData2.bnOptionData.get(nextExpiry);
+		List<OptionModle> lst2 = optionModles2.getOptionModle();
+
 		double atmStrike = Utils.getATMStrike(optionModles, 50);
 
 		double peLeg = atmStrike - 200;
 		double ceLeg = atmStrike + 200;
 
-		List<OptionModle> lst = optionModles.getOptionModle();
 		Strategy strategy = new Strategy(UnderLying.BANKNIFTY);
 		strategy.setStrategyName("BNF");
 
-		Strategy legPeBuy = Utils.buildStrategy("BNF", lst, peLeg, OptionType.PUT, nextExpiry, optionModles.getSpot(), lot);
+		Strategy legPeBuy = Utils.buildStrategy("BNF", lst2, peLeg, OptionType.PUT, nextExpiry, optionModles.getSpot(), lot);
 		Strategy legPeSell = Utils.buildStrategy("BNF", lst, peLeg, OptionType.PUT, currentExpiry, optionModles.getSpot(), -lot);
 
 		Strategy legCeSell = Utils.buildStrategy("BNF", lst, ceLeg, OptionType.CALL, currentExpiry, optionModles.getSpot(), -lot);
-		Strategy legCeBuy = Utils.buildStrategy("BNF", lst, ceLeg, OptionType.CALL, nextExpiry, optionModles.getSpot(), lot);
+		Strategy legCeBuy = Utils.buildStrategy("BNF", lst2, ceLeg, OptionType.CALL, nextExpiry, optionModles.getSpot(), lot);
 
-		// order is imp to visulization
+		// order is imp to visualization
 		strategy.getStrategyModels().addAll(legPeBuy.getStrategyModels());
 		strategy.getStrategyModels().addAll(legPeSell.getStrategyModels());
 		strategy.getStrategyModels().addAll(legCeSell.getStrategyModels());

@@ -35,7 +35,6 @@ public class Calculation {
 			Double putCuresult = 0.0;
 			for (int j = i; j < optionModle.size(); j++) {
 				Integer a1 = optionModle.get(j).getP_oi();
-				//System.out.println(a1);
 				if (a1 != null) {
 					putCuresult = putCuresult + (a1 * ((strickDiff * j) - (strickDiff * i)));
 					maxPain.setCumulativePe(putCuresult);
